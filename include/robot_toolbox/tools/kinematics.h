@@ -189,4 +189,4 @@ class Kinematics
 
 };  // End Class: Kinematics
 } // End Namespace: Robotics Toolbox
-#endif // MATH_TOOL_H
+#endif // KINEMATIC_TOOL_H
