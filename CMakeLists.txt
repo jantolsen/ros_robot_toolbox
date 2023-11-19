@@ -141,6 +141,7 @@ add_library(${PROJECT_NAME}
   src/tools/math.cpp
   src/tools/visual.cpp
   src/tools/trajectory.cpp
+  src/tools/parameter.cpp
 )
 
 # Specify libraries to link a library or executable target against
