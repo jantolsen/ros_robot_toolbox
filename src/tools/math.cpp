@@ -24,6 +24,10 @@ namespace Toolbox
 // Math Tool Class - Members:
 // -------------------------------
 
+    // Constants
+    // -------------------------------
+    const std::string Math::class_prefix = "Toolbox::Math::";
+
     // Linear Spaced Vector (double)
     // -------------------------------
     // (Function overloading)
@@ -569,7 +573,8 @@ namespace Toolbox
             // Unknown sequence
             default:
                 // Report to terminal
-                ROS_ERROR_STREAM("Toolbox::Common::eulerToQuaternion: Failed! Unknown Euler-Sequence!");
+                ROS_ERROR_STREAM(Math::class_prefix << __FUNCTION__ 
+                    << ": Failed! Unknown Euler-Sequence!");
 
                 // Case break
                 break;;

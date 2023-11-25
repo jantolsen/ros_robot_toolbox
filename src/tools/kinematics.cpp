@@ -45,8 +45,8 @@ namespace Toolbox
             // Failed to capture Current-Joint-State message
 
             // Report to terminal
-            ROS_ERROR_STREAM(class_prefix << __FUNCTION__ << 
-                            " Failed to capture current joint-state message");
+            ROS_ERROR_STREAM(Kinematics::class_prefix << __FUNCTION__ 
+                << " Failed to capture current joint-state message");
 
             // Function return
             return false;
@@ -58,8 +58,8 @@ namespace Toolbox
             // Empty Joint-State Position
 
             // Report to terminal
-            ROS_ERROR_STREAM(class_prefix << __FUNCTION__ << 
-                            " Failed: Current joint-state position is empty");
+            ROS_ERROR_STREAM(class_prefix << __FUNCTION__ 
+                << " Failed: Current joint-state position is empty");
 
             // Function return
             return false;
@@ -126,8 +126,8 @@ namespace Toolbox
         catch(tf2::TransformException &ex)
         {
             // Report to terminal
-            ROS_ERROR_STREAM(class_prefix << __FUNCTION__ << 
-                            ": Tranformation failed!: " << ex.what());
+            ROS_ERROR_STREAM(class_prefix << __FUNCTION__ 
+                << ": Tranformation failed!: " << ex.what());
 
             // Function return
             return true;

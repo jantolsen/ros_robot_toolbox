@@ -45,7 +45,7 @@ namespace Toolbox
         std::vector<double> pos_traj;   // Position trajectory
         std::vector<double> vel_traj;   // Velocity trajectory
         std::vector<double> acc_traj;   // Acceleration trajectory
-        std::string func_prefix = "lspb: ";
+        std::string func_prefix = "lspb";
         
         // Illegal argument handling
         // -------------------------------
@@ -66,8 +66,8 @@ namespace Toolbox
                 acc_traj = std::vector<double>(t.size(), 0.0);      // Fill with zeros
 
                 // Report to terminal
-                ROS_ERROR_STREAM(class_prefix + func_prefix 
-                                <<  "End-Point equals End-Point, returning trajectory with only end-point values");
+                ROS_ERROR_STREAM(Trajectory::class_prefix + func_prefix 
+                    << ": Failed! End-Point equals End-Point, returning trajectory with only end-point values");
 
                 // Function return
                 return trajectory;
@@ -144,7 +144,7 @@ namespace Toolbox
     {
         // Define trajectory and lcoal variables
         std::vector<double> trajectory;
-        std::string func_prefix = "lspb: ";
+        std::string func_prefix = "lspb";
 
         // Illegal argument handling
         // -------------------------------
@@ -208,7 +208,7 @@ namespace Toolbox
         Eigen::VectorXd pos_traj;       // Position trajectory
         Eigen::VectorXd vel_traj;       // Velocity trajectory
         Eigen::VectorXd acc_traj;       // Acceleration trajectory
-        std::string func_prefix = "polynomialQuintic: ";
+        std::string func_prefix = "polynomialQuintic";
 
         // Illegal argument handling
         // -------------------------------
@@ -305,7 +305,7 @@ namespace Toolbox
     {
         // Define polynomial trajectory
         std::vector<double> trajectory; // Polynomial trajectory (position)
-        std::string func_prefix = "polynomialQuintic: "; 
+        std::string func_prefix = "polynomialQuintic"; 
 
         // Illegal argument handling
         // -------------------------------
@@ -369,7 +369,7 @@ namespace Toolbox
         std::vector<double> trajectory; // Polynomial trajectory (position)
         Eigen::VectorXd pos_traj;       // Position trajectory
         Eigen::VectorXd vel_traj;       // Velocity trajectory
-        std::string func_prefix = "polynomialCubic: "; 
+        std::string func_prefix = "polynomialCubic"; 
 
         // Illegal argument handling
         // -------------------------------
@@ -452,7 +452,7 @@ namespace Toolbox
     {
         // Define polynomial trajectory
         std::vector<double> trajectory; // Polynomial trajectory (position)
-        std::string func_prefix = "polynomialCubic: "; 
+        std::string func_prefix = "polynomialCubic"; 
 
         // Illegal argument handling
         // -------------------------------
@@ -579,9 +579,6 @@ namespace Toolbox
             // Determine the largest number of steps
             int steps = std::max(p_n, q_n);
 
-            ROS_ERROR("PRINT TRANS STEPS: (%d)", p_n);
-            ROS_ERROR("PRINT QUAT STEPS: (%d)", q_n);
-
         // Calculation
         // -------------------------------
             // Compute translation trajectory using linear interpolation
@@ -679,8 +676,8 @@ namespace Toolbox
             ptr_trajectory->push_back(0);
 
             // Report to terminal
-            ROS_ERROR_STREAM(class_prefix + func_prefix 
-                            <<  "Time-Period is empty, returning empty trajectory");
+            ROS_ERROR_STREAM(Trajectory::class_prefix + func_prefix 
+                << ": Failed! Time-Period is empty, returning empty trajectory");
 
             // Function return
             return false;
@@ -692,8 +689,8 @@ namespace Toolbox
             ptr_trajectory->push_back(0);
 
             // Report to terminal
-            ROS_ERROR_STREAM(class_prefix + func_prefix 
-                            <<  "Time-Period's last elemen equals zero, returning empty trajectory");
+            ROS_ERROR_STREAM(Trajectory::class_prefix + func_prefix 
+                << ": Failed! Time-Period's last elemen equals zero, returning empty trajectory");
 
             // Function return
             return false;
@@ -706,8 +703,8 @@ namespace Toolbox
             ptr_trajectory->push_back(p_f);
 
             // Report to terminal
-            ROS_ERROR_STREAM(class_prefix + func_prefix 
-                            <<  "Time-Period's size equals one, returning trajectory with only end-point");
+            ROS_ERROR_STREAM(Trajectory::class_prefix + func_prefix 
+                << ": Failed! Time-Period's size equals one, returning trajectory with only end-point");
 
             // Function return
             return false;
@@ -737,8 +734,8 @@ namespace Toolbox
             ptr_trajectory->push_back(0);
 
             // Report to terminal
-            ROS_ERROR_STREAM(class_prefix + func_prefix
-                            <<  "Number-of-steps is empty, returning empty/zero trajectory");
+            ROS_ERROR_STREAM(Trajectory::class_prefix + func_prefix
+                << ": Failed! Number-of-steps is empty, returning empty/zero trajectory");
 
             // Function return
             return false;
@@ -751,8 +748,8 @@ namespace Toolbox
             ptr_trajectory->push_back(p_f);
 
             // Report to terminal
-            ROS_ERROR_STREAM(class_prefix + func_prefix 
-                            <<  "Number-of-steps equals one, returning trajectory with only end-point");
+            ROS_ERROR_STREAM(Trajectory::class_prefix + func_prefix 
+                << ": Failed! Number-of-steps equals one, returning trajectory with only end-point");
 
             // Function return
             return false;

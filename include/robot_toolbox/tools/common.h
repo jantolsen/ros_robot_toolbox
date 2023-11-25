@@ -320,6 +320,8 @@ class Common
     // Accessible only for the class which defines them
     private:
 
+        // Prefix message for class
+        static const std::string class_prefix;
 
 }; // End Class: Common
 } // End Namespace: Robotics Toolbox

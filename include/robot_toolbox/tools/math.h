@@ -559,6 +559,9 @@ class Math
     // -------------------------------
     // Accessible only for the class which defines them
     private:
+    
+        // Prefix message for class
+        static const std::string class_prefix;
 
 
 }; // End Class: Math

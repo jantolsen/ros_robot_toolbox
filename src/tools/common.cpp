@@ -26,6 +26,8 @@ namespace Toolbox
 
     // Constants
     // -------------------------------
+        const std::string Common::class_prefix = "Toolbox::Common::";
+
         // X-Axis
         const struct AxisType Common::AXIS_X = 
         {
@@ -130,7 +132,8 @@ namespace Toolbox
             // Unknown sequence
             default:
                 // Report to terminal
-                ROS_ERROR_STREAM("Toolbox::Common::eulerToQuaternion: Failed! Unknown Euler-Sequence!");
+                ROS_ERROR_STREAM(class_prefix << __FUNCTION__ 
+                    << ": Failed! Unknown Euler-Sequence!");
 
                 // Case break
                 break;;
@@ -247,7 +250,8 @@ namespace Toolbox
             // Unknown sequence
             default:
                 // Report to terminal
-                ROS_ERROR_STREAM("Toolbox::Common::quaternionToEuler: Failed! Unknown Euler-Sequence!");
+                ROS_ERROR_STREAM(class_prefix << __FUNCTION__ 
+                    << ": Failed! Unknown Euler-Sequence!");
 
                 // Case break
                 break;;
