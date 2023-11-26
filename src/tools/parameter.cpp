@@ -26,7 +26,7 @@ namespace Toolbox
 
     // Constants
     // -------------------------------
-    const std::string Parameter::class_prefix = "Toolbox::Parameter::";
+    const std::string Parameter::CLASS_PREFIX = "Toolbox::Parameter::";
 
     // Check Parameter Member
     // -------------------------------
@@ -38,7 +38,7 @@ namespace Toolbox
         if(!param.hasMember(member))
         {
             // Report to terminal
-            ROS_ERROR_STREAM(Parameter::class_prefix << __FUNCTION__ 
+            ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
                 << " Failed! Parameter member [" << member << "] was not found");
             
             // Function return
@@ -60,10 +60,10 @@ namespace Toolbox
         if(param.getType() != type)
         {
             // Report to terminal
-            ROS_ERROR_STREAM(Parameter::class_prefix << __FUNCTION__ 
+            ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
                 << " Failed! Parameter types does not match: "
-                << " Input-parameter XmlRpc-Type: [" << Parameter::getTypeName(param.getType()) << "]" 
-                << " vs comparing XmlRpc-Type: [" << Parameter::getTypeName(type) << "]");
+                << " Input-parameter XmlRpc-Type: [" << getTypeName(param.getType()) << "]" 
+                << " vs comparing XmlRpc-Type: [" << getTypeName(type) << "]");
             
             // Function return
             return false;
@@ -93,7 +93,7 @@ namespace Toolbox
             // Invalid: Data-type does not have size
             default:
                 // Report to terminal
-                ROS_ERROR_STREAM(Parameter::class_prefix << __FUNCTION__ 
+                ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
                     << " Failed! Parameter data-type does not have a size: "
                     << " Input-parameter XmlRpc-Type: [" << Parameter::getTypeName(param.getType()) << "]");
                 
@@ -105,7 +105,7 @@ namespace Toolbox
         if(param.size() != size)
         {
             // Report to terminal
-            ROS_ERROR_STREAM(Parameter::class_prefix << __FUNCTION__ 
+            ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
                 << " Failed! Parameter size does not match: "
                 << " Input-parameter size: [" << param.size() << "]"
                 << " vs comparing size: [" << size << "]");
@@ -128,10 +128,10 @@ namespace Toolbox
         const XmlRpc::XmlRpcValue::Type& type)
     {
         // Check parameter for specified member
-        if(!Parameter::checkMember(param, member)) return false;
+        if(!checkMember(param, member)) return false;
 
         // Check parameter against specified type
-        if(!Parameter::checkType(param, type)) return false;
+        if(!checkType(param, type)) return false;
 
         // Function return
         return true;
@@ -148,13 +148,13 @@ namespace Toolbox
         const int& size)
     {
         // Check parameter for specified member
-        if(!Parameter::checkMember(param, member)) return false;
+        if(!checkMember(param, member)) return false;
 
         // Check parameter against specified type
-        if(!Parameter::checkType(param, type)) return false;
+        if(!checkType(param, type)) return false;
 
         // Check parameter against specified size
-        if(!Parameter::checkSize(param, size)) return false;
+        if(!checkSize(param, size)) return false;
 
         // Function return
         return true;

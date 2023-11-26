@@ -26,7 +26,7 @@ namespace Toolbox
 
     // Constants
     // -------------------------------
-    const std::string Math::class_prefix = "Toolbox::Math::";
+    const std::string Math::CLASS_PREFIX = "Toolbox::Math::";
 
     // Linear Spaced Vector (double)
     // -------------------------------
@@ -573,7 +573,7 @@ namespace Toolbox
             // Unknown sequence
             default:
                 // Report to terminal
-                ROS_ERROR_STREAM(Math::class_prefix << __FUNCTION__ 
+                ROS_ERROR_STREAM(Math::CLASS_PREFIX << __FUNCTION__ 
                     << ": Failed! Unknown Euler-Sequence!");
 
                 // Case break

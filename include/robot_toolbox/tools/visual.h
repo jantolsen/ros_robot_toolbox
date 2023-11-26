@@ -343,6 +343,8 @@ class Visual
     // -------------------------------
     // Accessible only for the class which defines them
     private:
+        // Prefix message for class
+        static const std::string CLASS_PREFIX;
 
 
 }; // End Class: Visual

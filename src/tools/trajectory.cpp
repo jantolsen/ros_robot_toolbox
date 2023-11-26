@@ -26,7 +26,7 @@ namespace Toolbox
     
     // Constants
     // -------------------------------
-    const std::string Trajectory::class_prefix = "Toolbox::Trajectory::";
+    const std::string Trajectory::CLASS_PREFIX = "Toolbox::Trajectory::";
 
 
     // Linear Segment with Parabolic Blends 
@@ -66,7 +66,7 @@ namespace Toolbox
                 acc_traj = std::vector<double>(t.size(), 0.0);      // Fill with zeros
 
                 // Report to terminal
-                ROS_ERROR_STREAM(Trajectory::class_prefix + func_prefix 
+                ROS_ERROR_STREAM(Trajectory::CLASS_PREFIX + func_prefix 
                     << ": Failed! End-Point equals End-Point, returning trajectory with only end-point values");
 
                 // Function return
@@ -676,7 +676,7 @@ namespace Toolbox
             ptr_trajectory->push_back(0);
 
             // Report to terminal
-            ROS_ERROR_STREAM(Trajectory::class_prefix + func_prefix 
+            ROS_ERROR_STREAM(Trajectory::CLASS_PREFIX + func_prefix 
                 << ": Failed! Time-Period is empty, returning empty trajectory");
 
             // Function return
@@ -689,7 +689,7 @@ namespace Toolbox
             ptr_trajectory->push_back(0);
 
             // Report to terminal
-            ROS_ERROR_STREAM(Trajectory::class_prefix + func_prefix 
+            ROS_ERROR_STREAM(Trajectory::CLASS_PREFIX + func_prefix 
                 << ": Failed! Time-Period's last elemen equals zero, returning empty trajectory");
 
             // Function return
@@ -703,7 +703,7 @@ namespace Toolbox
             ptr_trajectory->push_back(p_f);
 
             // Report to terminal
-            ROS_ERROR_STREAM(Trajectory::class_prefix + func_prefix 
+            ROS_ERROR_STREAM(Trajectory::CLASS_PREFIX + func_prefix 
                 << ": Failed! Time-Period's size equals one, returning trajectory with only end-point");
 
             // Function return
@@ -734,7 +734,7 @@ namespace Toolbox
             ptr_trajectory->push_back(0);
 
             // Report to terminal
-            ROS_ERROR_STREAM(Trajectory::class_prefix + func_prefix
+            ROS_ERROR_STREAM(Trajectory::CLASS_PREFIX + func_prefix
                 << ": Failed! Number-of-steps is empty, returning empty/zero trajectory");
 
             // Function return
@@ -748,7 +748,7 @@ namespace Toolbox
             ptr_trajectory->push_back(p_f);
 
             // Report to terminal
-            ROS_ERROR_STREAM(Trajectory::class_prefix + func_prefix 
+            ROS_ERROR_STREAM(Trajectory::CLASS_PREFIX + func_prefix 
                 << ": Failed! Number-of-steps equals one, returning trajectory with only end-point");
 
             // Function return

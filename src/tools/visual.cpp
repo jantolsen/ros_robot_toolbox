@@ -26,6 +26,7 @@ namespace Toolbox
 
     // Constants
     // -------------------------------
+    const std::string Visual::CLASS_PREFIX = "Toolbox::Visual::";
     const std_msgs::ColorRGBA Visual::COLOR_RED = setColorRed();
     const std_msgs::ColorRGBA Visual::COLOR_BLUE = setColorBlue();
     const std_msgs::ColorRGBA Visual::COLOR_GREEN = setColorGreen();

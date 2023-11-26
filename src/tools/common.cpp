@@ -26,7 +26,7 @@ namespace Toolbox
 
     // Constants
     // -------------------------------
-        const std::string Common::class_prefix = "Toolbox::Common::";
+        const std::string Common::CLASS_PREFIX = "Toolbox::Common::";
 
         // X-Axis
         const struct AxisType Common::AXIS_X = 
@@ -132,7 +132,7 @@ namespace Toolbox
             // Unknown sequence
             default:
                 // Report to terminal
-                ROS_ERROR_STREAM(class_prefix << __FUNCTION__ 
+                ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
                     << ": Failed! Unknown Euler-Sequence!");
 
                 // Case break
@@ -250,7 +250,7 @@ namespace Toolbox
             // Unknown sequence
             default:
                 // Report to terminal
-                ROS_ERROR_STREAM(class_prefix << __FUNCTION__ 
+                ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
                     << ": Failed! Unknown Euler-Sequence!");
 
                 // Case break

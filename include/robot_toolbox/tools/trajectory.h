@@ -870,7 +870,7 @@ class Trajectory
     private:
 
         // Prefix message for class
-        static const std::string class_prefix; 
+        static const std::string CLASS_PREFIX; 
 
 
         // Validate Trajectory Period
@@ -919,8 +919,8 @@ class Trajectory
                 ptr_trajectory->push_back(Eigen::Matrix<double, Dim, 1>::Zero(Dim));
 
                 // Report to terminal
-                ROS_ERROR_STREAM(class_prefix + func_prefix 
-                                <<  "Time-Period is empty, returning empty trajectory");
+                ROS_ERROR_STREAM(CLASS_PREFIX + func_prefix 
+                    << ": Time-Period is empty, returning empty trajectory");
 
                 // Function return
                 return false;
@@ -932,8 +932,8 @@ class Trajectory
                 ptr_trajectory->push_back(Eigen::Matrix<double, Dim, 1>::Zero(Dim));
 
                 // Report to terminal
-                ROS_ERROR_STREAM(class_prefix + func_prefix 
-                                <<  "Time-Period's last elemen equals zero, returning empty trajectory");
+                ROS_ERROR_STREAM(CLASS_PREFIX + func_prefix 
+                    << ": Time-Period's last elemen equals zero, returning empty trajectory");
 
                 // Function return
                 return false;
@@ -946,8 +946,8 @@ class Trajectory
                 ptr_trajectory->push_back(p_f);
 
                 // Report to terminal
-                ROS_ERROR_STREAM(class_prefix + func_prefix 
-                                <<  "Time-Period's size equals one, returning trajectory with only end-point");
+                ROS_ERROR_STREAM(CLASS_PREFIX + func_prefix 
+                    << ": Time-Period's size equals one, returning trajectory with only end-point");
 
                 // Function return
                 return false;
@@ -1004,8 +1004,8 @@ class Trajectory
                 ptr_trajectory->push_back(Eigen::Matrix<double, Dim, 1>::Zero(Dim));
 
                 // Report to terminal
-                ROS_ERROR_STREAM(class_prefix + func_prefix
-                                <<  "Number-of-steps is empty, returning empty/zero trajectory");
+                ROS_ERROR_STREAM(CLASS_PREFIX + func_prefix
+                    << ": Number-of-steps is empty, returning empty/zero trajectory");
 
                 // Function return
                 return false;
@@ -1018,8 +1018,8 @@ class Trajectory
                 ptr_trajectory->push_back(p_f);
 
                 // Report to terminal
-                ROS_ERROR_STREAM(class_prefix + func_prefix 
-                                <<  "Number-of-steps equals one, returning trajectory with only end-point");
+                ROS_ERROR_STREAM(CLASS_PREFIX + func_prefix 
+                    << ": Number-of-steps equals one, returning trajectory with only end-point");
 
                 // Function return
                 return false;
@@ -1049,12 +1049,12 @@ class Trajectory
             if (p_s.size() == 0)
             {
                 // Report to terminal
-                ROS_ERROR_STREAM(class_prefix + func_prefix 
-                                << "Start-Points vector is empty");
+                ROS_ERROR_STREAM(CLASS_PREFIX + func_prefix 
+                    << ": Start-Points vector is empty");
 
                 // Throw execption
-                throw std::invalid_argument(class_prefix + func_prefix 
-                                            + "Start-Points vector is empty");
+                throw std::invalid_argument(CLASS_PREFIX + func_prefix 
+                    + ": Start-Points vector is empty");
 
                 // Function return
                 return false;
@@ -1064,12 +1064,12 @@ class Trajectory
             else if (p_f.size() == 0)
             {
                 // Report to terminal
-                ROS_ERROR_STREAM(class_prefix + func_prefix 
-                                << "End-Points vector is empty");
+                ROS_ERROR_STREAM(CLASS_PREFIX + func_prefix 
+                    << ": End-Points vector is empty");
 
                 // Throw execption
-                throw std::invalid_argument(class_prefix + func_prefix 
-                                            + "End-Points vector is empty");
+                throw std::invalid_argument(CLASS_PREFIX + func_prefix 
+                    + ": End-Points vector is empty");
 
                 // Function return
                 return false;
@@ -1079,12 +1079,12 @@ class Trajectory
             else if (p_s.size() != p_f.size())
             {
                 // Report to terminal
-                ROS_ERROR_STREAM(class_prefix + func_prefix 
-                                << "Start- and End-Point has different size");
+                ROS_ERROR_STREAM(CLASS_PREFIX + func_prefix 
+                    << ": Start- and End-Point has different size");
 
                 // Throw execption
-                throw std::invalid_argument(class_prefix + func_prefix 
-                                            + "Start- and End-Point has different size");
+                throw std::invalid_argument(CLASS_PREFIX + func_prefix 
+                    + ": Start- and End-Point has different size");
 
                 // Function return
                 return false;
@@ -1129,12 +1129,12 @@ class Trajectory
                 else if(v_s.size() != dim)
                 {
                     // Report to terminal
-                    ROS_ERROR_STREAM(class_prefix + func_prefix 
-                                    << "Velocity-Initial-Points and Start-Points has different size");
+                    ROS_ERROR_STREAM(CLASS_PREFIX + func_prefix 
+                        << ": Velocity-Initial-Points and Start-Points has different size");
 
                     // Throw execption
-                    throw std::invalid_argument(class_prefix + func_prefix 
-                                                + "Velocity-Initial-Points and Start-Point has different size");
+                    throw std::invalid_argument(CLASS_PREFIX + func_prefix 
+                        + ": Velocity-Initial-Points and Start-Point has different size");
 
                     // Function return
                     return false;
@@ -1158,12 +1158,12 @@ class Trajectory
                 else if(v_f.size() != dim)
                 {
                     // Report to terminal
-                    ROS_ERROR_STREAM(class_prefix + func_prefix 
-                                    << "Velocity-Final-Points and Start-Points has different size");
+                    ROS_ERROR_STREAM(CLASS_PREFIX + func_prefix 
+                        << ": Velocity-Final-Points and Start-Points has different size");
 
                     // Throw execption
-                    throw std::invalid_argument(class_prefix + func_prefix 
-                                                + "Velocity-Final-Points and Start-Points has different size");
+                    throw std::invalid_argument(CLASS_PREFIX + func_prefix 
+                        + ": Velocity-Final-Points and Start-Points has different size");
                     
                     // Function return
                     return false;

@@ -26,7 +26,7 @@ namespace Toolbox
 
     // Constants
     // -------------------------------
-    const std::string Kinematics::class_prefix = "Toolbox::Kinematics::";
+    const std::string Kinematics::CLASS_PREFIX = "Toolbox::Kinematics::";
 
 
     // Get Current Joint-State
@@ -45,7 +45,7 @@ namespace Toolbox
             // Failed to capture Current-Joint-State message
 
             // Report to terminal
-            ROS_ERROR_STREAM(Kinematics::class_prefix << __FUNCTION__ 
+            ROS_ERROR_STREAM(Kinematics::CLASS_PREFIX << __FUNCTION__ 
                 << " Failed to capture current joint-state message");
 
             // Function return
@@ -58,7 +58,7 @@ namespace Toolbox
             // Empty Joint-State Position
 
             // Report to terminal
-            ROS_ERROR_STREAM(class_prefix << __FUNCTION__ 
+            ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
                 << " Failed: Current joint-state position is empty");
 
             // Function return
@@ -126,7 +126,7 @@ namespace Toolbox
         catch(tf2::TransformException &ex)
         {
             // Report to terminal
-            ROS_ERROR_STREAM(class_prefix << __FUNCTION__ 
+            ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
                 << ": Tranformation failed!: " << ex.what());
 
             // Function return

@@ -321,7 +321,7 @@ class Common
     private:
 
         // Prefix message for class
-        static const std::string class_prefix;
+        static const std::string CLASS_PREFIX;
 
 }; // End Class: Common
 } // End Namespace: Robotics Toolbox
