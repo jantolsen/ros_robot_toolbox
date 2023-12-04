@@ -62,8 +62,8 @@ namespace Toolbox
             // Report to terminal
             ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
                 << " Failed! Parameter types does not match: "
-                << " Input-parameter XmlRpc-Type: [" << getTypeName(param.getType()) << "]" 
-                << " vs comparing XmlRpc-Type: [" << getTypeName(type) << "]");
+                << " Input-parameter XmlRpc-Type: [" << getParamTypeName(param.getType()) << "]" 
+                << " vs comparing XmlRpc-Type: [" << getParamTypeName(type) << "]");
             
             // Function return
             return false;
@@ -95,7 +95,7 @@ namespace Toolbox
                 // Report to terminal
                 ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
                     << " Failed! Parameter data-type does not have a size: "
-                    << " Input-parameter XmlRpc-Type: [" << Parameter::getTypeName(param.getType()) << "]");
+                    << " Input-parameter XmlRpc-Type: [" << Parameter::getParamTypeName(param.getType()) << "]");
                 
                 // Function return
                 return false;
@@ -130,8 +130,8 @@ namespace Toolbox
         // Check parameter for specified member
         if(!checkMember(param, member)) return false;
 
-        // Check parameter against specified type
-        if(!checkType(param, type)) return false;
+        // Check parameter-member against specified type
+        if(!checkType(param[member], type)) return false;
 
         // Function return
         return true;
@@ -150,10 +150,10 @@ namespace Toolbox
         // Check parameter for specified member
         if(!checkMember(param, member)) return false;
 
-        // Check parameter against specified type
-        if(!checkType(param, type)) return false;
+        // Check parameter-member against specified type
+        if(!checkType(param[member], type)) return false;
 
-        // Check parameter against specified size
+        // Check parameter-member against specified size
         if(!checkSize(param, size)) return false;
 
         // Function return
@@ -163,7 +163,7 @@ namespace Toolbox
 
     // Get Name of Parameter-Type 
     // -------------------------------
-    std::string Parameter::getTypeName(
+    std::string Parameter::getParamTypeName(
         const XmlRpc::XmlRpcValue::Type& type)
     {
         // Determine data-type represent it by string  

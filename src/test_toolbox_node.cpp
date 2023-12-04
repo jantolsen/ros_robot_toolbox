@@ -723,6 +723,30 @@ void linear_trajectory()
     ROS_INFO_STREAM(" ");
 }
 
+namespace test{
+enum KinematicSolverType
+{
+    A,
+    B,
+    C,
+    D,
+    E,
+    F
+};
+
+// Kinematic Solver Type Map
+// (Matches the solver-types defined in InfoKinematics.msg)
+static std::map<std::string, KinematicSolverType, Toolbox::CaseInsensitiveComparator> const kinematicSolverTypeMap =
+{
+    {"KDL", KinematicSolverType::A},
+    {"OPW", KinematicSolverType::B},
+    {"TRACIK", KinematicSolverType::C},
+    {"LMA", KinematicSolverType::D},
+    {"CACHED_KDL", KinematicSolverType::E},
+    {"CACHED_TRACIK", KinematicSolverType::F}
+};
+}
+
 // Test Toolbox Node 
 // -------------------------------
 int main(int argc, char** argv)
@@ -748,7 +772,44 @@ int main(int argc, char** argv)
 
     // Main Code    
     // -------------------------------
-        
+        std::string name;
+        if(Toolbox::Parameter::findTypeMapName(88, test::kinematicSolverTypeMap, name))
+        {
+            ROS_INFO_STREAM("TYPE-NAME: " << name);
+        }
+        else
+        {
+            ROS_ERROR_STREAM("TYPE-NAME: NOT FOUND");
+        }
+
+        if(Toolbox::Parameter::findTypeMapName(test::KinematicSolverType::D, test::kinematicSolverTypeMap, name))
+        {
+            ROS_INFO_STREAM("TYPE-NAME: " << name);
+        }
+        else
+        {
+            ROS_ERROR_STREAM("TYPE-NAME: NOT FOUND");
+        }
+
+        int id;
+        if(Toolbox::Parameter::findTypeMapID("LMA", test::kinematicSolverTypeMap, id))
+        {
+            ROS_INFO_STREAM("TYPE-ID: " << id);
+        }
+        else
+        {
+            ROS_ERROR_STREAM("TYPE-ID: NOT FOUND");
+        }
+
+        if(Toolbox::Parameter::findTypeMapID("lma", test::kinematicSolverTypeMap, id))
+        {
+            ROS_INFO_STREAM("TYPE-ID: " << id);
+        }
+        else
+        {
+            ROS_ERROR_STREAM("TYPE-ID: NOT FOUND");
+        }
+
         // lspb_vec_time();
         
         // vec_convert();
@@ -790,8 +851,8 @@ int main(int argc, char** argv)
 
         // linear_trajectory();
 
-        Eigen::Isometry3d pose;
-        Toolbox::Kinematics::getCurrentPose("robot_tcp", "world", pose, true);
+        // Eigen::Isometry3d pose;
+        // Toolbox::Kinematics::getCurrentPose("robot_tcp", "world", pose, true);
 
         // slerp();
 

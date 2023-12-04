@@ -27,6 +27,7 @@
 // -------------------------------
     // Standard
     #include <vector>
+    #include <map>
 
     // Ros
     #include <ros/ros.h>
@@ -120,6 +121,80 @@ class Parameter
             const int& size);
 
 
+        // Find Type-Name in Type-Map by using Type-ID
+        // -------------------------------
+        /** \brief Search through supplied type-map and try to find type-id and respective type-name
+        * \param type_id    Type-ID Parameter [int]
+        * \param type_map   Type-Map to search through [std::map<std::string, enum>]
+        * \param type_name  Type-Name Paramter [std::string]
+        * \return Function result: Successful/unsuccessful (true/false)
+        */
+        template<typename Enum, typename Operator>
+        static bool findTypeMapName(
+            const int& type_id, 
+            const std::map<std::string, Enum, Operator>& type_map,
+            std::string& type_name)
+        {
+            // Iterate through supplied map
+            for(auto const& it : type_map)
+            {
+                // Compare iterator-value against supplied type-id
+                if(static_cast<int>(it.second) == type_id)
+                {
+                    // Set Type-Name equal to map-key
+                    type_name = it.first;
+
+                    // Function return
+                    return true;
+                } 
+            }
+            // Report to terminal
+            ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
+                << " Failed! Type-ID: [" << type_id << "] was NOT found in given Type-Map");
+
+            // Function return
+            return false;
+        } // Function-End: findNameTypeMap()
+
+
+        // Find Type-ID in Type-Map by using Type-Name
+        // -------------------------------
+        /** \brief Search through supplied type-map and try to find type-id and respective type-name
+        * \param type_name  Type-Name Paramter [std::string]
+        * \param type_map   Type-Map to search through [std::map<std::string, enum>]
+        * \param type_id    Type-ID Parameter [int]
+        * \return Function result: Successful/unsuccessful (true/false)
+        */
+        template<typename Enum, typename Operator>
+        static bool findTypeMapID(
+            const std::string& type_name, 
+            const std::map<std::string, Enum, Operator>& type_map,
+            int& type_id)
+        {
+            // Search through type-map using type-name as key
+            auto search = type_map.find(type_name);
+
+            // Check if searched element is found in the container
+            if(search != type_map.end())
+            {
+                // Set Type-ID equal to map-value
+                type_id = search->second;
+
+                // Function return
+                return true;
+            }
+            // No element was found in the container
+            // (iterator has reached the end of the container)
+
+            // Report error to terminal
+            ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
+                <<  ": Failed! Type-Name: [" << type_name << "] was NOT found in given Type-Map");
+
+            // Function return
+            return false;
+        } // Function-End: findTypeMapID()
+
+
     // Protected Class members
     // -------------------------------
     // Accessible within the class which defines them, 
@@ -132,7 +207,7 @@ class Parameter
         * \param type       Data-type to compare parameter against [XmlRpc::XmlRpcValue::Type]
         * \return Name of parameter-type represented [std::string]
         */
-        static std::string getTypeName(
+        static std::string getParamTypeName(
             const XmlRpc::XmlRpcValue::Type& type);
 
 
