@@ -58,6 +58,16 @@ namespace Toolbox
             const Eigen::Vector3d unit_vec;   // axis unit vector
         };
 
+        // Case-Insensitive Comparator
+        // (used for maps with std::string keys)
+        struct CaseInsensitiveComparator
+        {
+            bool operator()(const std::string& a, const std::string& b) const noexcept
+            {
+                return ::strcasecmp(a.c_str(), b.c_str()) < 0;
+            }
+        };
+
     // Enums
     // -------------------------------
         // Axis-ID
