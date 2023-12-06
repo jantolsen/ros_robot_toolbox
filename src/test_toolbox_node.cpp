@@ -773,7 +773,7 @@ int main(int argc, char** argv)
     // Main Code    
     // -------------------------------
         std::string name;
-        if(Toolbox::Parameter::findTypeMapName(88, test::kinematicSolverTypeMap, name))
+        if(Toolbox::Parameter::searchTypeMap(88, test::kinematicSolverTypeMap, name))
         {
             ROS_INFO_STREAM("TYPE-NAME: " << name);
         }
@@ -782,7 +782,7 @@ int main(int argc, char** argv)
             ROS_ERROR_STREAM("TYPE-NAME: NOT FOUND");
         }
 
-        if(Toolbox::Parameter::findTypeMapName(test::KinematicSolverType::D, test::kinematicSolverTypeMap, name))
+        if(Toolbox::Parameter::searchTypeMap(test::KinematicSolverType::D, test::kinematicSolverTypeMap, name))
         {
             ROS_INFO_STREAM("TYPE-NAME: " << name);
         }
@@ -792,7 +792,7 @@ int main(int argc, char** argv)
         }
 
         int id;
-        if(Toolbox::Parameter::findTypeMapID("LMA", test::kinematicSolverTypeMap, id))
+        if(Toolbox::Parameter::searchTypeMap("LMA", test::kinematicSolverTypeMap, id))
         {
             ROS_INFO_STREAM("TYPE-ID: " << id);
         }
@@ -801,7 +801,7 @@ int main(int argc, char** argv)
             ROS_ERROR_STREAM("TYPE-ID: NOT FOUND");
         }
 
-        if(Toolbox::Parameter::findTypeMapID("lma", test::kinematicSolverTypeMap, id))
+        if(Toolbox::Parameter::searchTypeMap("lma", test::kinematicSolverTypeMap, id))
         {
             ROS_INFO_STREAM("TYPE-ID: " << id);
         }

@@ -121,16 +121,18 @@ class Parameter
             const int& size);
 
 
-        // Find Type-Name in Type-Map by using Type-ID
+        // Search Type-Map 
+        // (Find Type-Name by using Type-ID)
         // -------------------------------
-        /** \brief Search through supplied type-map and try to find type-id and respective type-name
+        // (Function Overloading)
+        /** \brief Search for type-id in supplied type-map and to find respective type-name
         * \param type_id    Type-ID Parameter [int]
         * \param type_map   Type-Map to search through [std::map<std::string, enum>]
         * \param type_name  Type-Name Paramter [std::string]
         * \return Function result: Successful/unsuccessful (true/false)
         */
         template<typename Enum, typename Operator>
-        static bool findTypeMapName(
+        static bool searchTypeMap(
             const int& type_id, 
             const std::map<std::string, Enum, Operator>& type_map,
             std::string& type_name)
@@ -154,19 +156,20 @@ class Parameter
 
             // Function return
             return false;
-        } // Function-End: findNameTypeMap()
+        } // Function-End: searchTypeMap()
 
 
-        // Find Type-ID in Type-Map by using Type-Name
+        // Search Type-Map 
+        // (Find Type-ID by using Type-Name)
         // -------------------------------
-        /** \brief Search through supplied type-map and try to find type-id and respective type-name
+        /** \brief Search for type-name in supplied type-map to find respective type-id
         * \param type_name  Type-Name Paramter [std::string]
         * \param type_map   Type-Map to search through [std::map<std::string, enum>]
         * \param type_id    Type-ID Parameter [int]
         * \return Function result: Successful/unsuccessful (true/false)
         */
         template<typename Enum, typename Operator>
-        static bool findTypeMapID(
+        static bool searchTypeMap(
             const std::string& type_name, 
             const std::map<std::string, Enum, Operator>& type_map,
             int& type_id)
@@ -192,7 +195,7 @@ class Parameter
 
             // Function return
             return false;
-        } // Function-End: findTypeMapID()
+        } // Function-End: searchTypeMap()
 
 
     // Protected Class members
