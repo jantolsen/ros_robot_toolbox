@@ -58,11 +58,13 @@ class Parameter
         /** \brief Check the supplied parameter for containing the member parameter
         * \param param      Parameter to be checked [XmlRpc::XmlRpcValue]
         * \param member     Member item to search for within parameter [std::string]
+        * \param err_print  Print potential error-message to terminal (disabled at default) [bool]
         * \return Function result: Supplied parameter contains specified member (true/false)
         */
         static bool checkMember(
             const XmlRpc::XmlRpcValue& param, 
-            const std::string& member);
+            const std::string& member,
+            const bool& err_print = false);
 
 
         // Check and Compare Parameter Type
@@ -70,11 +72,13 @@ class Parameter
         /** \brief Check if supplied parameter equals specified parameter data-type.
         * \param param      Parameter to be checked [XmlRpc::XmlRpcValue]
         * \param type       Data-type to compare parameter against [XmlRpc::XmlRpcValue::Type]
+        * \param err_print  Print potential error-message to terminal (disabled at default) [bool]
         * \return Function result: Supplied parameter matches type of specified data-type (true/false)
         */
         static bool checkType(
             const XmlRpc::XmlRpcValue& param, 
-            const XmlRpc::XmlRpcValue::Type& type);
+            const XmlRpc::XmlRpcValue::Type& type,
+            const bool& err_print = false);
 
 
         // Check and Compare Parameter Size
@@ -82,11 +86,13 @@ class Parameter
         /** \brief Check if supplied parameter equals specified size.
         * \param param      Parameter to be checked [XmlRpc::XmlRpcValue]
         * \param size       Size to compare parameter against [int]
+        * \param err_print  Print potential error-message to terminal (disabled at default) [bool]
         * \return Function result: Supplied paramter matches specified size (true/false)
         */
         static bool checkSize(
             const XmlRpc::XmlRpcValue& param, 
-            const int& size);
+            const int& size,
+            const bool& err_print = false);
 
 
         // Check Parameter
@@ -96,12 +102,14 @@ class Parameter
         * \param param      Parameter to be checked [XmlRpc::XmlRpcValue]
         * \param member     Member item to search for within parameter [std::string]
         * \param type       Data-type to compare parameter against [XmlRpc::XmlRpcValue::Type]
+        * \param err_print  Print potential error-message to terminal (disabled at default) [bool]
         * \return Function result: Supplied parameter contains member and equals data-type (true/false)
         */
         static bool checkParameter(
             const XmlRpc::XmlRpcValue& param, 
             const std::string& member, 
-            const XmlRpc::XmlRpcValue::Type& type);
+            const XmlRpc::XmlRpcValue::Type& type,
+            const bool& err_print = false);
 
 
         // Check Parameter
@@ -112,13 +120,15 @@ class Parameter
         * \param member     Member item to search for within parameter [std::string]
         * \param type       Data-type to compare parameter against [XmlRpc::XmlRpcValue::Type]
         * \param size       Size to compare parameter against [int]
+        * \param err_print  Print potential error-message to terminal (disabled at default) [bool]
         * \return Function result: Supplied parameter contains member, equals data-type and size (true/false)
         */
         static bool checkParameter(
             const XmlRpc::XmlRpcValue& param, 
             const std::string& member, 
             const XmlRpc::XmlRpcValue::Type& type,
-            const int& size);
+            const int& size,
+            const bool& err_print = false);
 
 
         // Search Type-Map 
@@ -129,13 +139,15 @@ class Parameter
         * \param type_id    Type-ID Parameter [int]
         * \param type_map   Type-Map to search through [std::map<std::string, enum>]
         * \param type_name  Type-Name Paramter [std::string]
+        * \param err_print  Print potential error-message to terminal (disabled at default) [bool]
         * \return Function result: Successful/unsuccessful (true/false)
         */
         template<typename Enum, typename Operator>
         static bool searchTypeMap(
             const int& type_id, 
             const std::map<std::string, Enum, Operator>& type_map,
-            std::string& type_name)
+            std::string& type_name,
+            const bool& err_print = false)
         {
             // Iterate through supplied map
             for(auto const& it : type_map)
@@ -151,8 +163,11 @@ class Parameter
                 } 
             }
             // Report to terminal
-            ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
-                << " Failed! Type-ID: [" << type_id << "] was NOT found in given Type-Map");
+            if(err_print)
+            {
+                ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
+                    << " Failed! Type-ID: [" << type_id << "] was NOT found in given Type-Map");
+            }
 
             // Function return
             return false;
@@ -166,13 +181,15 @@ class Parameter
         * \param type_name  Type-Name Paramter [std::string]
         * \param type_map   Type-Map to search through [std::map<std::string, enum>]
         * \param type_id    Type-ID Parameter [int]
+        * \param err_print  Print potential error-message to terminal (disabled at default) [bool]
         * \return Function result: Successful/unsuccessful (true/false)
         */
         template<typename Enum, typename Operator>
         static bool searchTypeMap(
             const std::string& type_name, 
             const std::map<std::string, Enum, Operator>& type_map,
-            int& type_id)
+            int& type_id,
+            const bool& err_print = false)
         {
             // Search through type-map using type-name as key
             auto search = type_map.find(type_name);
@@ -190,8 +207,11 @@ class Parameter
             // (iterator has reached the end of the container)
 
             // Report error to terminal
-            ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
-                <<  ": Failed! Type-Name: [" << type_name << "] was NOT found in given Type-Map");
+            if(err_print)
+            {
+                ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
+                    <<  ": Failed! Type-Name: [" << type_name << "] was NOT found in given Type-Map");
+            }
 
             // Function return
             return false;

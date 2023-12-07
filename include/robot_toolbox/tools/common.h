@@ -315,6 +315,185 @@ class Common
             geometry_msgs::TransformStamped transform_stamped);
 
 
+        
+
+
+        // Search Map
+        // (Find Element in Map using Key [int]) 
+        // -------------------------------
+        // (Function Overloading)
+        /** \brief Search for key in supplied map to find respective element
+        * \param key        Key to search for [int]
+        * \param map        Map to search thorugh [std::map<int, typename>]
+        * \param element    Element at key in map [typename]
+        * \param err_print  Print potential error-message to terminal (disabled at default) [bool]
+        * \return Function result: Successful/unsuccessful (true/false)
+        */
+        template<typename Element>
+        static bool searchMap(
+            const int& key, 
+            const std::map<int, Element>& map,
+            Element& element,
+            const bool& err_print = false)
+        {
+            // Search for key in map
+            auto search = map.find(key);
+
+            // Check if searched key is found in the container
+            if(search != map.end())
+            {   
+                // Element found for key in map
+                element = search->second;
+
+                // Function return element
+                return true;
+            }
+            // No element was found in the container
+            // (iterator has reached the end of the container)
+
+            // Report to terminal
+            if(err_print)
+            {
+                ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
+                    << " Failed! Key: [" << key << "] was NOT found in given map");
+            }
+
+            // Function return
+            return false;
+        } // Function-End: searchTypeMap()
+
+
+        // Search Map
+        // (Find Element in Map using Key [std::string]) 
+        // -------------------------------
+        // (Function Overloading)
+        /** \brief Search for key in supplied map to find respective element
+        * \param key        Key to search for [std::string]
+        * \param map        Map to search thorugh [std::map<std::string, typename>]
+        * \param element    Element at key in map [typename]
+        * \param err_print  Print potential error-message to terminal (disabled at default) [bool]
+        * \return Function result: Successful/unsuccessful (true/false)
+        */
+        template<typename Element, typename Operator>
+        static bool searchMap(
+            const std::string& key, 
+            const std::map<std::string, Element, Operator>& map,
+            Element& element,
+            const bool& err_print = false)
+        {
+            // Search for key in map
+            auto search = map.find(key);
+
+            // Check if searched key is found in the container
+            if(search != map.end())
+            {   
+                // Element found for key in map
+                element = search->second;
+
+                // Function return element
+                return true;
+            }
+            // No element was found in the container
+            // (iterator has reached the end of the container)
+
+            // Report to terminal
+            if(err_print)
+            {
+                ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
+                    << " Failed! Key: [" << key << "] was NOT found in given map");
+            }
+
+            // Function return
+            return false;
+        } // Function-End: searchTypeMap()
+
+
+        // Search Map 
+        // (Find Key [std::string] in Map using Element) 
+        // -------------------------------
+        // (Function Overloading)
+        /** \brief Search for key in supplied map
+        * \param element    Element to search for [typename]
+        * \param map        Map to search thorugh [std::map<std::string, typename>]
+        * \param key        Key at element in map [std::string]
+        * \param err_print  Print potential error-message to terminal (disabled at default) [bool]
+        * \return Function result: Successful/unsuccessful (true/false)
+        */
+        template<typename Element, typename Operator>
+        static bool searchMap(
+            const Element& element, 
+            const std::map<std::string, Element, Operator>& map,
+            std::string& key,
+            const bool& err_print = false)
+        {
+            // Iterate through supplied map
+            for(auto const& it : map)
+            {
+                // Compare iterator-value against supplied type-id
+                if(static_cast<int>(it.second) == element)
+                {
+                    // Set Key equal to map-key
+                    key = it.first;
+
+                    // Function return
+                    return true;
+                } 
+            }
+            // Report to terminal
+            if(err_print)
+            {
+                ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
+                    << " Failed! Element: [" << element << "] was NOT found in given map");
+            }
+
+            // Function return
+            return false;
+        } // Function-End: searchTypeMap()
+
+
+        // Search Map 
+        // (Find Key [int] in Map using Element) 
+        // -------------------------------
+        // (Function Overloading)
+        /** \brief Search for key in supplied map
+        * \param element    Element to search for [typename]
+        * \param map        Map to search thorugh [std::map<int, typename>]
+        * \param key        Key at element in map [int]
+        * \param err_print  Print potential error-message to terminal (disabled at default) [bool]
+        * \return Function result: Successful/unsuccessful (true/false)
+        */
+        template<typename Element>
+        static bool searchMap(
+            const Element& element, 
+            const std::map<int, Element>& map,
+            int& key,
+            const bool& err_print = false)
+        {
+            // Iterate through supplied map
+            for(auto const& it : map)
+            {
+                // Compare iterator-value against supplied type-id
+                if(static_cast<int>(it.second) == element)
+                {
+                    // Set Key equal to map-key
+                    key = it.first;
+
+                    // Function return
+                    return true;
+                } 
+            }
+            // Report to terminal
+            if(err_print)
+            {
+                ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
+                    << " Failed! Element: [" << element << "] was NOT found in given map");
+            }
+
+            // Function return
+            return false;
+        } // Function-End: searchTypeMap()
+
+
         // Constants
         // -------------------------------
         // X-Axis

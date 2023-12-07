@@ -772,42 +772,80 @@ int main(int argc, char** argv)
 
     // Main Code    
     // -------------------------------
-        std::string name;
-        if(Toolbox::Parameter::searchTypeMap(88, test::kinematicSolverTypeMap, name))
+        // std::string name;
+        // if(Toolbox::Parameter::searchTypeMap(88, test::kinematicSolverTypeMap, name))
+        // {
+        //     ROS_INFO_STREAM("TYPE-NAME: " << name);
+        // }
+        // else
+        // {
+        //     ROS_ERROR_STREAM("TYPE-NAME: NOT FOUND");
+        // }
+
+        // if(Toolbox::Parameter::searchTypeMap(test::KinematicSolverType::D, test::kinematicSolverTypeMap, name))
+        // {
+        //     ROS_INFO_STREAM("TYPE-NAME: " << name);
+        // }
+        // else
+        // {
+        //     ROS_ERROR_STREAM("TYPE-NAME: NOT FOUND");
+        // }
+
+        // int id;
+        // if(Toolbox::Parameter::searchTypeMap("LMA", test::kinematicSolverTypeMap, id))
+        // {
+        //     ROS_INFO_STREAM("TYPE-ID: " << id);
+        // }
+        // else
+        // {
+        //     ROS_ERROR_STREAM("TYPE-ID: NOT FOUND");
+        // }
+
+        // if(Toolbox::Parameter::searchTypeMap("lma", test::kinematicSolverTypeMap, id))
+        // {
+        //     ROS_INFO_STREAM("TYPE-ID: " << id);
+        // }
+        // else
+        // {
+        //     ROS_ERROR_STREAM("TYPE-ID: NOT FOUND");
+        // }
+
+
+        ROS_ERROR_STREAM("Test Search-Map");
+        test::KinematicSolverType element;
+        if(Toolbox::Common::searchMap("LMA", test::kinematicSolverTypeMap, element))
         {
-            ROS_INFO_STREAM("TYPE-NAME: " << name);
+            ROS_INFO_STREAM("Element Found: " << element);
         }
         else
         {
-            ROS_ERROR_STREAM("TYPE-NAME: NOT FOUND");
+            ROS_ERROR_STREAM("Element: NOT FOUND");
+        }
+        if(Toolbox::Common::searchMap("asdas", test::kinematicSolverTypeMap, element))
+        {
+            ROS_INFO_STREAM("Element Found: " << element);
+        }
+        else
+        {
+            ROS_ERROR_STREAM("Element: NOT FOUND");
         }
 
-        if(Toolbox::Parameter::searchTypeMap(test::KinematicSolverType::D, test::kinematicSolverTypeMap, name))
+        std::string key;
+        if(Toolbox::Common::searchMap(test::KinematicSolverType::D, test::kinematicSolverTypeMap, key))
         {
-            ROS_INFO_STREAM("TYPE-NAME: " << name);
+            ROS_INFO_STREAM("Key Found: " << key);
         }
         else
         {
-            ROS_ERROR_STREAM("TYPE-NAME: NOT FOUND");
+            ROS_ERROR_STREAM("Key: NOT FOUND");
         }
-
-        int id;
-        if(Toolbox::Parameter::searchTypeMap("LMA", test::kinematicSolverTypeMap, id))
+        if(Toolbox::Common::searchMap(static_cast<test::KinematicSolverType>(89), test::kinematicSolverTypeMap, key))
         {
-            ROS_INFO_STREAM("TYPE-ID: " << id);
+            ROS_INFO_STREAM("Key Found: " << key);
         }
         else
         {
-            ROS_ERROR_STREAM("TYPE-ID: NOT FOUND");
-        }
-
-        if(Toolbox::Parameter::searchTypeMap("lma", test::kinematicSolverTypeMap, id))
-        {
-            ROS_INFO_STREAM("TYPE-ID: " << id);
-        }
-        else
-        {
-            ROS_ERROR_STREAM("TYPE-ID: NOT FOUND");
+            ROS_ERROR_STREAM("Key: NOT FOUND");
         }
 
         // lspb_vec_time();

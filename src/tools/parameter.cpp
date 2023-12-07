@@ -32,15 +32,19 @@ namespace Toolbox
     // -------------------------------
     bool Parameter::checkMember(
         const XmlRpc::XmlRpcValue& param, 
-        const std::string& member)
+        const std::string& member,
+        const bool& err_print)
     {
         // Check parameter for specified member
         if(!param.hasMember(member))
         {
             // Report to terminal
-            ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
-                << " Failed! Parameter member [" << member << "] was not found");
-            
+            if(err_print)
+            {
+                ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
+                    << " Failed! Parameter member [" << member << "] was not found");
+            }
+
             // Function return
             return false;
         }
@@ -54,17 +58,21 @@ namespace Toolbox
     // -------------------------------
     bool Parameter::checkType(
         const XmlRpc::XmlRpcValue& param, 
-        const XmlRpc::XmlRpcValue::Type& type)
+        const XmlRpc::XmlRpcValue::Type& type,
+        const bool& err_print)
     {
         // Check parameter against specified type
         if(param.getType() != type)
         {
             // Report to terminal
-            ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
-                << " Failed! Parameter types does not match: "
-                << " Input-parameter XmlRpc-Type: [" << getParamTypeName(param.getType()) << "]" 
-                << " vs comparing XmlRpc-Type: [" << getParamTypeName(type) << "]");
-            
+            if(err_print)
+            {
+                ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
+                    << " Failed! Parameter types does not match: "
+                    << " Input-parameter XmlRpc-Type: [" << getParamTypeName(param.getType()) << "]" 
+                    << " vs comparing XmlRpc-Type: [" << getParamTypeName(type) << "]");
+            }
+
             // Function return
             return false;
         }
@@ -78,7 +86,8 @@ namespace Toolbox
     // -------------------------------
     bool Parameter::checkSize(
         const XmlRpc::XmlRpcValue& param, 
-        const int& size)
+        const int& size,
+        const bool& err_print)
     {
         // Determine that the supplied parameter has a size
         // by checking the data-type
@@ -93,10 +102,13 @@ namespace Toolbox
             // Invalid: Data-type does not have size
             default:
                 // Report to terminal
-                ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
-                    << " Failed! Parameter data-type does not have a size: "
-                    << " Input-parameter XmlRpc-Type: [" << Parameter::getParamTypeName(param.getType()) << "]");
-                
+                if(err_print)
+                {
+                    ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
+                        << " Failed! Parameter data-type does not have a size: "
+                        << " Input-parameter XmlRpc-Type: [" << getParamTypeName(param.getType()) << "]");
+                }
+
                 // Function return
                 return false;
         }
@@ -105,11 +117,14 @@ namespace Toolbox
         if(param.size() != size)
         {
             // Report to terminal
-            ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
-                << " Failed! Parameter size does not match: "
-                << " Input-parameter size: [" << param.size() << "]"
-                << " vs comparing size: [" << size << "]");
-            
+            if(err_print)
+            {
+                ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
+                    << " Failed! Parameter size does not match: "
+                    << " Input-parameter size: [" << param.size() << "]"
+                    << " vs comparing size: [" << size << "]");
+            }
+
             // Function return
             return false;
         }
@@ -125,13 +140,14 @@ namespace Toolbox
     bool Parameter::checkParameter(
         const XmlRpc::XmlRpcValue& param, 
         const std::string& member, 
-        const XmlRpc::XmlRpcValue::Type& type)
+        const XmlRpc::XmlRpcValue::Type& type,
+        const bool& err_print)
     {
         // Check parameter for specified member
-        if(!checkMember(param, member)) return false;
+        if(!checkMember(param, member, err_print)) return false;
 
         // Check parameter-member against specified type
-        if(!checkType(param[member], type)) return false;
+        if(!checkType(param[member], type, err_print)) return false;
 
         // Function return
         return true;
@@ -145,16 +161,17 @@ namespace Toolbox
         const XmlRpc::XmlRpcValue& param, 
         const std::string& member, 
         const XmlRpc::XmlRpcValue::Type& type, 
-        const int& size)
+        const int& size,
+        const bool& err_print)
     {
         // Check parameter for specified member
-        if(!checkMember(param, member)) return false;
+        if(!checkMember(param, member, err_print)) return false;
 
         // Check parameter-member against specified type
-        if(!checkType(param[member], type)) return false;
+        if(!checkType(param[member], type, err_print)) return false;
 
         // Check parameter-member against specified size
-        if(!checkSize(param, size)) return false;
+        if(!checkSize(param, size, err_print)) return false;
 
         // Function return
         return true;
