@@ -745,6 +745,40 @@ static std::map<std::string, KinematicSolverType, Toolbox::CaseInsensitiveCompar
     {"CACHED_KDL", KinematicSolverType::E},
     {"CACHED_TRACIK", KinematicSolverType::F}
 };
+
+
+static std::map<int, std::string> const testMap =
+{
+    {1, "KDL"},
+    {2, "OPW"},
+    {3, "TRACIK"},
+    {4, "LMA"},
+    {5, "CACHED_KDL"},
+    {6, "CACHED_TRACIK"}
+};
+
+
+
+static std::map<int, std::string> const testMap2 =
+{
+    {KinematicSolverType::A, "KDL"},
+    {KinematicSolverType::B, "OPW"},
+    {KinematicSolverType::C, "TRACIK"},
+    {KinematicSolverType::D, "LMA"},
+    {KinematicSolverType::E, "CACHED_KDL"},
+    {KinematicSolverType::F, "CACHED_TRACIK"}
+};
+
+static std::map<std::string, int> const testMap3 =
+{
+    {"KDL",1},
+    {"OPW",2},
+    {"TRACIK",3},
+    {"LMA",4},
+    {"CACHED_KDL",5},
+    {"CACHED_TRACIK",6}
+};
+
 }
 
 // Test Toolbox Node 
@@ -771,67 +805,34 @@ int main(int argc, char** argv)
                                 1);             // Queue size 
 
     // Main Code    
-    // -------------------------------
-        // std::string name;
-        // if(Toolbox::Parameter::searchTypeMap(88, test::kinematicSolverTypeMap, name))
-        // {
-        //     ROS_INFO_STREAM("TYPE-NAME: " << name);
-        // }
-        // else
-        // {
-        //     ROS_ERROR_STREAM("TYPE-NAME: NOT FOUND");
-        // }
-
-        // if(Toolbox::Parameter::searchTypeMap(test::KinematicSolverType::D, test::kinematicSolverTypeMap, name))
-        // {
-        //     ROS_INFO_STREAM("TYPE-NAME: " << name);
-        // }
-        // else
-        // {
-        //     ROS_ERROR_STREAM("TYPE-NAME: NOT FOUND");
-        // }
-
-        // int id;
-        // if(Toolbox::Parameter::searchTypeMap("LMA", test::kinematicSolverTypeMap, id))
-        // {
-        //     ROS_INFO_STREAM("TYPE-ID: " << id);
-        // }
-        // else
-        // {
-        //     ROS_ERROR_STREAM("TYPE-ID: NOT FOUND");
-        // }
-
-        // if(Toolbox::Parameter::searchTypeMap("lma", test::kinematicSolverTypeMap, id))
-        // {
-        //     ROS_INFO_STREAM("TYPE-ID: " << id);
-        // }
-        // else
-        // {
-        //     ROS_ERROR_STREAM("TYPE-ID: NOT FOUND");
-        // }
 
 
         ROS_ERROR_STREAM("Test Search-Map");
-        test::KinematicSolverType element;
-        if(Toolbox::Common::searchMap("LMA", test::kinematicSolverTypeMap, element))
+        test::KinematicSolverType value;
+        std::string key0 = "lma";
+        if(Toolbox::Common::findValueInMap(key0, test::kinematicSolverTypeMap, value))
         {
-            ROS_INFO_STREAM("Element Found: " << element);
+            ROS_INFO_STREAM("Value Found: " << value);
         }
         else
         {
-            ROS_ERROR_STREAM("Element: NOT FOUND");
+            ROS_ERROR_STREAM("Value: NOT FOUND");
         }
-        if(Toolbox::Common::searchMap("asdas", test::kinematicSolverTypeMap, element))
+        if(Toolbox::Common::findValueInMap("asdas", test::kinematicSolverTypeMap, value))
         {
-            ROS_INFO_STREAM("Element Found: " << element);
+            ROS_INFO_STREAM("Value Found: " << value);
         }
         else
         {
-            ROS_ERROR_STREAM("Element: NOT FOUND");
+            ROS_ERROR_STREAM("Value: NOT FOUND");
         }
 
+        ROS_ERROR_STREAM(" ");
+        ROS_ERROR_STREAM("FIND KEY IN MAP");
+        ROS_ERROR_STREAM("THIS");
         std::string key;
-        if(Toolbox::Common::searchMap(test::KinematicSolverType::D, test::kinematicSolverTypeMap, key))
+        // if(Toolbox::Common::findKeyInMap(test::B, test::kinematicSolverTypeMap, key))
+        if(Toolbox::Common::findKeyInMap(3, test::testMap3, key))
         {
             ROS_INFO_STREAM("Key Found: " << key);
         }
@@ -839,13 +840,38 @@ int main(int argc, char** argv)
         {
             ROS_ERROR_STREAM("Key: NOT FOUND");
         }
-        if(Toolbox::Common::searchMap(static_cast<test::KinematicSolverType>(89), test::kinematicSolverTypeMap, key))
+
+        ROS_ERROR_STREAM(" ");
+        if(Toolbox::Common::findKeyInMap(static_cast<test::KinematicSolverType>(88), test::kinematicSolverTypeMap, key))
         {
             ROS_INFO_STREAM("Key Found: " << key);
         }
         else
         {
             ROS_ERROR_STREAM("Key: NOT FOUND");
+        }
+
+        ROS_ERROR_STREAM(" ");
+        std::string value2 = "KDL";
+        int key2;
+        if(Toolbox::Common::findKeyInMap(value2, test::testMap, key2))
+        {
+            ROS_INFO_STREAM("Key Found:" << key2 << " with value: " << value2);
+        }
+        else
+        {
+            ROS_ERROR_STREAM("Key: NOT FOUND" << " with value: " << value2);
+        }
+
+        ROS_ERROR_STREAM(" ");
+        std::string value3 = "kdl";
+        if(Toolbox::Common::findKeyInMap(value3, test::testMap, key2))
+        {
+            ROS_INFO_STREAM("Key Found:" << key2 << " with value: " << value3);
+        }
+        else
+        {
+            ROS_ERROR_STREAM("Key: NOT FOUND" << " with value: " << value3);
         }
 
         // lspb_vec_time();
