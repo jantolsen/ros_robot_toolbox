@@ -58,9 +58,9 @@ namespace Toolbox
             const Eigen::Vector3d unit_vec;   // axis unit vector
         };
         
-        // Case-Insensitive Comparator
+        // Map Case-Insensitive Comparator
         // (useful for maps with [std::string] as keys)
-        struct CaseInsensitiveComparator
+        struct MapCaseInsensitiveComparator
         {
             // Operator to ignore lower- and upper case differences
             bool operator()(const std::string& a, const std::string& b) const noexcept
@@ -315,12 +315,12 @@ class Common
             geometry_msgs::TransformStamped transform_stamped);
 
 
-        // Reverse Map
+        // Map: Reverse Map
         // -------------------------------
         // (Function Overloading)
         /** \brief Reverse a map (swap key and value)
-        * \param map        Map reverse [std::map<typename Key, typename Value>]
-        * \return Returns reverse map [std::map<typename Value, typename Key>]
+        * \param map        Map to reverse [std::map<typename Key, typename Value>]
+        * \return Returns reversed map [std::map<typename Value, typename Key>]
         */
         template<typename Key, typename Value>
         static std::map<Value, Key> mapReverse(
@@ -341,21 +341,21 @@ class Common
         } // Function-End: mapReverse()
 
 
-        // Reverse Map
+        // Map: Reverse Map
         // -------------------------------
         // (Function Overloading)
         /** \brief Reverse a map (swap key and value)
         * Map contains struct-operator for CaseInsensitiveComparator 
         * (used for ignore capitalization of letters in string)
-        * \param map        Map reverse [std::map<typename Key, typename Value>]
-        * \return Returns reverse map [std::map<typename Value, typename Key>]
+        * \param map        Map to reverse [std::map<typename Key, typename Value, typename Operator>]
+        * \return Returns reversed map [std::map<typename Value, typename Key, typename Operator>]
         */
-        template<typename Key, typename Value>
-        static std::map<Value, Key> mapReverse(
-            const std::map<Key, Value>& map)
+        template<typename Key, typename Value, typename Operator>
+        static std::map<Value, Key, Operator> mapReverse(
+            const std::map<Key, Value, Operator>& map)
         {
             // Create reverse map
-            std::map<Value, Key> reverse_map;
+            std::map<Value, Key, Operator> reverse_map;
 
             // Iterate through supplied map
             for(auto const& it : map)
@@ -369,244 +369,514 @@ class Common
         } // Function-End: mapReverse()
 
 
-        // Find Value in Map
-        // (Find Value in Map using Key [std::string]) 
+        // Map: Get Value
+        // (Get Value in Map using Key) 
         // -------------------------------
         // (Function Overloading)
-        /** \brief Search for key in supplied map to find respective element
+        /** \brief Search and find value in supplied map by searching for given key
+        * \param key        Key to search for [typename Key]
+        * \param map        Map to search thorugh [std::map<typename Key, typename Value>]
+        * \param value      Value at given key in map [typename Value]
+        * \return Function result: Successful/unsuccessful (true/false)
+        */
+        template<typename Key, typename Value>
+        static bool mapGetValue(
+            const Key& key, 
+            const std::map<Key, Value>& map,
+            Value& value)
+        {
+            // Search for key in map
+            auto search = map.find(key);
+
+            // Check if searched key is found in the container
+            if(search != map.end())
+            {   
+                // Value found for given key in map
+                value = search->second;
+
+                // Function return
+                return true;
+            }
+            // No value was found in the container
+            // (iterator has reached the end of the container)
+
+            // Report to terminal
+            ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
+                << " Failed! Given Key: [" << key << "] was NOT found in given map");
+
+            // Function return
+            return false;
+        } // Function-End: mapFindValue()
+
+
+        // Map: Get Value
+        // (Get Value in Map using Key [std::string]) 
+        // -------------------------------
+        // (Function Overloading)
+        /** \brief Search and find value in supplied map by searching for given key [std::string]
+        * \param key        Key to search for [std::string]
+        * \param map        Map to search thorugh [std::map<std::string, typename Value>]
+        * \param value      Value at given key in map [typename Value]
+        * \param case_insensitive   Ignore capitalization of letters in given key [std::string]
+        *                           (enabled as default) [bool]
+        * \return Function result: Successful/unsuccessful (true/false)
+        */
+        template<typename Value>
+        static bool mapGetValue(
+            const std::string& key, 
+            const std::map<std::string, Value>& map,
+            Value& value,
+            const bool& case_insensitive=true)
+        {
+            // Check for case-insensitive key flag
+            if(case_insensitive)
+            {
+                // Create a new map instance with case-insensitive comparator
+                std::map<std::string, Value, MapCaseInsensitiveComparator> map_new;
+
+                // Copy given map elements to new map
+                map_new.insert(map.begin(), map.end());
+
+                // Call overloading function
+                // (map with MapCaseInsensitiveComparator)
+                return mapGetValue(key, map_new, value);
+            }
+            // Non case-insensitive key
+            else
+            {
+                // Search for key in map
+                auto search = map.find(key);
+
+                // Check if searched key is found in the container
+                if(search != map.end())
+                {   
+                    // Value found for given key in map
+                    value = search->second;
+
+                    // Function return
+                    return true;
+                }
+                // No value was found in the container
+                // (iterator has reached the end of the container)
+
+                // Report to terminal
+                ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
+                    << " Failed! Given Key: [" << key << "] was NOT found in given map");
+
+                // Function return
+                return false;
+            }
+        } // Function-End: mapGetValue()
+
+
+        // Map: Get Value
+        // (Get Value in Map using Key)
+        // -------------------------------
+        // (Function Overloading)
+        /** \brief Search and find value in supplied map by searching for given key
+        * Map contains struct-operator for MapCaseInsensitiveComparator 
+        * (used for ignore capitalization of letters in string)
+        * \param key        Key to search for [typename Key]
+        * \param map        Map to search thorugh [std::map<typename Key, typename Value, typename Operator>]
+        * \param value      Value at given key in map [typename Value]
+        * \return Function result: Successful/unsuccessful (true/false)
+        */
+        template<typename Key, typename Value, typename Operator>
+        static bool mapGetValue(
+            const Key& key, 
+            const std::map<Key, Value, Operator>& map,
+            Value& value)
+        {
+            // Search for key in map
+            auto search = map.find(key);
+
+            // Check if searched key is found in the container
+            if(search != map.end())
+            {   
+                // Value found for given key in map
+                value = search->second;
+
+                // Function return
+                return true;
+            }
+            // No value was found in the container
+            // (iterator has reached the end of the container)
+
+            // Report to terminal
+            ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
+                << " Failed! Given Key: [" << key << "] was NOT found in given map");
+
+            // Function return
+            return false;
+        } // Function-End: mapGetValue()
+
+
+        // Map: Get Key
+        // (Get Key in Map using Value)
+        // -------------------------------
+        // (Function Overloading)
+        /** \brief Search and find key in supplied map by searching for given value
+        * \param value      Value to search for [typename Value]
+        * \param map        Map to search thorugh [std::map<typename Key, typename Value>]
+        * \param key        Key at given value in map [typename Key]
+        * \return Function result: Successful/unsuccessful (true/false)
+        */
+        template<typename Key, typename Value>
+        static bool mapGetKey(
+            const Value& value, 
+            const std::map<Key, Value>& map,
+            Key& key)
+        {
+            // Check if value is string-type
+            if constexpr (std::is_same<Value, std::string>::value)
+            {   
+                // Iterate through supplied map
+                for(auto const& it : map)
+                {
+                    // Compare iterator-value against supplied value
+                    if(strcasecmp(it.second.c_str(), value.c_str()) == 0)
+                    {
+                        // Set Key equal to map-key at given value
+                        key = it.first;
+
+                        // Function return
+                        return true;
+                    }
+                    // Continue iteration
+                }
+            }
+            // Non string-type
+            else
+            {
+                // Iterate through supplied map
+                for(auto const& it : map)
+                {
+                    // Compare iterator-value against supplied value
+                    if(it.second == value)
+                    {
+                        // Set Key equal to map-key at given value
+                        key = it.first;
+
+                        // Function return
+                        return true;
+                    }
+                    // Continue iteration
+                }
+            }
+
+            // Report to terminal
+            ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
+                << " Failed! Value: [" << value << "] was NOT found in given map");
+
+            // Function return
+            return false;
+        } // Function-End: mapGetKey()
+
+
+        // Map: Get Key
+        // (Get Key in Map using Value)
+        // -------------------------------
+        // (Function Overloading)
+        /** \brief Search and find key in supplied map by searching for given value
         * Map contains struct-operator for CaseInsensitiveComparator 
         * (used for ignore capitalization of letters in string)
-        * \param key        Key to search for [std::string]
-        * \param map        Map to search thorugh [std::map<std::string, typename Value, typename Operator>]
-        * \param value      Value at given key in map [typename Value]
-        * \return Function result: Successful/unsuccessful (true/false)
-        */
-        template<typename Value, typename Operator>
-        static bool findValueInMap(
-            const std::string& key, 
-            const std::map<std::string, Value, Operator>& map,
-            Value& value)
-        {
-            // Search for key in map
-            auto search = map.find(key);
-
-            // Check if searched key is found in the container
-            if(search != map.end())
-            {   
-                // Value found for given key in map
-                value = search->second;
-
-                // Function return
-                return true;
-            }
-            // No value was found in the container
-            // (iterator has reached the end of the container)
-
-            // Report to terminal
-            ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
-                << " Failed! Given Key: [" << key << "] was NOT found in given map");
-
-            // Function return
-            return false;
-        } // Function-End: findValueInMap()
-
-
-        // Find Value in Map
-        // (Find Value in Map using Key [std::string]) 
-        // -------------------------------
-        // (Function Overloading)
-        /** \brief Search for key in supplied map to find respective element
-        * \param key        Key to search for [std::string]
-        * \param map        Map to search thorugh [std::map<std::string, typename Value>]
-        * \param value      Value at given key in map [typename Value]
-        * \return Function result: Successful/unsuccessful (true/false)
-        */
-        template<typename Value>
-        static bool findValueInMap(
-            const std::string& key, 
-            const std::map<std::string, Value>& map,
-            Value& value)
-        {
-            // Search for key in map
-            auto search = map.find(key);
-
-            // Check if searched key is found in the container
-            if(search != map.end())
-            {   
-                // Value found for given key in map
-                value = search->second;
-
-                // Function return
-                return true;
-            }
-            // No value was found in the container
-            // (iterator has reached the end of the container)
-
-            // Report to terminal
-            ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
-                << " Failed! Given Key: [" << key << "] was NOT found in given map");
-
-            // Function return
-            return false;
-        } // Function-End: findValueInMap()
-
-
-        // Find Value in Map
-        // (Find Value in Map using Key [int]) 
-        // -------------------------------
-        // (Function Overloading)
-        /** \brief Search for key in supplied map to find respective element
-        * \param key        Key to search for [int]
-        * \param map        Map to search thorugh [std::map<int, typename Value>]
-        * \param value      Value at given key in map [typename Value]
-        * \return Function result: Successful/unsuccessful (true/false)
-        */
-        template<typename Value>
-        static bool findValueInMap(
-            const int& key, 
-            const std::map<int, Value>& map,
-            Value& value)
-        {
-            // Search for key in map
-            auto search = map.find(key);
-
-            // Check if searched key is found in the container
-            if(search != map.end())
-            {   
-                // Value found for given key in map
-                value = search->second;
-
-                // Function return
-                return true;
-            }
-            // No value was found in the container
-            // (iterator has reached the end of the container)
-
-            // Report to terminal
-            ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
-                << " Failed! Given Key: [" << key << "] was NOT found in given map");
-
-            // Function return
-            return false;
-        } // Function-End: findValueInMap()
-
-
-        // Find Key in Map
-        // (Find Key [std::string] in Map using Value) 
-        // -------------------------------
-        // (Function Overloading)
-        /** \brief Find key in supplied map by searching for given value
         * \param value      Value to search for [typename Value]
-        * \param map        Map to search thorugh [std::map<std::string, typename Value, typename Operator>]
-        * \param key        Key at given value in map [std::string]
+        * \param map        Map to search thorugh [std::map<typename Key, typename Value, typename Operator>]
+        * \param key        Key at given value in map [typename Key]
         * \return Function result: Successful/unsuccessful (true/false)
         */
-        template<typename Value, typename Operator>
-        static bool findKeyInMap(
+        template<typename Key, typename Value, typename Operator>
+        static bool mapGetKey(
             const Value& value, 
-            const std::map<std::string, Value, Operator>& map,
-            std::string& key)
+            const std::map<Key, Value, Operator>& map,
+            Key& key)
         {
-            // Iterate through supplied map
-            for(auto const& it : map)
-            {
-                // Compare iterator-value against supplied value
-                if(it.second == value)
+            // Check if value is string-type
+            if constexpr (std::is_same<Value, std::string>::value)
+            {   
+                // Iterate through supplied map
+                for(auto const& it : map)
                 {
-                    // Set Key equal to map-key at given value
-                    key = it.first;
+                    // Compare iterator-value against supplied value
+                    if(strcasecmp(it.second.c_str(), value.c_str()) == 0)
+                    {
+                        // Set Key equal to map-key at given value
+                        key = it.first;
 
-                    // Function return
-                    return true;
+                        // Function return
+                        return true;
+                    }
+                    // Continue iteration
                 }
-                // Continue iteration
+            }
+            // Non string-type
+            else
+            {
+                // Iterate through supplied map
+                for(auto const& it : map)
+                {
+                    // Compare iterator-value against supplied value
+                    if(it.second == value)
+                    {
+                        // Set Key equal to map-key at given value
+                        key = it.first;
+
+                        // Function return
+                        return true;
+                    }
+                    // Continue iteration
+                }
             }
 
             // Report to terminal
             ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
-                << " Failed! Element: [" << value << "] was NOT found in given map");
+                << " Failed! Value: [" << value << "] was NOT found in given map");
 
             // Function return
             return false;
-        } // Function-End: findKeyInMap()
+        } // Function-End: mapGetKey()
 
 
-        // Find Key in Map
-        // (Find Key [std::string] in Map using Value) 
-        // -------------------------------
-        // (Function Overloading)
-        /** \brief Find key in supplied map by searching for given value
-        * \param value      Value to search for [typename Value]
-        * \param map        Map to search thorugh [std::map<std::string, typename Value>]
-        * \param key        Key at given value in map [std::string]
-        * \return Function result: Successful/unsuccessful (true/false)
-        */
-        template<typename Value>
-        static bool findKeyInMap(
-            const Value& value, 
-            const std::map<std::string, Value>& map,
-            std::string& key)
-        {
-            // Iterate through supplied map
-            for(auto const& it : map)
-            {
-                // Compare iterator-value against supplied value
-                if(it.second == value)
-                {
-                    // Set Key equal to map-key at given value
-                    key = it.first;
 
-                    // Function return
-                    return true;
-                }
-                // Continue iteration
-            }
-            // Report to terminal
-            ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
-                << " Failed! Given Value: [" << value << "] was NOT found in given map");
+        
+        // // Find Value in Map
+        // // (Find Value in Map using Key [std::string]) 
+        // // -------------------------------
+        // // (Function Overloading)
+        // /** \brief Search for key in supplied map to find respective element
+        // * Map contains struct-operator for CaseInsensitiveComparator 
+        // * (used for ignore capitalization of letters in string)
+        // * \param key        Key to search for [std::string]
+        // * \param map        Map to search thorugh [std::map<std::string, typename Value, typename Operator>]
+        // * \param value      Value at given key in map [typename Value]
+        // * \return Function result: Successful/unsuccessful (true/false)
+        // */
+        // template<typename Value, typename Operator>
+        // static bool findValueInMap(
+        //     const std::string& key, 
+        //     const std::map<std::string, Value, Operator>& map,
+        //     Value& value)
+        // {
+        //     // Search for key in map
+        //     auto search = map.find(key);
 
-            // Function return
-            return false;
-        } // Function-End: findKeyInMap()
+        //     // Check if searched key is found in the container
+        //     if(search != map.end())
+        //     {   
+        //         // Value found for given key in map
+        //         value = search->second;
+
+        //         // Function return
+        //         return true;
+        //     }
+        //     // No value was found in the container
+        //     // (iterator has reached the end of the container)
+
+        //     // Report to terminal
+        //     ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
+        //         << " Failed! Given Key: [" << key << "] was NOT found in given map");
+
+        //     // Function return
+        //     return false;
+        // } // Function-End: findValueInMap()
 
 
-        // Find Key in Map
-        // (Find Key [int] in Map using Value) 
-        // -------------------------------
-        // (Function Overloading)
-        /** \brief Find key in supplied map by searching for given value
-        * \param value      Value to search for [typename Value]
-        * \param map        Map to search thorugh [std::map<int, typename Value>]
-        * \param key        Key at given value in map [int]
-        * \return Function result: Successful/unsuccessful (true/false)
-        */
-        template<typename Value>
-        static bool findKeyInMap(
-            const Value& value, 
-            const std::map<int, Value>& map,
-            int& key)
-        {
-            // Iterate through supplied map
-            for(auto const& it : map)
-            {
-                // Compare iterator-value against supplied value
-                if(it.second == value)
-                {
-                    // Set Key equal to map-key at given value
-                    key = it.first;
+        // // Find Value in Map
+        // // (Find Value in Map using Key [std::string]) 
+        // // -------------------------------
+        // // (Function Overloading)
+        // /** \brief Search for key in supplied map to find respective element
+        // * \param key        Key to search for [std::string]
+        // * \param map        Map to search thorugh [std::map<std::string, typename Value>]
+        // * \param value      Value at given key in map [typename Value]
+        // * \return Function result: Successful/unsuccessful (true/false)
+        // */
+        // template<typename Value>
+        // static bool findValueInMap(
+        //     const std::string& key, 
+        //     const std::map<std::string, Value>& map,
+        //     Value& value)
+        // {
+        //     // Search for key in map
+        //     auto search = map.find(key);
 
-                    // Function return
-                    return true;
-                }
-                // Continue iteration
-            }
-            // Report to terminal
-            ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
-                << " Failed! Given Value: [" << value << "] was NOT found in given map");
+        //     // Check if searched key is found in the container
+        //     if(search != map.end())
+        //     {   
+        //         // Value found for given key in map
+        //         value = search->second;
 
-            // Function return
-            return false;
-        } // Function-End: findKeyInMap()
+        //         // Function return
+        //         return true;
+        //     }
+        //     // No value was found in the container
+        //     // (iterator has reached the end of the container)
+
+        //     // Report to terminal
+        //     ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
+        //         << " Failed! Given Key: [" << key << "] was NOT found in given map");
+
+        //     // Function return
+        //     return false;
+        // } // Function-End: findValueInMap()
+
+
+        // // Find Value in Map
+        // // (Find Value in Map using Key [int]) 
+        // // -------------------------------
+        // // (Function Overloading)
+        // /** \brief Search for key in supplied map to find respective element
+        // * \param key        Key to search for [int]
+        // * \param map        Map to search thorugh [std::map<int, typename Value>]
+        // * \param value      Value at given key in map [typename Value]
+        // * \return Function result: Successful/unsuccessful (true/false)
+        // */
+        // template<typename Value>
+        // static bool findValueInMap(
+        //     const int& key, 
+        //     const std::map<int, Value>& map,
+        //     Value& value)
+        // {
+        //     // Search for key in map
+        //     auto search = map.find(key);
+
+        //     // Check if searched key is found in the container
+        //     if(search != map.end())
+        //     {   
+        //         // Value found for given key in map
+        //         value = search->second;
+
+        //         // Function return
+        //         return true;
+        //     }
+        //     // No value was found in the container
+        //     // (iterator has reached the end of the container)
+
+        //     // Report to terminal
+        //     ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
+        //         << " Failed! Given Key: [" << key << "] was NOT found in given map");
+
+        //     // Function return
+        //     return false;
+        // } // Function-End: findValueInMap()
+
+
+        // // Find Key in Map
+        // // (Find Key [std::string] in Map using Value) 
+        // // -------------------------------
+        // // (Function Overloading)
+        // /** \brief Find key in supplied map by searching for given value
+        // * \param value      Value to search for [typename Value]
+        // * \param map        Map to search thorugh [std::map<std::string, typename Value, typename Operator>]
+        // * \param key        Key at given value in map [std::string]
+        // * \return Function result: Successful/unsuccessful (true/false)
+        // */
+        // template<typename Value, typename Operator>
+        // static bool findKeyInMap(
+        //     const Value& value, 
+        //     const std::map<std::string, Value, Operator>& map,
+        //     std::string& key)
+        // {
+        //     // Iterate through supplied map
+        //     for(auto const& it : map)
+        //     {
+        //         // Compare iterator-value against supplied value
+        //         if(it.second == value)
+        //         {
+        //             // Set Key equal to map-key at given value
+        //             key = it.first;
+
+        //             // Function return
+        //             return true;
+        //         }
+        //         // Continue iteration
+        //     }
+
+        //     // Report to terminal
+        //     ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
+        //         << " Failed! Element: [" << value << "] was NOT found in given map");
+
+        //     // Function return
+        //     return false;
+        // } // Function-End: findKeyInMap()
+
+
+        // // Find Key in Map
+        // // (Find Key [std::string] in Map using Value) 
+        // // -------------------------------
+        // // (Function Overloading)
+        // /** \brief Find key in supplied map by searching for given value
+        // * \param value      Value to search for [typename Value]
+        // * \param map        Map to search thorugh [std::map<std::string, typename Value>]
+        // * \param key        Key at given value in map [std::string]
+        // * \return Function result: Successful/unsuccessful (true/false)
+        // */
+        // template<typename Value>
+        // static bool findKeyInMap(
+        //     const Value& value, 
+        //     const std::map<std::string, Value>& map,
+        //     std::string& key)
+        // {
+        //     // Iterate through supplied map
+        //     for(auto const& it : map)
+        //     {
+        //         // Compare iterator-value against supplied value
+        //         if(it.second == value)
+        //         {
+        //             // Set Key equal to map-key at given value
+        //             key = it.first;
+
+        //             // Function return
+        //             return true;
+        //         }
+        //         // Continue iteration
+        //     }
+        //     // Report to terminal
+        //     ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
+        //         << " Failed! Given Value: [" << value << "] was NOT found in given map");
+
+        //     // Function return
+        //     return false;
+        // } // Function-End: findKeyInMap()
+
+
+        // // Find Key in Map
+        // // (Find Key [int] in Map using Value) 
+        // // -------------------------------
+        // // (Function Overloading)
+        // /** \brief Find key in supplied map by searching for given value
+        // * \param value      Value to search for [typename Value]
+        // * \param map        Map to search thorugh [std::map<int, typename Value>]
+        // * \param key        Key at given value in map [int]
+        // * \return Function result: Successful/unsuccessful (true/false)
+        // */
+        // template<typename Value>
+        // static bool findKeyInMap(
+        //     const Value& value, 
+        //     const std::map<int, Value>& map,
+        //     int& key)
+        // {
+        //     // Iterate through supplied map
+        //     for(auto const& it : map)
+        //     {
+        //         // Compare iterator-value against supplied value
+        //         if(it.second == value)
+        //         {
+        //             // Set Key equal to map-key at given value
+        //             key = it.first;
+
+        //             // Function return
+        //             return true;
+        //         }
+        //         // Continue iteration
+        //     }
+        //     // Report to terminal
+        //     ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
+        //         << " Failed! Given Value: [" << value << "] was NOT found in given map");
+
+        //     // Function return
+        //     return false;
+        // } // Function-End: findKeyInMap()
 
 
         // Constants
