@@ -46,7 +46,7 @@ namespace Toolbox
 
             // Report to terminal
             ROS_ERROR_STREAM(Kinematics::CLASS_PREFIX << __FUNCTION__ 
-                << " Failed to capture current joint-state message");
+                << ": Failed to capture current joint-state message");
 
             // Function return
             return false;
@@ -59,7 +59,7 @@ namespace Toolbox
 
             // Report to terminal
             ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
-                << " Failed: Current joint-state position is empty");
+                << ": Failed: Current joint-state position is empty");
 
             // Function return
             return false;

@@ -161,9 +161,17 @@ target_link_libraries(
 # add_executable(${PROJECT_NAME}_node src/robot_toolbox_node.cpp)
 
 add_executable(test_toolbox_node 
-  src/test_toolbox_node.cpp)
+  test/test_toolbox_node.cpp)
 
 target_link_libraries(test_toolbox_node
+  ${catkin_LIBRARIES}
+  ${PROJECT_NAME}
+)
+
+add_executable(test_common_map 
+  test/test_common_map.cpp)
+
+target_link_libraries(test_common_map
   ${catkin_LIBRARIES}
   ${PROJECT_NAME}
 )
@@ -209,6 +217,7 @@ install(
   TARGETS 
     ${PROJECT_NAME}
     test_toolbox_node
+    test_common_map
   ARCHIVE DESTINATION 
     ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION 

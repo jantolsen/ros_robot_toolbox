@@ -39,7 +39,7 @@ namespace Toolbox
         {
             // Report to terminal
             ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
-                << " Failed! Parameter member [" << member << "] was not found");
+                << ": Failed! Parameter member [" << member << "] was not found");
 
             // Function return
             return false;
@@ -61,7 +61,7 @@ namespace Toolbox
         {
             // Report to terminal
             ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
-                << " Failed! Parameter types does not match: "
+                << ": Failed! Parameter types does not match: "
                 << " Input-parameter XmlRpc-Type: [" << getParamTypeName(param.getType()) << "]" 
                 << " vs comparing XmlRpc-Type: [" << getParamTypeName(type) << "]");
 
@@ -94,7 +94,7 @@ namespace Toolbox
             default:
                 // Report to terminal
                 ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
-                    << " Failed! Parameter data-type does not have a size: "
+                    << ": Failed! Parameter data-type does not have a size: "
                     << " Input-parameter XmlRpc-Type: [" << getParamTypeName(param.getType()) << "]");
 
                 // Function return
@@ -106,7 +106,7 @@ namespace Toolbox
         {
             // Report to terminal
             ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
-                << " Failed! Parameter size does not match: "
+                << ": Failed! Parameter size does not match: "
                 << " Input-parameter size: [" << param.size() << "]"
                 << " vs comparing size: [" << size << "]");
 
