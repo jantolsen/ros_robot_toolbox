@@ -121,18 +121,17 @@ class Parameter
             const int& size);
 
 
-        // Search Type-Map 
+        // Search Type-Identifier Map 
         // -------------------------------
-        // (Function Overloading)
-        /** \brief Search and find the relating type-name/type-id of on the given type-name/type-id
-        * by searching through the supplied type-map
-        * \param search_item    Item to search for (Type-Name or Type-ID) [typename SearchType]
+        /** \brief Search for the given type-identifier (type-name/type-id) in the supplied type-identifer-map,
+        * to find the related type-identifier pair (type-name/type-id)
+        * \param search_item    Identifier item to search for (Type-Name or Type-ID) [typename SearchType]
         * \param type_map       Type-Map to search thorugh [std::map<typename MapKey, typename MapValue>]
         * \param result_item    Resulting item (Type-Name or Type-ID) [typename ResultType]
         * \return Function result: Successful/unsuccessful (true/false)
         */
         template<typename SearchType, typename ResultType, typename MapKey, typename MapValue>
-        static bool searchTypeMap(
+        static bool searchTypeIdentifierMap(
             const SearchType& search_item, 
             const std::map<MapKey, MapValue>& type_map,
             ResultType& result_item)
@@ -142,7 +141,8 @@ class Parameter
             {
                 // Report to terminal
                 ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
-                    << ": Failed! Given Search-item: [" << search_item << "] was NOT found in Type-Map");
+                    << ": Failed! Given Search-Item: [" << search_item << "]"
+                    << " was NOT found in Type-Identifier-Map");
 
                 // Function return
                 return false;
@@ -150,21 +150,21 @@ class Parameter
 
             // Function return
             return true;
-        } // Function-End: searchTypeMap()
+        } // Function-End: searchTypeIdentifierMap()
 
 
-        // Check Type Item
+        // Check Type-Identifier
         // -------------------------------
-        /** \brief Search and find type-item parameter from parameter-server
-        * This involves checking the parameter-server for the given parameter-member
-        * and searching for the type-item in the supplied type-map.
+        /** \brief Check if the given type-identifier (type-name/type-id) parameter 
+        * is present on the parameter-server. Also checks if the given type-identifier 
+        * (type-name/type-id) exists in the supplied type-identifer-map
         * \param param      Parameter to be checked [XmlRpc::XmlRpcValue]
         * \param member     Member item to search for within parameter [std::string]
         * \param type_map   Type-Map to search thorugh [std::map<typename MapKey, typename MapValue>]
         * \return Function result: Successful/unsuccessful (true/false)
         */
         template<typename MapKey, typename MapValue>
-        static bool checkTypeItem(
+        static bool checkTypeIdentifier(
             const XmlRpc::XmlRpcValue& param, 
             const std::string& member,
             const std::map<MapKey, MapValue>& type_map)
@@ -176,30 +176,30 @@ class Parameter
             // Check for parameter on parameter-server
             if(!checkMember(param, member))
             {
-                // Parameter get/validation failed
+                // Parameter validation failed
                 ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
-                    <<  ": Failed! Parameter [" << member << "] is missing");
+                    << ": Failed! Parameter [" << member << "] is missing");
 
                 // Function return
                 return false;
             }
 
-            // Check for parameter type-item in type-map
-            // Get Parameter data-type
+            // Get parameter data-type and search for type-identifier in type-identifier-map
             switch (param.getType())
             {
                 // Integer:
-                // (Valid Data-type for type-map search)
+                // (Valid Data-type for type-identifier-map search)
                 case XmlRpc::XmlRpcValue::TypeInt:
                     // Cast parameter-member to int
                     param_member_int = static_cast<int>(param[member]);
 
-                    // Search for type-item in type-map
-                    if(!Common::mapCheckItem(param_member_int, type_map))
+                    // Search for type-identifier in type-identifier-map
+                    if(!Common::mapContains(param_member_int, type_map))
                     {
-                        // Parameter map-search failed
+                        // Type-identifier map-search failed
                         ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
-                            <<  ": Failed! Parameter [" << member << "] is NOT a part of valid types in related type-map");
+                            << ": Failed! Parameter [" << member << "]" 
+                            << " is NOT a part of valid types in related Type-Identifier-Map");
 
                         // Function return
                         return false;
@@ -209,17 +209,18 @@ class Parameter
                     return true;
 
                 // String:
-                // (Valid Data-type for type-map search)
+                // (Valid Data-type for type-identifier-map search)
                 case XmlRpc::XmlRpcValue::TypeString:
                     // Cast parameter-member to string
                     param_member_str = static_cast<std::string>(param[member]);
 
-                    // Search for type-item in type-map
-                    if(!Common::mapCheckItem(param_member_str, type_map))
+                    // Search for type-identifier in type-identifier-map
+                    if(!Common::mapContains(param_member_str, type_map))
                     {
-                        // Parameter map-search failed
+                        // Type-identifier map-search failed
                         ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
-                            <<  ": Failed! Parameter [" << member << "] is NOT a part of valid types in related type-map");
+                            << ": Failed! Parameter [" << member << "]"
+                            << " is NOT a part of valid types in related Type-Identifier-Map");
 
                         // Function return
                         return false;
@@ -229,24 +230,24 @@ class Parameter
                     return true;
 
                 // Default:
-                // (Invalid data-type for type-map search)
+                // (Invalid data-type for type-identifier-map search)
                 default:
                     // Report to terminal
                     ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
-                        << ": Failed! Parameter data-type [" << getParamTypeName(param.getType()) << "] does NOT fit for type-map search");
+                        << ": Failed! Parameter data-type [" << getDataTypeName(param.getType()) << "]"
+                        << " does NOT fit for Type-Identifier-Map search");
 
                     // Function return
                     return false;
             }
-        } // Function-End: checkTypeItem()
+        } // Function-End: checkIdentifier()
 
 
-        // Get Type Item
+        // Get Type-Identifier
         // -------------------------------
-        // (Function Overloading)
-        /** \brief Search and find type-item parameter from parameter-server
-        * This involves checking the parameter-server for the given parameter-member
-        * and searching for the type-item in the supplied type-map.
+        /** \brief Search for the type-identifier (type-name/type-id) parameter on the parameter-server
+        * Also search for the given type-identifier (type-name/type-id) in the supplied type-identifer-map
+        * to find the related type-identifier pair (type-name/type-id)
         * Function returns corresponding type-item [int] and type-item-name [std::string]
         * \param param      Parameter to be checked [XmlRpc::XmlRpcValue]
         * \param member     Member item to search for within parameter [std::string]
@@ -256,7 +257,7 @@ class Parameter
         * \return Function result: Successful/unsuccessful (true/false)
         */
         template<typename MapKey, typename MapValue>
-        static bool getTypeItem(
+        static bool getTypeIdentifier(
             const XmlRpc::XmlRpcValue& param, 
             const std::string& member,
             const std::map<MapKey, MapValue>& type_map,
@@ -269,26 +270,26 @@ class Parameter
             int search_result_int;
             std::string search_result_str;
             
-            // Check type-item parameter
-            if(!checkTypeItem(param, member, type_map))
+            // Check Type-Identifier
+            if(!checkTypeIdentifier(param, member, type_map))
             {
                 // Function return
                 return false;
             }
 
-            // Get Parameter data-type and search for type-item in type-map
+            // Get parameter data-type and search for type-identifier in type-identifier-map
             switch (param.getType())
             {
                 // Integer:
-                // (Valid Data-type for type-map search)
+                // (Valid Data-type for type-identifier-map search)
                 case XmlRpc::XmlRpcValue::TypeInt:
                     // Cast parameter-member to int
                     param_member_int = static_cast<int>(param[member]);
 
-                    // Search for type-item in type-map
-                    if(searchTypeMap(param_member_int, type_map, search_result_str))
+                    // Search for type-identifier in type-identifier-map
+                    if(searchTypeIdentifierMap(param_member_int, type_map, search_result_str))
                     {
-                        // Type-item is found in type-map!
+                        // Type-identifier is found in type-identifier-map!
                         // Update results
                         result_item = param_member_int;
                         result_item_name = search_result_str;
@@ -297,23 +298,24 @@ class Parameter
                         return true;
                     }
 
-                    // Parameter map-search failed
+                    // Type-identifier map-search failed
                     ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
-                        <<  ": Failed! Parameter [" << member << "] is NOT a part of valid types in related type-map");
+                        << ": Failed! Parameter [" << member << "]"
+                        << " is NOT a part of valid types in related Type-Identifier-Map");
 
                     // Function return
                     return false;
 
                 // String:
-                // (Valid Data-type for type-map search)
+                // (Valid Data-type for type-identifier-map search)
                 case XmlRpc::XmlRpcValue::TypeString:
                     // Cast parameter-member to string
                     param_member_str = static_cast<std::string>(param[member]);
 
-                    // Search for type-item in type-map
-                    if(searchTypeMap(param_member_str, type_map, search_result_int))
+                    // Search for type-identifier in type-identifier-map
+                    if(searchTypeIdentifierMap(param_member_str, type_map, search_result_int))
                     {
-                        // Type-item is found in type-map!
+                        // Type-identifier is found in type-identifier-map!
                         // Update results
                         result_item = search_result_int;
                         result_item_name = param_member_str;
@@ -322,24 +324,26 @@ class Parameter
                         return true;
                     }
 
-                    // Parameter map-search failed
+                    // Type-identifier-map search failed
                     ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
-                        <<  ": Failed! Parameter [" << member << "] is NOT a part of valid types in related type-map");
+                        << ": Failed! Parameter [" << member << "]"
+                        << " is NOT a part of valid types in related Type-Identifier-Map");
 
                     // Function return
                     return false;
 
                 // Default:
-                // (Invalid data-type for type-map search)
+                // (Invalid data-type for type-identifier-map search)
                 default:
                     // Report to terminal
                     ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
-                        << ": Failed! Parameter data-type [" << getParamTypeName(param.getType()) << "] does NOT fit for type-map search");
+                        << ": Failed! Parameter data-type [" << getDataTypeName(param.getType()) << "]"
+                        << " does NOT fit for Type-Identifier-Map search");
 
                     // Function return
                     return false;
             }
-        } // Function-End: getTypeItem()
+        } // Function-End: getTypeIdentifier()
 
 
     // Protected Class members
@@ -348,13 +352,13 @@ class Parameter
     // and classes which inherits from the parent class
     protected:
 
-        // Get Name of Parameter-Type 
+        // Get Name of Parameter Data-Type 
         // -------------------------------
-        /** \brief Converts Parameter-Type to a readable type-name
+        /** \brief Converts Parameter Data-Type to a readable type-name
         * \param type       Data-type to compare parameter against [XmlRpc::XmlRpcValue::Type]
         * \return Name of parameter-type represented [std::string]
         */
-        static std::string getParamTypeName(
+        static std::string getDataTypeName(
             const XmlRpc::XmlRpcValue::Type& type);
 
 

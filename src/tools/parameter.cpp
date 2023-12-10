@@ -62,8 +62,8 @@ namespace Toolbox
             // Report to terminal
             ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
                 << ": Failed! Parameter types does not match: "
-                << " Input-parameter XmlRpc-Type: [" << getParamTypeName(param.getType()) << "]" 
-                << " vs comparing XmlRpc-Type: [" << getParamTypeName(type) << "]");
+                << " Input-parameter XmlRpc-Type: [" << getDataTypeName(param.getType()) << "]" 
+                << " vs comparing XmlRpc-Type: [" << getDataTypeName(type) << "]");
 
             // Function return
             return false;
@@ -95,7 +95,7 @@ namespace Toolbox
                 // Report to terminal
                 ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
                     << ": Failed! Parameter data-type does not have a size: "
-                    << " Input-parameter XmlRpc-Type: [" << getParamTypeName(param.getType()) << "]");
+                    << " Input-parameter XmlRpc-Type: [" << getDataTypeName(param.getType()) << "]");
 
                 // Function return
                 return false;
@@ -161,9 +161,9 @@ namespace Toolbox
     } // Function-End: checkParameter()
 
 
-    // Get Name of Parameter-Type 
+    // Get Name of Parameter Data-Type
     // -------------------------------
-    std::string Parameter::getParamTypeName(
+    std::string Parameter::getDataTypeName(
         const XmlRpc::XmlRpcValue::Type& type)
     {
         // Determine data-type represent it by string  
