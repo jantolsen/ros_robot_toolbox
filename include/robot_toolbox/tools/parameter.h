@@ -138,7 +138,18 @@ class Parameter
             ResultType& result_item)
         {
             // Call Common::mapSearch()
-            return Common::mapSearch(search_item, type_map, result_item);
+            if(!Common::mapSearch(search_item, type_map, result_item))
+            {
+                // Report to terminal
+                ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
+                    << ": Failed! Given Search-item: [" << search_item << "] was NOT found in Type-Map");
+
+                // Function return
+                return false;
+            }
+
+            // Function return
+            return true;
         } // Function-End: searchTypeMap()
 
 
@@ -161,7 +172,18 @@ class Parameter
             ResultType& result_item)
         {
             // Call Common::mapSearch()
-            return Common::mapSearch(search_item, type_map, result_item);
+            if(!Common::mapSearch(search_item, type_map, result_item))
+            {
+                // Report to terminal
+                ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
+                    << ": Failed! Given Search-item: [" << search_item << "] was NOT found in Type-Map");
+
+                // Function return
+                return false;
+            }
+
+            // Function return
+            return true;
         } // Function-End: searchTypeMap()
 
 
