@@ -185,7 +185,7 @@ class Parameter
             }
 
             // Get parameter data-type and search for type-identifier in type-identifier-map
-            switch (param.getType())
+            switch (param[member].getType())
             {
                 // Integer:
                 // (Valid Data-type for type-identifier-map search)
@@ -278,7 +278,7 @@ class Parameter
             }
 
             // Get parameter data-type and search for type-identifier in type-identifier-map
-            switch (param.getType())
+            switch (param[member].getType())
             {
                 // Integer:
                 // (Valid Data-type for type-identifier-map search)
@@ -319,7 +319,7 @@ class Parameter
                         // Update results
                         result_item = search_result_int;
                         result_item_name = param_member_str;
-
+                        
                         // Function return
                         return true;
                     }
