@@ -534,6 +534,7 @@ class Common
                 for(auto const& it : map)
                 {
                     // Compare iterator-value against supplied value
+                    // (Case-Insensitivity)
                     if(strcasecmp(it.second.c_str(), value.c_str()) == 0)
                     {
                         // Set Key equal to map-key at given value
@@ -598,6 +599,7 @@ class Common
                 for(auto const& it : map)
                 {
                     // Compare iterator-value against supplied value
+                    // (Case-Insensitivity)
                     if(strcasecmp(it.second.c_str(), value.c_str()) == 0)
                     {
                         // Set Key equal to map-key at given value
@@ -637,7 +639,7 @@ class Common
         } // Function-End: mapGetKey()
 
 
-        // Search Map 
+        // Map: Search
         // -------------------------------
         // (Function Overloading)
         /** \brief Search through supplied map to find the related element-item for the given search-item
@@ -657,14 +659,14 @@ class Common
             {
                 // Call MapGetValue()
                 // (using search-item as key to search for related value)
-                return Common::mapGetValue(search_item, map, result_item);
+                return mapGetValue(search_item, map, result_item);
             }
             // Compare search-item type vs map-value type
             else if constexpr (std::is_same<SearchType, MapValue>::value)
             {
                 // Call MapGetKey()
                 // (using search-item as value to search for related key)
-                return Common::mapGetKey(search_item, map, result_item);
+                return mapGetKey(search_item, map, result_item);
             }
 
             // Report to terminal
@@ -678,7 +680,7 @@ class Common
         } // Function-End: mapSearch()
 
 
-        // Search Map 
+        // Map: Search 
         // -------------------------------
         // (Function Overloading)
         /** \brief Search through supplied map to find the related element-item for the given search-item
@@ -700,14 +702,14 @@ class Common
             {
                 // Call MapGetValue()
                 // (using search-item as key to search for related value)
-                return Common::mapGetValue(search_item, map, result_item);
+                return mapGetValue(search_item, map, result_item);
             }
             // Compare search-item type vs map-value type
             else if constexpr (std::is_same<SearchType, MapValue>::value)
             {
                 // Call MapGetKey()
                 // (using search-item as value to search for related key)
-                return Common::mapGetKey(search_item, map, result_item);
+                return mapGetKey(search_item, map, result_item);
             }
 
             // Report to terminal
@@ -719,6 +721,147 @@ class Common
             // Function return
             return false;
         } // Function-End: mapSearch()
+
+        
+        // Map: Check for key (no result-item)
+        // -------------------------------
+        // (Function Overloading)
+        /** \brief Search for the presence of the given key in supplied map
+        * \param search_item    Item to search for [typename SearchType]
+        * \param map            Map to search thorugh [std::map<typename MapKey, typename MapValue>]
+        * \return Function result: Successful/unsuccessful (true/false)
+        */
+        template<typename SearchType, typename MapKey, typename MapValue>
+        static bool mapCheckKey(
+            const SearchType& search_item, 
+            const std::map<MapKey, MapValue>& map)
+        {
+            // Search for key in map
+            auto search = map.find(search_item);
+
+            // Check if searched key is found in the container
+            if(search != map.end())
+            {   
+                // Key is found within map
+                return true;
+            }
+            // No value was found in the container
+            // (iterator has reached the end of the container)
+
+            // Function return
+            return false;
+        } // Function-End: mapCheckKey()
+
+
+        // Map: Check for value (no result-item)
+        // -------------------------------
+        // (Function Overloading)
+        /** \brief Search for the presence of the given value in supplied map
+        * \param search_item    Item to search for [typename SearchType]
+        * \param map            Map to search thorugh [std::map<typename MapKey, typename MapValue>]
+        * \return Function result: Successful/unsuccessful (true/false)
+        */
+        template<typename SearchType, typename MapKey, typename MapValue>
+        static bool mapCheckValue(
+            const SearchType& search_item, 
+            const std::map<MapKey, MapValue>& map)
+        {
+            // Check if search-item is string-type
+            if constexpr (std::is_same<SearchType, std::string>::value)
+            {   
+                // Iterate through supplied map
+                for(auto const& it : map)
+                {
+                    // Compare iterator-value against supplied value
+                    // (Case-Insensitivity)
+                    if(strcasecmp(it.second.c_str(), search_item.c_str()) == 0)
+                    {
+                        // Value is found within map
+                        return true;
+                    }
+                    // Continue iteration
+                }
+            }
+            // Non string-type
+            else
+            {
+                // Iterate through supplied map
+                for(auto const& it : map)
+                {
+                    // Compare iterator-value against supplied value
+                    if(it.second == search_item)
+                    {
+                        // Value is found within map
+                        return true;
+                    }
+                    // Continue iteration
+                }
+            }
+            // No search-item was found in the container
+            // Function return
+            return false;
+        } // Function-End: mapCheckValue()
+
+
+        // Map: Check for Item (no result-item)
+        // -------------------------------
+        // (Function Overloading)
+        /** \brief Search for the presence of the given search-item in supplied map
+        * \param search_item    Item to search for [typename SearchType]
+        * \param map            Map to search thorugh [std::map<typename MapKey, typename MapValue>]
+        * \return Function result: Successful/unsuccessful (true/false)
+        */
+        template<typename SearchType, typename MapKey, typename MapValue>
+        static bool mapCheckItem(
+            const SearchType& search_item, 
+            const std::map<MapKey, MapValue>& map)
+        {
+            // Compare search-item type vs map-key type
+            if constexpr (std::is_same<SearchType, MapKey>::value)
+            {
+                // Search for item as key
+                if(!mapCheckKey(search_item, map))
+                {
+                    // Item was found in the map
+                    // Report to terminal
+                    ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
+                        << ": Failed! Given item: [" << search_item << "] was NOT found in given map");
+                        
+                    // Function return
+                    return true;
+                }
+
+                // Function return
+                return true;
+            }
+            // Compare search-item type vs map-value type
+            else if constexpr (std::is_same<SearchType, MapValue>::value)
+            {
+                // Search for item as value
+                if(!mapCheckValue(search_item, map))
+                {
+                    // Item was found in the map
+                    // Report to terminal
+                    ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
+                        << ": Failed! Given item: [" << search_item << "] was NOT found in given map");
+                        
+                    // Function return
+                    return true;
+                } 
+
+                // Function return
+                return true;
+            }
+
+            // Report to terminal
+            ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
+                << ": Failed! Data-Type of Search-Item: [" << typeid(search_item).name() << "]"
+                << " does NOT match the data-type of either the Map's Key-type [" << typeid(MapKey).name() << "]"
+                << " nor Value-type [" << typeid(MapValue).name() << "]");
+
+            // Function return
+            return false;
+        } // Function-End: mapCheckItem()
 
 
         // Constants

@@ -52,7 +52,7 @@ namespace Toolbox
 
     // Check and Compare Parameter Type
     // -------------------------------
-    bool Parameter::checkType(
+    bool Parameter::checkDataType(
         const XmlRpc::XmlRpcValue& param, 
         const XmlRpc::XmlRpcValue::Type& type)
     {
@@ -131,7 +131,7 @@ namespace Toolbox
         if(!checkMember(param, member)) return false;
 
         // Check parameter-member against specified type
-        if(!checkType(param[member], type)) return false;
+        if(!checkDataType(param[member], type)) return false;
 
         // Function return
         return true;
@@ -151,7 +151,7 @@ namespace Toolbox
         if(!checkMember(param, member)) return false;
 
         // Check parameter-member against specified type
-        if(!checkType(param[member], type)) return false;
+        if(!checkDataType(param[member], type)) return false;
 
         // Check parameter-member against specified size
         if(!checkSize(param, size)) return false;
