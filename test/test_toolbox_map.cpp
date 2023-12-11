@@ -21,6 +21,9 @@
     // Robotics Toolbox
     #include "robot_toolbox/toolbox.h"
 
+    // Boost
+    #include <boost/optional.hpp>
+
 namespace test
 {
     enum KinematicSolverType
@@ -547,6 +550,33 @@ namespace test
 
 } // End: Namespace test
 
+boost::optional<std::string> checkInt(int test)
+{
+    std::string result;
+
+    if(test == 0)
+    {
+        ROS_ERROR("INVALID INT");
+        return boost::none;
+    }
+    
+    result = "Valid int";
+    return result;
+}
+
+boost::optional<std::string> checkInt2(int test)
+{
+    boost::optional<std::string> result;
+    if(test == 0)
+    {
+        
+        return result = "Valid int";
+    }
+    
+    // result = "Valid int";
+    return result;
+}
+
 // Test Toolbox Node 
 // -------------------------------
 int main(int argc, char** argv)
@@ -566,10 +596,52 @@ int main(int argc, char** argv)
     // Test(s)
     // -------------------------------
 
-        test::testMapGetValues();
+        // test::testMapGetValues();
         // test::testMapGetKeys();  
         // test::testSearchTypeMap();
 
+    if(auto res = checkInt(2))
+    {
+        std::string test1 = *res;
+
+        ROS_INFO_STREAM("Test1 Result: " << test1);
+    }
+    
+
+    if(auto res = checkInt(0))
+    {
+        std::string test1 = *res;
+
+        ROS_INFO_STREAM("Test2 Result: " << test1);
+    }
+    else
+    {
+        ROS_INFO_STREAM("Test2 Failed! ");
+    }
+
+    if(auto res = checkInt2(0))
+    {
+        std::string test1 = *res;
+
+        ROS_INFO_STREAM("Test3 Result: " << test1);
+    }
+    else
+    {
+        ROS_INFO_STREAM("Test3 Failed! ");
+    }
+
+    if(auto res = checkInt2(3))
+    {
+        std::string test1 = *res;
+
+        ROS_INFO_STREAM("Test4 Result: " << test1);
+    }
+    else
+    {
+        ROS_INFO_STREAM("Test4 Failed! ");
+    }
+
+    
     // Shutdown
     // -------------------------------
     // ROS-Loop waiting for shutdown
