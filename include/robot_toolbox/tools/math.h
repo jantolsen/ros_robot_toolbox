@@ -33,6 +33,7 @@
 
     // Robotics Toolbox
     #include "robot_toolbox/tools/common.h"
+    #include "robot_toolbox/tools/convert.h"
 
 // Namespace: Robotics Toolbox
 // -------------------------------
@@ -301,7 +302,7 @@ class Math
         */
         static Eigen::Vector3d getNormalVector(
             Eigen::Isometry3d tm,
-            AxisType axis_type = Common::AXIS_Z);
+            AxisType axis_type = AXIS_Z);
 
 
         // Get Normal Vector (Pose)
@@ -315,7 +316,7 @@ class Math
         */
         static Eigen::Vector3d getNormalVector(
             geometry_msgs::Pose pose,
-            AxisType axis_type = Common::AXIS_Z);
+            AxisType axis_type = AXIS_Z);
 
 
         // Rotation Matrix - Quaternion-Vector

@@ -36,6 +36,7 @@
 
     // Robotics Toolbox
     #include "robot_toolbox/tools/common.h"
+    #include "robot_toolbox/tools/convert.h"
     
 
 // Namespace: Robotics Toolbox

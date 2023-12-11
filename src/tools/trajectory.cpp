@@ -278,15 +278,15 @@ namespace Toolbox
 
             // Evaluate polynomials
             // (converting time-vector from std::Vector<> to Eigen::VectorX)
-            pos_traj = Math::polyval(c, Common::vectorStdToEigen(t));
-            vel_traj = Math::polyval(c_d, Common::vectorStdToEigen(t));
-            acc_traj = Math::polyval(c_dd, Common::vectorStdToEigen(t));
+            pos_traj = Math::polyval(c, Convert::vectorStdToEigen(t));
+            vel_traj = Math::polyval(c_d, Convert::vectorStdToEigen(t));
+            acc_traj = Math::polyval(c_dd, Convert::vectorStdToEigen(t));
 
         // Resize polynomial trajectory to equal time-period size
         trajectory.resize(t.size());
 
         // Convert Trajectory Eigen::VectorXd to std::vector<double>
-        trajectory = Common::vectorEigenToStd(pos_traj);
+        trajectory = Convert::vectorEigenToStd(pos_traj);
 
         // Function return
         return trajectory;
@@ -426,14 +426,14 @@ namespace Toolbox
                     
             // Evaluate polynomials
             // (converting time-vector from std::Vector<> to Eigen::VectorX)
-            pos_traj = Math::polyval(c, Common::vectorStdToEigen(t));
-            vel_traj = Math::polyval(c_d, Common::vectorStdToEigen(t));
+            pos_traj = Math::polyval(c, Convert::vectorStdToEigen(t));
+            vel_traj = Math::polyval(c_d, Convert::vectorStdToEigen(t));
 
         // Resize polynomial trajectory to equal time-period sizeQuintic
         trajectory.resize(t.size());
 
         // Convert Trajectory Eigen::VectorXd to std::vector<double>
-        trajectory = Common::vectorEigenToStd(pos_traj);
+        trajectory = Convert::vectorEigenToStd(pos_traj);
 
         // Function return
         return trajectory;

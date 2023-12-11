@@ -353,7 +353,7 @@ namespace Toolbox
             // X-Axis Arrow Marker
             x_axis = Toolbox::Visual::visualPose(pose_csys_tm,          // Pose of Coordinate system
                                                 name + "/x_axis",       // Namespace for arrow marker
-                                                Common::AXIS_X,         // Axis of axis-arrow-marker
+                                                AXIS_X,                 // Axis of axis-arrow-marker
                                                 Visual::COLOR_RED,      // Color of axis-arrow marker 
                                                 scale,                  // Scale of axis-arrow marker
                                                 ref_frame);             // Reference Frame for axis-arrow marker            
@@ -361,7 +361,7 @@ namespace Toolbox
             // Y-Axis Arrow Marker
             y_axis = Toolbox::Visual::visualPose(pose_csys_tm,          // Pose of Coordinate system
                                                 name + "/y_axis",       // Namespace for arrow marker  
-                                                Common::AXIS_Y,         // Axis of axis-arrow-marker 
+                                                AXIS_Y,                 // Axis of axis-arrow-marker 
                                                 Visual::COLOR_GREEN,    // Color of axis-arrow marker   
                                                 scale,                  // Scale of axis-arrow marker
                                                 ref_frame);             // Reference Frame for axis-arrow marker  
@@ -369,7 +369,7 @@ namespace Toolbox
             // Z-Axis Arrow Marker
             z_axis = Toolbox::Visual::visualPose(pose_csys_tm,          // Pose of Coordinate system
                                                 name + "/z_axis",       // Namespace for arrow marker
-                                                Common::AXIS_Z,         // Axis of axis-arrow-marker
+                                                AXIS_Z,                 // Axis of axis-arrow-marker
                                                 Visual::COLOR_BLUE,     // Color of axis-arrow marker
                                                 scale,                  // Scale of axis-arrow marker
                                                 ref_frame);             // Reference Frame for axis-arrow marker  
@@ -401,21 +401,21 @@ namespace Toolbox
             // X-Axis Arrow Marker
             x_axis = Toolbox::Visual::visualPose(pose_csys,             // Pose of Coordinate system
                                                 name + "/x_axis",       // Namespace for arrow marker
-                                                Common::AXIS_X,         // Axis of axis-arrow-marker
+                                                AXIS_X,                 // Axis of axis-arrow-marker
                                                 Visual::COLOR_RED,      // Color of axis-arrow marker 
                                                 scale);                 // Scale of axis-arrow marker
 
             // Y-Axis Arrow Marker
             y_axis = Toolbox::Visual::visualPose(pose_csys,             // Pose of Coordinate system
                                                 name + "/y_axis",       // Namespace for arrow marker
-                                                Common::AXIS_Y,         // Axis of axis-arrow-marker 
+                                                AXIS_Y,                 // Axis of axis-arrow-marker 
                                                 Visual::COLOR_GREEN,    // Color of axis-arrow marker   
                                                 scale);                 // Scale of axis-arrow marker
 
             // Z-Axis Arrow Marker
             z_axis = Toolbox::Visual::visualPose(pose_csys,             // Pose of Coordinate system
                                                 name + "/z_axis",       // Namespace for arrow marker
-                                                Common::AXIS_Z,         // Axis of axis-arrow-marker
+                                                AXIS_Z,                 // Axis of axis-arrow-marker
                                                 Visual::COLOR_BLUE,     // Color of axis-arrow marker
                                                 scale);                 // Scale of axis-arrow marker
 

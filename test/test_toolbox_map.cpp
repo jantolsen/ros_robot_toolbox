@@ -35,7 +35,7 @@ namespace test
 
     // Kinematic Solver Type Map
     // (Matches the solver-types defined in InfoKinematics.msg)
-    static std::map<std::string, KinematicSolverType, Toolbox::MapCaseInsensitiveComparator> const kinematicSolverTypeMap =
+    static std::map<std::string, KinematicSolverType, Toolbox::Map::CaseInsensitiveComparator> const kinematicSolverTypeMap =
     {
         {"KDL", KinematicSolverType::A},
         {"OPW", KinematicSolverType::B},
@@ -91,7 +91,7 @@ namespace test
             ROS_INFO("Test: 1");
             int key_int = 2;
             std::string value_str;
-            if(Toolbox::Common::mapSearch(key_int, test::testMap_keyInt, value_str))
+            if(Toolbox::Map::mapSearch(key_int, test::testMap_keyInt, value_str))
             {
                 ROS_INFO_STREAM("Key Found: " << key_int);
                 ROS_INFO_STREAM("Related Value: " << value_str);
@@ -104,7 +104,7 @@ namespace test
             ROS_INFO(" ");
             ROS_INFO("Test: 2");
             key_int = 22;
-            if(Toolbox::Common::mapSearch(key_int, test::testMap_keyInt, value_str))
+            if(Toolbox::Map::mapSearch(key_int, test::testMap_keyInt, value_str))
             {
                 ROS_INFO_STREAM("Key Found: " << key_int);
                 ROS_INFO_STREAM("Related Value: " << value_str);
@@ -123,7 +123,7 @@ namespace test
             ROS_INFO("Test: 1");
             std::string key_str = "LMA";
             int value_int;
-            if(Toolbox::Common::mapSearch(key_str, test::testMap_keyString, value_int))
+            if(Toolbox::Map::mapSearch(key_str, test::testMap_keyString, value_int))
             {
                 ROS_INFO_STREAM("Key Found: " << key_str);
                 ROS_INFO_STREAM("Related Value: " << value_int);
@@ -136,7 +136,7 @@ namespace test
             ROS_INFO(" ");
             ROS_INFO("Test: 2");
             key_str = "lma";
-            if(Toolbox::Common::mapSearch(key_str, test::testMap_keyString, value_int))
+            if(Toolbox::Map::mapSearch(key_str, test::testMap_keyString, value_int))
             {
                 ROS_INFO_STREAM("Key Found: " << key_str);
                 ROS_INFO_STREAM("Related Value: " << value_int);
@@ -153,7 +153,7 @@ namespace test
         
             ROS_INFO("Test: 1");
             test::KinematicSolverType key_enum = test::KinematicSolverType::B;
-            if(Toolbox::Common::mapSearch(key_enum, test::testMap_keyEnum, value_str))
+            if(Toolbox::Map::mapSearch(key_enum, test::testMap_keyEnum, value_str))
             {
                 ROS_INFO_STREAM("Key Found: " << key_enum);
                 ROS_INFO_STREAM("Related Value: " << value_str);
@@ -166,7 +166,7 @@ namespace test
             ROS_INFO(" ");
             ROS_INFO("Test: 2");
             key_enum = static_cast<test::KinematicSolverType>(22);
-            if(Toolbox::Common::mapSearch(key_enum, test::testMap_keyEnum, value_str))
+            if(Toolbox::Map::mapSearch(key_enum, test::testMap_keyEnum, value_str))
             {
                 ROS_INFO_STREAM("Key Found: " << key_enum);
                 ROS_INFO_STREAM("Related Value: " << value_str);
@@ -185,7 +185,7 @@ namespace test
             ROS_INFO("Test: 1");
             key_str = "LMA";
             test::KinematicSolverType value_enum;
-            if(Toolbox::Common::mapSearch(key_str, test::kinematicSolverTypeMap, value_enum))
+            if(Toolbox::Map::mapSearch(key_str, test::kinematicSolverTypeMap, value_enum))
             {
                 ROS_INFO_STREAM("Key Found: " << key_str);
                 ROS_INFO_STREAM("Related Value: " << value_enum);
@@ -198,7 +198,7 @@ namespace test
             ROS_INFO(" ");
             ROS_INFO("Test: 2");
             key_str = "opw";
-            if(Toolbox::Common::mapSearch(key_str, test::kinematicSolverTypeMap, value_enum))
+            if(Toolbox::Map::mapSearch(key_str, test::kinematicSolverTypeMap, value_enum))
             {
                 ROS_INFO_STREAM("Key Found: " << key_str);
                 ROS_INFO_STREAM("Related Value: " << value_str);
@@ -226,7 +226,7 @@ namespace test
             ROS_INFO("Test: 1");
             int value_int = 2;
             std::string key_str;
-            if(Toolbox::Common::mapSearch(value_int, test::testMap_keyString, key_str))
+            if(Toolbox::Map::mapSearch(value_int, test::testMap_keyString, key_str))
             {
                 ROS_INFO_STREAM("Value Found: " << value_int);
                 ROS_INFO_STREAM("Related Key: " << key_str);
@@ -239,7 +239,7 @@ namespace test
             ROS_INFO(" ");
             ROS_INFO("Test: 2");
             value_int = 22;
-            if(Toolbox::Common::mapSearch(value_int, test::testMap_keyString, key_str))
+            if(Toolbox::Map::mapSearch(value_int, test::testMap_keyString, key_str))
             {
                 ROS_INFO_STREAM("Value Found: " << value_int);
                 ROS_INFO_STREAM("Related Key: " << key_str);
@@ -258,7 +258,7 @@ namespace test
             ROS_INFO("Test: 1");
             std::string value_str = "LMA";
             int key_int;
-            if(Toolbox::Common::mapSearch(value_str, test::testMap_keyInt, key_int))
+            if(Toolbox::Map::mapSearch(value_str, test::testMap_keyInt, key_int))
             {
                 ROS_INFO_STREAM("Value Found: " << value_str);
                 ROS_INFO_STREAM("Related Key: " << key_int);
@@ -271,7 +271,7 @@ namespace test
             ROS_INFO(" ");
             ROS_INFO("Test: 2");
             value_str = "lma";
-            if(Toolbox::Common::mapSearch(value_str, test::testMap_keyInt, key_int))
+            if(Toolbox::Map::mapSearch(value_str, test::testMap_keyInt, key_int))
             {
                 ROS_INFO_STREAM("Value Found: " << value_str);
                 ROS_INFO_STREAM("Related Key: " << key_int);
@@ -289,7 +289,7 @@ namespace test
             ROS_INFO("Test: 1");
             value_str = "LMA";
             test::KinematicSolverType key_enum;
-            if(Toolbox::Common::mapSearch(value_str, test::testMap_keyEnum, key_enum))
+            if(Toolbox::Map::mapSearch(value_str, test::testMap_keyEnum, key_enum))
             {
                 ROS_INFO_STREAM("Value Found: " << value_str);
                 ROS_INFO_STREAM("Related Key: " << key_enum);
@@ -302,7 +302,7 @@ namespace test
             ROS_INFO(" ");
             ROS_INFO("Test: 2");
             value_str = "asd";
-            if(Toolbox::Common::mapSearch(value_str, test::testMap_keyEnum, key_enum))
+            if(Toolbox::Map::mapSearch(value_str, test::testMap_keyEnum, key_enum))
             {
                 ROS_INFO_STREAM("Value Found: " << value_str);
                 ROS_INFO_STREAM("Related Key: " << key_enum);
@@ -321,7 +321,7 @@ namespace test
             ROS_INFO("Test: 1");
             key_str;
             test::KinematicSolverType value_enum = test::KinematicSolverType::D;
-            if(Toolbox::Common::mapSearch(value_enum, test::kinematicSolverTypeMap, key_str))
+            if(Toolbox::Map::mapSearch(value_enum, test::kinematicSolverTypeMap, key_str))
             {
                 ROS_INFO_STREAM("Value Found: " << value_enum);
                 ROS_INFO_STREAM("Related Key: " << key_str);
@@ -334,7 +334,7 @@ namespace test
             ROS_INFO(" ");
             ROS_INFO("Test: 2");
             value_enum = static_cast<test::KinematicSolverType>(83);
-            if(Toolbox::Common::mapSearch(value_enum, test::kinematicSolverTypeMap, key_str))
+            if(Toolbox::Map::mapSearch(value_enum, test::kinematicSolverTypeMap, key_str))
             {
                 ROS_INFO_STREAM("Value Found: " << value_enum);
                 ROS_INFO_STREAM("Related Key: " << key_str);
@@ -554,7 +554,7 @@ int main(int argc, char** argv)
     // Initialization
     // -------------------------------
     // Initialize a ROS Node with a node name
-    ros::init(argc, argv, "test_toolbox_common_map");   
+    ros::init(argc, argv, "test_toolbox_map");   
 
     // Starting ROS Nodehandle(s)
     ros::NodeHandle nh; 
@@ -566,7 +566,7 @@ int main(int argc, char** argv)
     // Test(s)
     // -------------------------------
 
-        // test::testMapGetValues();
+        test::testMapGetValues();
         // test::testMapGetKeys();  
         // test::testSearchTypeMap();
 

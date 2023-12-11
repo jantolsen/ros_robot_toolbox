@@ -25,10 +25,10 @@
 void degreeRad()
 {
     // Degree
-    double deg = Toolbox::Common::radToDeg(M_PI/2);
+    double deg = Toolbox::Convert::radToDeg(M_PI/2);
     ROS_INFO_STREAM("Degree: " << deg);
 
-    double rad = Toolbox::Common::degToRad(45.0);
+    double rad = Toolbox::Convert::degToRad(45.0);
     ROS_INFO_STREAM("Radians: " << rad);
 }
 
@@ -58,7 +58,7 @@ void colors()
 void axistype()
 {
     // Axis
-        Toolbox::AxisType a = Toolbox::Common::AXIS_X; 
+        Toolbox::AxisType a = Toolbox::AXIS_X; 
 
         ROS_INFO_STREAM(" Axis X: ");
         ROS_INFO_STREAM(" ----------- ");
@@ -67,8 +67,8 @@ void axistype()
 
         ROS_INFO_STREAM(" Axis Z: ");
         ROS_INFO_STREAM(" ----------- ");
-        ROS_INFO_STREAM(" Id: "     << Toolbox::Common::AXIS_Z.id);
-        ROS_INFO_STREAM(" Name: "   << Toolbox::Common::AXIS_Z.name);
+        ROS_INFO_STREAM(" Id: "     << Toolbox::AXIS_Z.id);
+        ROS_INFO_STREAM(" Name: "   << Toolbox::AXIS_Z.name);
         ROS_INFO_STREAM(" ");
 }
 
@@ -87,7 +87,7 @@ void traj()
 
     traj = Toolbox::Trajectory::trajectoryCircular(pos,
                                                 1.0,
-                                                Toolbox::Common::degToRad(22.5),
+                                                Toolbox::Convert::degToRad(22.5),
                                                 4);
 
 
@@ -158,9 +158,9 @@ void rotmat()
     double psi = 37;
 
     // Quat
-    Eigen::AngleAxisd pitch(Toolbox::Common::degToRad(phi), Eigen::Vector3d::UnitZ());
-    Eigen::AngleAxisd roll(Toolbox::Common::degToRad(theta), Eigen::Vector3d::UnitY());
-    Eigen::AngleAxisd yaw(Toolbox::Common::degToRad(psi), Eigen::Vector3d::UnitZ());
+    Eigen::AngleAxisd pitch(Toolbox::Convert::degToRad(phi), Eigen::Vector3d::UnitZ());
+    Eigen::AngleAxisd roll(Toolbox::Convert::degToRad(theta), Eigen::Vector3d::UnitY());
+    Eigen::AngleAxisd yaw(Toolbox::Convert::degToRad(psi), Eigen::Vector3d::UnitZ());
     Eigen::Quaternion<double> q = pitch * roll * yaw;
     Eigen::Matrix3d rot_quat = Toolbox::Math::rotMat(q);
 
@@ -220,13 +220,13 @@ void transformation()
     double phi = 15;
     double theta = -58;
     double psi = 37;
-    Eigen::Vector3d rot_vec(Toolbox::Common::degToRad(phi), Toolbox::Common::degToRad(theta), Toolbox::Common::degToRad(psi));
+    Eigen::Vector3d rot_vec(Toolbox::Convert::degToRad(phi), Toolbox::Convert::degToRad(theta), Toolbox::Convert::degToRad(psi));
     Eigen::Matrix3d rot_xyz = Toolbox::Math::rotMatXYZ(rot_vec);
 
     // Quat
-    Eigen::AngleAxisd pitch(Toolbox::Common::degToRad(phi), Eigen::Vector3d::UnitX());
-    Eigen::AngleAxisd roll(Toolbox::Common::degToRad(theta), Eigen::Vector3d::UnitY());
-    Eigen::AngleAxisd yaw(Toolbox::Common::degToRad(psi), Eigen::Vector3d::UnitZ());
+    Eigen::AngleAxisd pitch(Toolbox::Convert::degToRad(phi), Eigen::Vector3d::UnitX());
+    Eigen::AngleAxisd roll(Toolbox::Convert::degToRad(theta), Eigen::Vector3d::UnitY());
+    Eigen::AngleAxisd yaw(Toolbox::Convert::degToRad(psi), Eigen::Vector3d::UnitZ());
     Eigen::Quaternion<double> q = pitch * roll * yaw;
     Eigen::Matrix3d rot_quat = Toolbox::Math::rotMat(q);
 
@@ -386,13 +386,13 @@ void slerp()
     // -------------------------------
     std::vector<Eigen::Quaterniond> slerp_vec;
 
-    double start_rotx = Toolbox::Common::degToRad(0);
-    double start_roty = Toolbox::Common::degToRad(0);
-    double start_rotz = Toolbox::Common::degToRad(0);
+    double start_rotx = Toolbox::Convert::degToRad(0);
+    double start_roty = Toolbox::Convert::degToRad(0);
+    double start_rotz = Toolbox::Convert::degToRad(0);
 
-    double end_rotx = Toolbox::Common::degToRad(45);
-    double end_roty = Toolbox::Common::degToRad(0);
-    double end_rotz = Toolbox::Common::degToRad(0);
+    double end_rotx = Toolbox::Convert::degToRad(45);
+    double end_roty = Toolbox::Convert::degToRad(0);
+    double end_rotz = Toolbox::Convert::degToRad(0);
 
     Eigen::Quaterniond start =  Eigen::AngleAxisd(start_rotx, Eigen::Vector3d::UnitX())
                                 * Eigen::AngleAxisd(start_roty, Eigen::Vector3d::UnitY())
@@ -415,8 +415,8 @@ void slerp()
         std::cout << slerp_vec[i].vec() << std::endl;
         
         ROS_INFO_STREAM(" Euler: ");
-        Eigen::Vector3d euler = Toolbox::Common::quaternionToEuler(slerp_vec[i], Toolbox::XYZ);
-        std::cout << euler*Toolbox::Common::radToDeg() << std::endl;
+        Eigen::Vector3d euler = Toolbox::Convert::quaternionToEuler(slerp_vec[i], Toolbox::XYZ);
+        std::cout << euler*Toolbox::Convert::radToDeg() << std::endl;
 
         ROS_INFO_STREAM(" ----------- ");
     }
@@ -551,8 +551,8 @@ void vec_convert()
     std_vec_in = {123, 456, 789, 111};
 
     std::vector<double> std_vec_res;
-    std_vec_res = Toolbox::Common::vectorEigenToStd(eigen_vec_in);
-    Eigen::VectorXd  eigen_vec_res = Toolbox::Common::vectorStdToEigen(std_vec_in);
+    std_vec_res = Toolbox::Convert::vectorEigenToStd(eigen_vec_in);
+    Eigen::VectorXd  eigen_vec_res = Toolbox::Convert::vectorStdToEigen(std_vec_in);
 
     ROS_INFO_STREAM(" Convert Vector: ");
     ROS_INFO_STREAM(" ----------- ");
@@ -664,9 +664,9 @@ void linear_trajectory()
         double phi0 = 0;
         double theta0 = 0;
         double psi0 = 0;
-        Eigen::Vector3d rot0(Toolbox::Common::degToRad(phi0), 
-                            Toolbox::Common::degToRad(theta0), 
-                            Toolbox::Common::degToRad(psi0));
+        Eigen::Vector3d rot0(Toolbox::Convert::degToRad(phi0), 
+                            Toolbox::Convert::degToRad(theta0), 
+                            Toolbox::Convert::degToRad(psi0));
 
         // Transformation
         Eigen::Isometry3d tm0 = Toolbox::Math::transMat(pos0, rot0);
@@ -683,9 +683,9 @@ void linear_trajectory()
         double phi1 = 0;
         double theta1 = 0;
         double psi1 = 90;
-        Eigen::Vector3d rot1(Toolbox::Common::degToRad(phi1), 
-                            Toolbox::Common::degToRad(theta1), 
-                            Toolbox::Common::degToRad(psi1));
+        Eigen::Vector3d rot1(Toolbox::Convert::degToRad(phi1), 
+                            Toolbox::Convert::degToRad(theta1), 
+                            Toolbox::Convert::degToRad(psi1));
 
         // Transformation
         Eigen::Isometry3d tm1 = Toolbox::Math::transMat(pos1, rot1);
@@ -710,13 +710,13 @@ void linear_trajectory()
         ROS_INFO_STREAM("Orientation: ");
             Eigen::Quaterniond q(trajectory[i].rotation());
 
-            Eigen::Vector3d euler = Toolbox::Common::quaternionToEuler(q, Toolbox::XYZ);
-            euler = euler * Toolbox::Common::radToDeg();
+            Eigen::Vector3d euler = Toolbox::Convert::quaternionToEuler(q, Toolbox::XYZ);
+            euler = euler * Toolbox::Convert::radToDeg();
             std::cout << euler << std::endl;
 
         // std::cout << q.w() << std::endl;
         // std::cout << q.vec() << std::endl;
-        // std::cout << q.vec()*Toolbox::Common::radToDeg() << std::endl;
+        // std::cout << q.vec()*Toolbox::Convert::radToDeg() << std::endl;
         
         ROS_INFO_STREAM(" ");
     }
@@ -747,6 +747,18 @@ int main(int argc, char** argv)
                                 1);             // Queue size 
 
     // Main Code    
+
+        ROS_INFO_STREAM("Struct X-Axis:");
+        ROS_INFO_STREAM("ID: " << Toolbox::AXIS_X.id);
+        ROS_INFO_STREAM("Name: " << Toolbox::AXIS_X.name);
+        ROS_INFO_STREAM("UnitVec: " << Toolbox::AXIS_X.unit_vec);
+
+        ROS_INFO(" ");
+        ROS_INFO_STREAM("Struct Y-Axis:");
+        ROS_INFO_STREAM("ID: " << Toolbox::AXIS_Y.id);
+        ROS_INFO_STREAM("Name: " << Toolbox::AXIS_Y.name);
+        ROS_INFO_STREAM("UnitVec: " << Toolbox::AXIS_Y.unit_vec);
+
 
         // lspb_vec_time();
         

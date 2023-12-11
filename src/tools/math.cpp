@@ -271,8 +271,8 @@ namespace Toolbox
         Eigen::Quaternion<double> q_f;
 
         // Convert Euler-Angles to Quaternion  
-        q_s = Common::eulerToQuaternion(r_s, euler_seq);
-        q_f = Common::eulerToQuaternion(r_f, euler_seq);
+        q_s = Convert::eulerToQuaternion(r_s, euler_seq);
+        q_f = Convert::eulerToQuaternion(r_f, euler_seq);
 
         // Calculate Spherical Linear Interpolation
         // (computed with quaternions)
@@ -286,7 +286,7 @@ namespace Toolbox
             Eigen::Quaternion<double> q = q_interpolation[i];
 
             // Convert Quaternion to Euler-Angles
-            Eigen::Vector3d euler = Common::quaternionToEuler(q, euler_seq);
+            Eigen::Vector3d euler = Convert::quaternionToEuler(q, euler_seq);
 
             // Append Euler-Angles to Interpolation vector
             interpolation.push_back(euler);
@@ -599,9 +599,9 @@ namespace Toolbox
     {
         // Define Rotation Matrix and Eigen-Vector
         Eigen::Matrix3d rm;
-        Eigen::Vector3d euler(Common::degToRad(phi), 
-                              Common::degToRad(theta), 
-                              Common::degToRad(psi));
+        Eigen::Vector3d euler(Convert::degToRad(phi), 
+                              Convert::degToRad(theta), 
+                              Convert::degToRad(psi));
                               
         // Calculate Rotation Matrix
         rm = rotMat(euler, seq);
@@ -832,9 +832,9 @@ namespace Toolbox
         // Define Transformation-Matrix, Position and Rotation-Vector
         Eigen::Isometry3d tm;
         Eigen::Vector3d pos_vec(x, y, z);
-        Eigen::Vector3d rot_vec(Common::degToRad(phi), 
-                                Common::degToRad(theta), 
-                                Common::degToRad(psi));
+        Eigen::Vector3d rot_vec(Convert::degToRad(phi), 
+                                Convert::degToRad(theta), 
+                                Convert::degToRad(psi));
         
         // Transformation-Matrix
         tm = transMat(pos_vec, rot_vec, euler_seq);

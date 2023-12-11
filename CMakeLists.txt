@@ -137,7 +137,9 @@ include_directories(
 ## Declare a C++ library
 add_library(${PROJECT_NAME}
   src/tools/common.cpp
+  src/tools/convert.cpp
   src/tools/kinematics.cpp
+  src/tools/map.cpp
   src/tools/math.cpp
   src/tools/visual.cpp
   src/tools/trajectory.cpp
@@ -168,10 +170,10 @@ target_link_libraries(test_toolbox_node
   ${PROJECT_NAME}
 )
 
-add_executable(test_common_map 
-  test/test_common_map.cpp)
+add_executable(test_toolbox_map 
+  test/test_toolbox_map.cpp)
 
-target_link_libraries(test_common_map
+target_link_libraries(test_toolbox_map
   ${catkin_LIBRARIES}
   ${PROJECT_NAME}
 )

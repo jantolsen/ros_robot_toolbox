@@ -137,7 +137,7 @@ namespace Toolbox
         if(print_result)
         {
             // Convert Quaternion-Orientation to Euler-Orientation
-            geometry_msgs::Vector3 rpy = Common::quaternionToEuler(transform.transform.rotation, XYZ);
+            geometry_msgs::Vector3 rpy = Convert::quaternionToEuler(transform.transform.rotation, XYZ);
 
             ROS_INFO("Toolbox:getCurrentTransform:");
             ROS_INFO("--------------------");
@@ -147,9 +147,9 @@ namespace Toolbox
             ROS_INFO(" Position Y: (%f)", transform.transform.translation.y);
             ROS_INFO(" Position Z: (%f)", transform.transform.translation.z);
             ROS_INFO(" ");
-            ROS_INFO(" Orientation (deg) X: (%f)", Common::radToDeg(rpy.x));
-            ROS_INFO(" Orientation (deg) Y: (%f)", Common::radToDeg(rpy.y));
-            ROS_INFO(" Orientation (deg) Z: (%f)", Common::radToDeg(rpy.z));
+            ROS_INFO(" Orientation (deg) X: (%f)", Convert::radToDeg(rpy.x));
+            ROS_INFO(" Orientation (deg) Y: (%f)", Convert::radToDeg(rpy.y));
+            ROS_INFO(" Orientation (deg) Z: (%f)", Convert::radToDeg(rpy.z));
             ROS_INFO(" ");
             ROS_INFO(" Orientation (rad) X: (%f)", rpy.x);
             ROS_INFO(" Orientation (rad) Y: (%f)", rpy.y);
@@ -237,7 +237,7 @@ namespace Toolbox
         if (Kinematics::getCurrentTransform(target_frame, ref_frame, transform_stamped_, print_result))
         {
             // Convert Transform-Stamped to Pose-Stamed
-            pose = Common::transformToPose(transform_stamped_);
+            pose = Convert::transformToPose(transform_stamped_);
 
             // Function return
             return true;

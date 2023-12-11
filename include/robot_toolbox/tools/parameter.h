@@ -37,6 +37,8 @@
 
     // Robotics Toolbox
     #include "robot_toolbox/tools/common.h"
+    #include "robot_toolbox/tools/convert.h"
+    #include "robot_toolbox/tools/map.h"
     
 
 // Namespace: Robotics Toolbox
@@ -136,8 +138,8 @@ class Parameter
             const std::map<MapKey, MapValue>& type_map,
             ResultType& result_item)
         {
-            // Call Common::mapSearch()
-            if(!Common::mapSearch(search_item, type_map, result_item))
+            // Call Map::mapSearch()
+            if(!Map::mapSearch(search_item, type_map, result_item))
             {
                 // Report to terminal
                 ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
@@ -194,7 +196,7 @@ class Parameter
                     param_member_int = static_cast<int>(param[member]);
 
                     // Search for type-identifier in type-identifier-map
-                    if(!Common::mapContains(param_member_int, type_map))
+                    if(!Map::mapContains(param_member_int, type_map))
                     {
                         // Type-identifier map-search failed
                         ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
@@ -215,7 +217,7 @@ class Parameter
                     param_member_str = static_cast<std::string>(param[member]);
 
                     // Search for type-identifier in type-identifier-map
-                    if(!Common::mapContains(param_member_str, type_map))
+                    if(!Map::mapContains(param_member_str, type_map))
                     {
                         // Type-identifier map-search failed
                         ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 

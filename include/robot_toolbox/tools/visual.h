@@ -40,12 +40,6 @@
 
     // TF2
     #include <tf2_eigen/tf2_eigen.h>
-    // #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
-    // #include <tf2_ros/transform_listener.h>
-    // #include <tf2/convert.h>
-    
-    // #include <tf/tf.h>
-    // #include <tf_conversions/tf_eigen.h>
 
     // Eigen
     // #include <Eigen/Core>
@@ -54,6 +48,7 @@
 
     // Robotics Toolbox
     #include "robot_toolbox/tools/common.h"
+    #include "robot_toolbox/tools/convert.h"
     #include "robot_toolbox/tools/math.h"
 
 // Namespace: Robotics Toolbox
@@ -194,7 +189,7 @@ class Visual
         static visualization_msgs::Marker visualPose(
             Eigen::Isometry3d pose_tm,
             std::string ns,
-            AxisType axis_type = Common::AXIS_X,
+            AxisType axis_type = AXIS_X,
             std_msgs::ColorRGBA color = COLOR_RED,
             double scale = 0.25,
             std::string ref_frame = "world");
@@ -214,7 +209,7 @@ class Visual
         static visualization_msgs::Marker visualPose(
             geometry_msgs::PoseStamped pose,
             std::string ns,
-            AxisType axis_type = Common::AXIS_X,
+            AxisType axis_type = AXIS_X,
             std_msgs::ColorRGBA color = COLOR_RED,
             double scale = 0.25);
 
@@ -268,7 +263,7 @@ class Visual
         static visualization_msgs::Marker visualNormalVector(
             Eigen::Isometry3d pose,
             std::string ns,
-            AxisType axis_type = Common::AXIS_Z,
+            AxisType axis_type = AXIS_Z,
             std_msgs::ColorRGBA color = COLOR_YELLOW,
             double scale = 0.25);
 
@@ -287,7 +282,7 @@ class Visual
         static visualization_msgs::Marker visualNormalVector(
             geometry_msgs::Pose pose,
             std::string ns,
-            AxisType axis_type = Common::AXIS_Z,
+            AxisType axis_type = AXIS_Z,
             std_msgs::ColorRGBA color = COLOR_YELLOW,
             double scale = 0.25);
         
