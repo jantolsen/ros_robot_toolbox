@@ -219,7 +219,7 @@ install(
   TARGETS 
     ${PROJECT_NAME}
     test_toolbox_node
-    test_common_map
+    test_toolbox_map
   ARCHIVE DESTINATION 
     ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION 
