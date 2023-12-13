@@ -350,142 +350,142 @@ namespace test
     } // Function end: testMapGetKeys()
 
 
-    // Test: Search in Type-Map(s)
-    // (Get related key/value by searching in type-map)
-    // -------------------------------
-    void testSearchTypeMap()
-    {
-        ROS_INFO("Type Map: Search in type-map to find correlated item:");
-        ROS_INFO("--------------------");
+    // // Test: Search in Type-Map(s)
+    // // (Get related key/value by searching in type-map)
+    // // -------------------------------
+    // void testSearchTypeMap()
+    // {
+    //     ROS_INFO("Type Map: Search in type-map to find correlated item:");
+    //     ROS_INFO("--------------------");
         
-        ROS_INFO(" ");
-        ROS_INFO("Type Map: Key [String] Value [Int]:");
-        ROS_INFO("--------------------");
+    //     ROS_INFO(" ");
+    //     ROS_INFO("Type Map: Key [String] Value [Int]:");
+    //     ROS_INFO("--------------------");
 
-            int search_int;
-            int res_int;
-            std::string search_str;
-            std::string res_str;
+    //         int search_int;
+    //         int res_int;
+    //         std::string search_str;
+    //         std::string res_str;
 
-            ROS_INFO("Test 1: Find Value by Key");
-            search_str = "tracik";
-            if(Toolbox::Parameter::searchTypeIdentifierMap(search_str, test::testMap_keyString, res_int))
-            {
-                ROS_INFO_STREAM("Search Item Found: " << search_str);
-                ROS_INFO_STREAM("Resulting Item: " << res_int);
-            }
-            else
-            {
-                ROS_ERROR_STREAM("Search Item NOT Found: " << search_str);
-                ROS_ERROR_STREAM("Resulting Item: NOT FOUND");
-            }
+    //         ROS_INFO("Test 1: Find Value by Key");
+    //         search_str = "tracik";
+    //         if(Toolbox::Parameter::searchTypeIdentifierMap(search_str, test::testMap_keyString, res_int))
+    //         {
+    //             ROS_INFO_STREAM("Search Item Found: " << search_str);
+    //             ROS_INFO_STREAM("Resulting Item: " << res_int);
+    //         }
+    //         else
+    //         {
+    //             ROS_ERROR_STREAM("Search Item NOT Found: " << search_str);
+    //             ROS_ERROR_STREAM("Resulting Item: NOT FOUND");
+    //         }
 
-            ROS_INFO(" ");
-            ROS_INFO("Test 2: Find Value by Key");
-            search_str = "sadsad";
-            if(Toolbox::Parameter::searchTypeIdentifierMap(search_str, test::testMap_keyString, res_int))
-            {
-                ROS_INFO_STREAM("Search Item Found: " << search_str);
-                ROS_INFO_STREAM("Resulting Item: " << res_int);
-            }
-            else
-            {
-                ROS_ERROR_STREAM("Search Item NOT Found: " << search_str);
-                ROS_ERROR_STREAM("Resulting Item: NOT FOUND");
-            }
+    //         ROS_INFO(" ");
+    //         ROS_INFO("Test 2: Find Value by Key");
+    //         search_str = "sadsad";
+    //         if(Toolbox::Parameter::searchTypeIdentifierMap(search_str, test::testMap_keyString, res_int))
+    //         {
+    //             ROS_INFO_STREAM("Search Item Found: " << search_str);
+    //             ROS_INFO_STREAM("Resulting Item: " << res_int);
+    //         }
+    //         else
+    //         {
+    //             ROS_ERROR_STREAM("Search Item NOT Found: " << search_str);
+    //             ROS_ERROR_STREAM("Resulting Item: NOT FOUND");
+    //         }
 
-            ROS_INFO(" ");
-            ROS_INFO("Test 3: Find Key by Value");
-            search_int = 4;
-            if(Toolbox::Parameter::searchTypeIdentifierMap(search_int, test::testMap_keyString, res_str))
-            {
-                ROS_INFO_STREAM("Search Item Found: " << search_int);
-                ROS_INFO_STREAM("Resulting Item: " << res_str);
-            }
-            else
-            {
-                ROS_ERROR_STREAM("Search Item NOT Found: " << search_int);
-                ROS_ERROR_STREAM("Resulting Item: NOT FOUND");
-            }
+    //         ROS_INFO(" ");
+    //         ROS_INFO("Test 3: Find Key by Value");
+    //         search_int = 4;
+    //         if(Toolbox::Parameter::searchTypeIdentifierMap(search_int, test::testMap_keyString, res_str))
+    //         {
+    //             ROS_INFO_STREAM("Search Item Found: " << search_int);
+    //             ROS_INFO_STREAM("Resulting Item: " << res_str);
+    //         }
+    //         else
+    //         {
+    //             ROS_ERROR_STREAM("Search Item NOT Found: " << search_int);
+    //             ROS_ERROR_STREAM("Resulting Item: NOT FOUND");
+    //         }
 
-            ROS_INFO(" ");
-            ROS_INFO("Test 4: Find Key by Value");
-            search_int = 44;
-            if(Toolbox::Parameter::searchTypeIdentifierMap(search_int, test::testMap_keyString, res_str))
-            {
-                ROS_INFO_STREAM("Search Item Found: " << search_int);
-                ROS_INFO_STREAM("Resulting Item: " << res_str);
-            }
-            else
-            {
-                ROS_ERROR_STREAM("Search Item NOT Found: " << search_int);
-                ROS_ERROR_STREAM("Resulting Item: NOT FOUND");
-            }
+    //         ROS_INFO(" ");
+    //         ROS_INFO("Test 4: Find Key by Value");
+    //         search_int = 44;
+    //         if(Toolbox::Parameter::searchTypeIdentifierMap(search_int, test::testMap_keyString, res_str))
+    //         {
+    //             ROS_INFO_STREAM("Search Item Found: " << search_int);
+    //             ROS_INFO_STREAM("Resulting Item: " << res_str);
+    //         }
+    //         else
+    //         {
+    //             ROS_ERROR_STREAM("Search Item NOT Found: " << search_int);
+    //             ROS_ERROR_STREAM("Resulting Item: NOT FOUND");
+    //         }
 
-        ROS_INFO(" ");
-        ROS_INFO("Type Map: Key [KinematicSolverType] Value [String]:");
-        ROS_INFO("--------------------");
+    //     ROS_INFO(" ");
+    //     ROS_INFO("Type Map: Key [KinematicSolverType] Value [String]:");
+    //     ROS_INFO("--------------------");
 
-            KinematicSolverType search_enum;
-            KinematicSolverType res_enum;
-            search_str;
-            res_str;
+    //         KinematicSolverType search_enum;
+    //         KinematicSolverType res_enum;
+    //         search_str;
+    //         res_str;
 
-            ROS_INFO("Test 1: Find Value by Key");
-            search_enum = static_cast<KinematicSolverType>(4);
-            if(Toolbox::Parameter::searchTypeIdentifierMap(search_enum, test::testMap_keyEnum, res_str))
-            {
-                ROS_INFO_STREAM("Search Item Found: " << search_enum);
-                ROS_INFO_STREAM("Resulting Item: " << res_str);
-            }
-            else
-            {
-                ROS_ERROR_STREAM("Search Item NOT Found: " << search_enum);
-                ROS_ERROR_STREAM("Resulting Item: NOT FOUND");
-            }
+    //         ROS_INFO("Test 1: Find Value by Key");
+    //         search_enum = static_cast<KinematicSolverType>(4);
+    //         if(Toolbox::Parameter::searchTypeIdentifierMap(search_enum, test::testMap_keyEnum, res_str))
+    //         {
+    //             ROS_INFO_STREAM("Search Item Found: " << search_enum);
+    //             ROS_INFO_STREAM("Resulting Item: " << res_str);
+    //         }
+    //         else
+    //         {
+    //             ROS_ERROR_STREAM("Search Item NOT Found: " << search_enum);
+    //             ROS_ERROR_STREAM("Resulting Item: NOT FOUND");
+    //         }
 
-            ROS_INFO(" ");
-            ROS_INFO("Test 2: Find Value by Key");
-            search_enum = KinematicSolverType::E;
-            if(Toolbox::Parameter::searchTypeIdentifierMap(search_enum, test::testMap_keyEnum, res_str))
-            {
-                ROS_INFO_STREAM("Search Item Found: " << search_enum);
-                ROS_INFO_STREAM("Resulting Item: " << res_str);
-            }
-            else
-            {
-                ROS_ERROR_STREAM("Search Item NOT Found: " << search_enum);
-                ROS_ERROR_STREAM("Resulting Item: NOT FOUND");
-            }
+    //         ROS_INFO(" ");
+    //         ROS_INFO("Test 2: Find Value by Key");
+    //         search_enum = KinematicSolverType::E;
+    //         if(Toolbox::Parameter::searchTypeIdentifierMap(search_enum, test::testMap_keyEnum, res_str))
+    //         {
+    //             ROS_INFO_STREAM("Search Item Found: " << search_enum);
+    //             ROS_INFO_STREAM("Resulting Item: " << res_str);
+    //         }
+    //         else
+    //         {
+    //             ROS_ERROR_STREAM("Search Item NOT Found: " << search_enum);
+    //             ROS_ERROR_STREAM("Resulting Item: NOT FOUND");
+    //         }
 
-            ROS_INFO(" ");
-            ROS_INFO("Test 3: Find Key by Value");
-            search_str = "KDL";
-            if(Toolbox::Parameter::searchTypeIdentifierMap(search_str, test::testMap_keyEnum, res_enum))
-            {
-                ROS_INFO_STREAM("Search Item Found: " << search_str);
-                ROS_INFO_STREAM("Resulting Item: " << res_enum);
-            }
-            else
-            {
-                ROS_ERROR_STREAM("Search Item NOT Found: " << search_str);
-                ROS_ERROR_STREAM("Resulting Item: NOT FOUND");
-            }
+    //         ROS_INFO(" ");
+    //         ROS_INFO("Test 3: Find Key by Value");
+    //         search_str = "KDL";
+    //         if(Toolbox::Parameter::searchTypeIdentifierMap(search_str, test::testMap_keyEnum, res_enum))
+    //         {
+    //             ROS_INFO_STREAM("Search Item Found: " << search_str);
+    //             ROS_INFO_STREAM("Resulting Item: " << res_enum);
+    //         }
+    //         else
+    //         {
+    //             ROS_ERROR_STREAM("Search Item NOT Found: " << search_str);
+    //             ROS_ERROR_STREAM("Resulting Item: NOT FOUND");
+    //         }
 
-            ROS_INFO(" ");
-            ROS_INFO("Test 4: Find Key by Value");
-            search_int = 44;
-            // if(Toolbox::Parameter::searchTypeIdentifierMap(static_cast<KinematicSolverType>(22), test::testMap_keyEnum, res_str))
-            if(Toolbox::Parameter::searchTypeIdentifierMap(search_int, test::testMap_keyEnum, res_str))
-            {
-                ROS_INFO_STREAM("Search Item Found: " << search_int);
-                ROS_INFO_STREAM("Resulting Item: " << res_str);
-            }
-            else
-            {
-                ROS_ERROR_STREAM("Search Item NOT Found: " << search_int);
-                ROS_ERROR_STREAM("Resulting Item: NOT FOUND");
-            }
+    //         ROS_INFO(" ");
+    //         ROS_INFO("Test 4: Find Key by Value");
+    //         search_int = 44;
+    //         // if(Toolbox::Parameter::searchTypeIdentifierMap(static_cast<KinematicSolverType>(22), test::testMap_keyEnum, res_str))
+    //         if(Toolbox::Parameter::searchTypeIdentifierMap(search_int, test::testMap_keyEnum, res_str))
+    //         {
+    //             ROS_INFO_STREAM("Search Item Found: " << search_int);
+    //             ROS_INFO_STREAM("Resulting Item: " << res_str);
+    //         }
+    //         else
+    //         {
+    //             ROS_ERROR_STREAM("Search Item NOT Found: " << search_int);
+    //             ROS_ERROR_STREAM("Resulting Item: NOT FOUND");
+    //         }
 
         // ROS_INFO(" ");
         // ROS_INFO("Test-Map KinematicSolverType:");
@@ -546,7 +546,7 @@ namespace test
         //         ROS_ERROR_STREAM("Search Item NOT Found: " << search_int);
         //         ROS_ERROR_STREAM("Resulting Item: NOT FOUND");
         //     }
-    } // Function End: testSearchTypeMap()
+    // } // Function End: testSearchTypeMap()
 
 } // End: Namespace test
 

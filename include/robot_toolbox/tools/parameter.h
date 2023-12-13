@@ -29,6 +29,9 @@
     #include <vector>
     #include <map>
 
+    // Boost
+    #include <boost/optional.hpp>
+
     // Ros
     #include <ros/ros.h>
 
@@ -122,230 +125,423 @@ class Parameter
             const XmlRpc::XmlRpcValue::Type& type,
             const int& size);
 
-
-        // Search Type-Identifier Map 
+        
+        // Get Parameter Data: Bool 
         // -------------------------------
-        /** \brief Search for the given type-identifier (type-name/type-id) in the supplied type-identifer-map,
-        * to find the related type-identifier pair (type-name/type-id)
-        * \param search_item    Identifier item to search for (Type-Name or Type-ID) [typename SearchType]
-        * \param type_map       Type-Map to search thorugh [std::map<typename MapKey, typename MapValue>]
-        * \param result_item    Resulting item (Type-Name or Type-ID) [typename ResultType]
-        * \return Function result: Successful/unsuccessful (true/false)
+        /** \brief Search for member in given parameter-data and returns parameter-value if successful.
+        * Function checks if the supplied parameter-data contains the parameter-member. 
+        * Data-type of the parameter-member is checked and gets converted to respecitve value-type if successful.
+        * Failed parameter-member check or invalid data-type will result in error message and function returns false
+        * \param param_xml      Parameter-data to be checked [XmlRpc::XmlRpcValue]
+        * \param param_member   Member item to search for within parameter [std::string]
+        * \return Function return: Successful: parameter value [bool] / Unsuccessful: false [bool]
         */
-        template<typename SearchType, typename ResultType, typename MapKey, typename MapValue>
-        static bool searchTypeIdentifierMap(
-            const SearchType& search_item, 
-            const std::map<MapKey, MapValue>& type_map,
-            ResultType& result_item)
-        {
-            // Call Map::mapSearch()
-            if(!Map::mapSearch(search_item, type_map, result_item))
-            {
-                // Report to terminal
-                ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
-                    << ": Failed! Given Search-Item: [" << search_item << "]"
-                    << " was NOT found in Type-Identifier-Map");
-
-                // Function return
-                return false;
-            }
-
-            // Function return
-            return true;
-        } // Function-End: searchTypeIdentifierMap()
+        static boost::optional<bool> getParamBool(
+            const XmlRpc::XmlRpcValue& param_xml,
+            const std::string& param_member);
 
 
-        // Check Type-Identifier
+        // Get Parameter Data: Int 
         // -------------------------------
-        /** \brief Check if the given type-identifier (type-name/type-id) parameter 
-        * is present on the parameter-server. Also checks if the given type-identifier 
-        * (type-name/type-id) exists in the supplied type-identifer-map
-        * \param param      Parameter to be checked [XmlRpc::XmlRpcValue]
-        * \param member     Member item to search for within parameter [std::string]
-        * \param type_map   Type-Map to search thorugh [std::map<typename MapKey, typename MapValue>]
-        * \return Function result: Successful/unsuccessful (true/false)
+        /** \brief Search for member in given parameter-data and returns parameter-value if successful.
+        * Function checks if the supplied parameter-data contains the parameter-member. 
+        * Data-type of the parameter-member is checked and gets converted to respecitve value-type if successful.
+        * Failed parameter-member check or invalid data-type will result in error message and function returns false
+        * \param param_xml      Parameter-data to be checked [XmlRpc::XmlRpcValue]
+        * \param param_member   Member item to search for within parameter [std::string]
+        * \return Function return: Successful: parameter value [int] / Unsuccessful: false [bool]
         */
-        template<typename MapKey, typename MapValue>
-        static bool checkTypeIdentifier(
-            const XmlRpc::XmlRpcValue& param, 
-            const std::string& member,
-            const std::map<MapKey, MapValue>& type_map)
-        {
-            // Local variable(s)
-            int param_member_int;
-            std::string param_member_str;
+        static boost::optional<int> getParamInt(
+            const XmlRpc::XmlRpcValue& param_xml,
+            const std::string& param_member);
 
-            // Check for parameter on parameter-server
-            if(!checkMember(param, member))
+
+        // Get Parameter Data: Double 
+        // -------------------------------
+        /** \brief Search for member in given parameter-data and returns parameter-value if successful.
+        * Function checks if the supplied parameter-data contains the parameter-member. 
+        * Data-type of the parameter-member is checked and gets converted to respecitve value-type if successful.
+        * Failed parameter-member check or invalid data-type will result in error message and function returns false
+        * \param param_xml      Parameter-data to be checked [XmlRpc::XmlRpcValue]
+        * \param param_member   Member item to search for within parameter [std::string]
+        * \return Function return: Successful: parameter value [double] / Unsuccessful: false [bool]
+        */
+        static boost::optional<double> getParamDouble(
+            const XmlRpc::XmlRpcValue& param_xml,
+            const std::string& param_member);
+
+
+        // Get Parameter Data: String 
+        // -------------------------------
+        /** \brief Search for member in given parameter-data and returns parameter-value if successful.
+        * Function checks if the supplied parameter-data contains the parameter-member. 
+        * Data-type of the parameter-member is checked and gets converted to respecitve value-type if successful.
+        * Failed parameter-member check or invalid data-type will result in error message and function returns false
+        * \param param_xml      Parameter-data to be checked [XmlRpc::XmlRpcValue]
+        * \param param_member   Member item to search for within parameter [std::string]
+        * \return Function return: Successful: parameter value [std::string] / Unsuccessful: false [bool]
+        */
+        static boost::optional<std::string> getParamString(
+            const XmlRpc::XmlRpcValue& param_xml,
+            const std::string& param_member);
+
+
+        // Get Parameter Data: Type-Name 
+        // -------------------------------
+        /** \brief Search for member in given parameter-data and returns parameter-value if successful.
+        * Function checks if the supplied parameter-data contains the parameter-member. 
+        * Data-type of the parameter-member is checked and gets converted to respecitve value-type if successful.
+        * Function requires a type-map to be supplied, to validate and act as a lookup for passed parameter-member.
+        * Failed parameter-member check or invalid data-type will result in error message and function returns false
+        * \param type_map       Type-Map to act as lookup and validation for parameter-member [std::map<std::string, TypeInfo>]
+        * \param param_xml      Parameter-data to be checked [XmlRpc::XmlRpcValue]
+        * \param param_member   Member item to search for within parameter [std::string]
+        * \return Function return: Successful: parameter type-name value [std::string] / Unsuccessful: false [bool]
+        */
+        template<typename TypeValue>
+        static boost::optional<std::string> getParamTypeName(
+            const XmlRpc::XmlRpcValue& param_xml,
+            const std::string& param_member,
+            const boost::bimap<std::string, TypeValue>& type_map)
+        {
+            // Check for parameter-member in given parameter-data
+            if(!checkMember(param_xml, param_member))
             {
                 // Parameter validation failed
                 ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
-                    << ": Failed! Parameter [" << member << "] is missing");
+                    << ": Failed! Parameter [" << param_member <<"] is missing");
 
                 // Function return
-                return false;
-            }
+                return boost::none;
+            } 
 
-            // Get parameter data-type and search for type-identifier in type-identifier-map
-            switch (param[member].getType())
+            // Convert parameter-member to string-type
+            boost::optional<std::string> result_cast = castParamToString(param_xml[param_member]);
+            if(!result_cast)
             {
-                // Integer:
-                // (Valid Data-type for type-identifier-map search)
-                case XmlRpc::XmlRpcValue::TypeInt:
-                    // Cast parameter-member to int
-                    param_member_int = static_cast<int>(param[member]);
+                // Parameter validation failed
+                ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
+                    << ": Failed! Parameter [" << param_member <<"] is configured incorrectly");
 
-                    // Search for type-identifier in type-identifier-map
-                    if(!Map::mapContains(param_member_int, type_map))
-                    {
-                        // Type-identifier map-search failed
-                        ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
-                            << ": Failed! Parameter [" << member << "]" 
-                            << " is NOT a part of valid types in related Type-Identifier-Map");
-
-                        // Function return
-                        return false;
-                    }
-
-                    // Function return
-                    return true;
-
-                // String:
-                // (Valid Data-type for type-identifier-map search)
-                case XmlRpc::XmlRpcValue::TypeString:
-                    // Cast parameter-member to string
-                    param_member_str = static_cast<std::string>(param[member]);
-
-                    // Search for type-identifier in type-identifier-map
-                    if(!Map::mapContains(param_member_str, type_map))
-                    {
-                        // Type-identifier map-search failed
-                        ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
-                            << ": Failed! Parameter [" << member << "]"
-                            << " is NOT a part of valid types in related Type-Identifier-Map");
-
-                        // Function return
-                        return false;
-                    }
-
-                    // Function return
-                    return true;
-
-                // Default:
-                // (Invalid data-type for type-identifier-map search)
-                default:
-                    // Report to terminal
-                    ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
-                        << ": Failed! Parameter data-type [" << getDataTypeName(param.getType()) << "]"
-                        << " does NOT fit for Type-Identifier-Map search");
-
-                    // Function return
-                    return false;
+                // Function return
+                return boost::none;
             }
-        } // Function-End: checkIdentifier()
 
-
-        // Get Type-Identifier
-        // -------------------------------
-        /** \brief Search for the type-identifier (type-name/type-id) parameter on the parameter-server
-        * Also search for the given type-identifier (type-name/type-id) in the supplied type-identifer-map
-        * to find the related type-identifier pair (type-name/type-id)
-        * Function returns corresponding type-item [int] and type-item-name [std::string]
-        * \param param      Parameter to be checked [XmlRpc::XmlRpcValue]
-        * \param member     Member item to search for within parameter [std::string]
-        * \param type_map   Type-Map to search thorugh [std::map<typename MapKey, typename MapValue>]
-        * \param result_item        Resulting type-item [int]
-        * \param result_item_name   Resulting type-item-name [std::string]
-        * \return Function result: Successful/unsuccessful (true/false)
-        */
-        template<typename MapKey, typename MapValue>
-        static bool getTypeIdentifier(
-            const XmlRpc::XmlRpcValue& param, 
-            const std::string& member,
-            const std::map<MapKey, MapValue>& type_map,
-            int& result_item,
-            std::string& result_item_name)
-        {
-            // Local variable(s)
-            int param_member_int;
-            std::string param_member_str;
-            int search_result_int;
-            std::string search_result_str;
+            // Acquired parameter-member as string-type
+            std::string param_string = *result_cast;
+        
+            // Create a local map with case-insensitive comparator
+            // (ignores capitalization of letters in given key [std::string])
+            boost::bimap<std::string, TypeValue, Toolbox::Map::CaseInsensitiveComparator> type_map_ci;
             
-            // Check Type-Identifier
-            if(!checkTypeIdentifier(param, member, type_map))
+            // Copy contents of given type-map into local map (case-insensitive)
+            type_map_ci.insert(type_map.begin(), type_map.end());
+
+            // Search for parameter-member in type-map
+            boost::optional<std::string> result_search = searchTypeMapByName(type_map_ci, param_string);
+            if(!result_search)
             {
+                // Parameter validation failed
+                ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
+                    << ": Failed! Parameter [" << param_member <<"] is NOT a valid type-name");
+
                 // Function return
-                return false;
+                return boost::none;
             }
 
-            // Get parameter data-type and search for type-identifier in type-identifier-map
-            switch (param[member].getType())
+            // Function return
+            return param_string;
+        } // Function end: getParamTypeName()
+
+
+        // Get Parameter Data: Type-Info 
+        // -------------------------------
+        /** \brief Search for member in given parameter-data and returns parameter-value if successful.
+        * Function checks if the supplied parameter-data contains the parameter-member. 
+        * Data-type of the parameter-member is checked and gets converted to respecitve value-type if successful.
+        * Function requires a type-map to be supplied, to validate and act as a lookup for passed parameter-member.
+        * Failed parameter-member check or invalid data-type will result in error message and function returns false
+        * \param type_map       Type-Map to act as lookup and validation for parameter-member [std::map<std::string, TypeInfo>]
+        * \param param_xml      Parameter-data to be checked [XmlRpc::XmlRpcValue]
+        * \param param_member   Member item to search for within parameter [std::string]
+        * \return Function return: Successful: parameter type-info value [TypeValue] / Unsuccessful: false [bool]
+        */
+        template<typename TypeValue>
+        static boost::optional<TypeValue> getParamTypeInfo(
+            const XmlRpc::XmlRpcValue& param_xml,
+            const std::string& param_member,
+            const boost::bimap<std::string, TypeValue>& type_map)
+        {
+            // Check for parameter-member in given parameter-data
+            if(!checkMember(param_xml, param_member))
             {
-                // Integer:
-                // (Valid Data-type for type-identifier-map search)
-                case XmlRpc::XmlRpcValue::TypeInt:
-                    // Cast parameter-member to int
-                    param_member_int = static_cast<int>(param[member]);
+                // Parameter validation failed
+                ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
+                    << ": Failed! Parameter [" << param_member <<"] is missing");
 
-                    // Search for type-identifier in type-identifier-map
-                    if(searchTypeIdentifierMap(param_member_int, type_map, search_result_str))
-                    {
-                        // Type-identifier is found in type-identifier-map!
-                        // Update results
-                        result_item = param_member_int;
-                        result_item_name = search_result_str;
-    
-                        // Function return
-                        return true;
-                    }
+                // Function return
+                return boost::none;
+            } 
 
-                    // Type-identifier map-search failed
-                    ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
-                        << ": Failed! Parameter [" << member << "]"
-                        << " is NOT a part of valid types in related Type-Identifier-Map");
+            // Convert parameter-member to string-type
+            boost::optional<std::string> result_cast = castParamToString(param_xml[param_member]);
+            if(!result_cast)
+            {
+                // Parameter validation failed
+                ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
+                    << ": Failed! Parameter [" << param_member <<"] is configured incorrectly");
 
-                    // Function return
-                    return false;
-
-                // String:
-                // (Valid Data-type for type-identifier-map search)
-                case XmlRpc::XmlRpcValue::TypeString:
-                    // Cast parameter-member to string
-                    param_member_str = static_cast<std::string>(param[member]);
-
-                    // Search for type-identifier in type-identifier-map
-                    if(searchTypeIdentifierMap(param_member_str, type_map, search_result_int))
-                    {
-                        // Type-identifier is found in type-identifier-map!
-                        // Update results
-                        result_item = search_result_int;
-                        result_item_name = param_member_str;
-                        
-                        // Function return
-                        return true;
-                    }
-
-                    // Type-identifier-map search failed
-                    ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
-                        << ": Failed! Parameter [" << member << "]"
-                        << " is NOT a part of valid types in related Type-Identifier-Map");
-
-                    // Function return
-                    return false;
-
-                // Default:
-                // (Invalid data-type for type-identifier-map search)
-                default:
-                    // Report to terminal
-                    ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
-                        << ": Failed! Parameter data-type [" << getDataTypeName(param.getType()) << "]"
-                        << " does NOT fit for Type-Identifier-Map search");
-
-                    // Function return
-                    return false;
+                // Function return
+                return boost::none;
             }
-        } // Function-End: getTypeIdentifier()
+
+            // Aqcuired parameter-member as string-type
+            std::string param_string = *result_cast;
+        
+            // Create a local map with case-insensitive comparator
+            // (ignores capitalization of letters in given key [std::string])
+            boost::bimap<std::string, TypeValue, Toolbox::Map::CaseInsensitiveComparator> type_map_ci;
+            
+            // Copy contents of given type-map into local map (case-insensitive)
+            type_map_ci.insert(type_map.begin(), type_map.end());
+
+            // Search for parameter-member in type-map
+            boost::optional<TypeValue> result_map = searchTypeMapByName(type_map_ci, param_string);
+            if(!result_map)
+            {
+                // Parameter validation failed
+                ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
+                    << ": Failed! Parameter [" << param_member <<"] is NOT a valid type-name");
+
+                // Function return
+                return boost::none;
+            }
+
+            // Function return
+            return result_map;
+        } // Function end: getParamTypeInfo()
+
+
+        // Convert Parameter Data to Bool-Value 
+        // -------------------------------
+        /** \brief Convert parameter data to bool-value
+        * Parameter is checked for data-type and returns bool-value if successful.
+        * Invalid data-type will result in error message and function return false
+        * \param param  Parameter to be converted [XmlRpc::XmlRpcValue]
+        * \return Function return: Successful: parameter value [bool] / Unsuccessful: false [bool]
+        */
+        static boost::optional<bool> castParamToBool(
+            const XmlRpc::XmlRpcValue& param);
+
+        
+        // Convert Parameter Data to Int-Value 
+        // -------------------------------
+        /** \brief Convert parameter data to int-value
+        * Parameter is checked for data-type and returns int-value if successful.
+        * Invalid data-type will result in error message and function return false
+        * \param param  Parameter to be converted [XmlRpc::XmlRpcValue]
+        * \return Function return: Successful: parameter value [int] / Unsuccessful: false [bool]
+        */
+        static boost::optional<int> castParamToInt(
+            const XmlRpc::XmlRpcValue& param);
+
+
+        // Convert Parameter Data to Double-Value 
+        // -------------------------------
+        /** \brief Convert parameter data to double-value
+        * Parameter is checked for data-type and returns double-value if successful.
+        * Invalid data-type will result in error message and function return false
+        * \param param  Parameter to be converted [XmlRpc::XmlRpcValue]
+        * \return Function return: Successful: parameter value [double] / Unsuccessful: false [bool]
+        */
+        static boost::optional<double> castParamToDouble(
+            const XmlRpc::XmlRpcValue& param);
+
+
+        // Convert Parameter Data to String-Value 
+        // -------------------------------
+        /** \brief Convert parameter data to string-value
+        * Parameter is checked for data-type and returns string-value if successful.
+        * Invalid data-type will result in error message and function return false
+        * \param param  Parameter to be converted [XmlRpc::XmlRpcValue]
+        * \return Function return: Successful: parameter value [std::string] / Unsuccessful: false [bool]
+        */
+        static boost::optional<std::string> castParamToString(
+            const XmlRpc::XmlRpcValue& param);
+
+
+        // // Search Type-Map: Find by Type-Name
+        // // -------------------------------
+        // /** \brief Search for given type-name in supplied type-map. 
+        // * If given type-name is found within the map, function returns the related type-name of the container-pair.
+        // * If no search-item is found within the map, function returns false 
+        // * \param type_map   Type-Map to search thorugh [std::map<std::string, typename TypeInfo>]
+        // * \param type_name  Type-Name to search for (key) [std::string]
+        // * \return Function return: Successful: type-name value [typename TypeInfo] / Unsuccessful: false [bool]
+        // */
+        // template<typename TypeInfo>
+        // static boost::optional<TypeInfo> searchTypeMapByName(
+        //     const std::map<std::string, TypeInfo>& type_map,
+        //     const std::string& type_name)
+        // {
+        //     // Search for key type-name in map
+        //     auto search = type_map.left.find(type_name);
+
+        //     // Check if searched key is found in the container
+        //     if(search == type_map.left.end())
+        //     {
+        //         // Map search failed! Type-Info key is NOT found in the container
+        //         ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
+        //             << ": Failed! Given type-name [" << type_name <<"] was NOT found in given type-map");
+                
+        //         // Function return
+        //         return boost::none;
+        //     }
+
+        //     // Map search success! Type-Name key is found in the container
+        //     // Return related Type-Info
+        //     return search->second;
+        // } // Function end: searchTypeMapByName()
+
+
+        // // Search Type-Map: Find by Type-Name
+        // // -------------------------------
+        // /** \brief Search for given type-name in supplied type-map. 
+        // * If given type-name is found within the map, function returns the related type-name of the container-pair.
+        // * If no search-item is found within the map, function returns false 
+        // * Supplied map contains operator 
+        // * (typically CaseInsensitiveComparator used to ignore capitalization of letters in key-string)
+        // * \param type_map   Type-Map to search thorugh [std::map<std::string, typename TypeInfo, Operator>]
+        // * \param type_name  Type-Name to search for (key) [std::string]
+        // * \return Function return: Successful: type-name value [typename TypeInfo] / Unsuccessful: false [bool]
+        // */
+        // template<typename TypeInfo>
+        // static boost::optional<TypeInfo> searchTypeMapByName(
+        //     const std::map<std::string, TypeInfo, Toolbox::Map::CaseInsensitiveComparator>& type_map,
+        //     const std::string& type_name)
+        // {
+        //     // Search for key type-name in map
+        //     auto search = type_map.left.find(type_name);
+
+        //     // Check if searched key is found in the container
+        //     if(search == type_map.left.end())
+        //     {
+        //         // Map search failed! Type-Info key is NOT found in the container
+        //         ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
+        //             << ": Failed! Given type-name [" << type_name <<"] was NOT found in given type-map");
+                
+        //         // Function return
+        //         return boost::none;
+        //     }
+
+        //     // Map search success! Type-Name key is found in the container
+        //     // Return related Type-Info
+        //     return search->second;
+        // } // Function end: searchTypeMapByName()
+
+
+        // Search Type-Map: Find by Type-Name
+        // -------------------------------
+        /** \brief Search for given type-name in supplied type-map. 
+        * If given type-name is found within the map, function returns the related type-name of the container-pair.
+        * If no search-item is found within the map, function returns false 
+        * \param type_map   Type-Map to search thorugh [boost::bimap<std::string, typename TypeInfo>]
+        * \param type_name  Type-Name to search for (key) [std::string]
+        * \return Function return: Successful: type-name value [typename TypeInfo] / Unsuccessful: false [bool]
+        */
+        template<typename TypeInfo>
+        static boost::optional<TypeInfo> searchTypeMapByName(
+            const boost::bimap<std::string, TypeInfo>& type_map,
+            const std::string& type_name)
+        {
+            // Search for key type-name (left-element) in map
+            auto search = type_map.left.find(type_name);
+
+            // Check if searched key is found in the container
+            if(search == type_map.left.end())
+            {
+                // Map search failed! Type-Info key (left-element) is NOT found in the container
+                ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
+                    << ": Failed! Given type-name [" << type_name <<"] was NOT found in given type-map");
+                
+                // Function return
+                return boost::none;
+            }
+
+            // Map search success! Type-Name key (left-element) is found in the container
+            // Return related Type-Info (right-element)
+            return search->second;
+        } // Function end: searchTypeMapByName()
+
+
+        // Search Type-Map: Find by Type-Name
+        // -------------------------------
+        /** \brief Search for given type-name in supplied type-map. 
+        * If given type-name is found within the map, function returns the related type-name of the container-pair.
+        * If no search-item is found within the map, function returns false 
+        * Supplied map contains operator 
+        * (typically CaseInsensitiveComparator used to ignore capitalization of letters in key-string)
+        * \param type_map   Type-Map to search thorugh [boost::bimap<std::string, typename TypeInfo, Operator>]
+        * \param type_name  Type-Name to search for (key) [std::string]
+        * \return Function return: Successful: type-name value [typename TypeInfo] / Unsuccessful: false [bool]
+        */
+        template<typename TypeInfo>
+        static boost::optional<TypeInfo> searchTypeMapByName(
+            const boost::bimap<std::string, TypeInfo, Toolbox::Map::CaseInsensitiveComparator>& type_map,
+            const std::string& type_name)
+        {
+            // Search for key type-name (left-element) in map
+            auto search = type_map.left.find(type_name);
+
+            // Check if searched key is found in the container
+            if(search == type_map.left.end())
+            {
+                // Map search failed! Type-Info key (left-element) is NOT found in the container
+                ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
+                    << ": Failed! Given type-name [" << type_name <<"] was NOT found in given type-map");
+                
+                // Function return
+                return boost::none;
+            }
+
+            // Map search success! Type-Name key (left-element) is found in the container
+            // Return related Type-Info (right-element)
+            return search->second;
+        } // Function end: searchTypeMapByName()
+
+
+        // Search Type-Map: Find by Type-Info 
+        // -------------------------------
+        /** \brief Search for given type-info in supplied type-map. 
+        * If given type-info is found within map, function returns the related type-name of the container-pair.
+        * If no search-item is found within the map, function returns false 
+        * \param type_map   Type-Map to search thorugh [boost::bimap<std::string, typename TypeInfo>]
+        * \param type_name  Type-Info to search for (key) [typename TypeInfo]
+        * \return Function return: Successful: type-name value [std::string] / Unsuccessful: false [bool]
+        */
+        template<typename TypeInfo>
+        static boost::optional<std::string> searchTypeMapByType(
+            const boost::bimap<std::string, TypeInfo>& type_map,
+            const TypeInfo& type_info)
+        {
+            // Search for key type-info (right-element) in map
+            auto search = type_map.right.find(type_info);
+
+            // Check if searched key is found in the container
+            if(search == type_map.right.end())
+            {
+                // Map search failed! Type-Info key (right-element) is NOT found in the container
+                ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
+                    << ": Failed! Given type-info [" << type_info <<"] was NOT found in given type-map");
+                
+                // Function return
+                return boost::none;
+            }
+
+            // Map search success! Type-Info key (right-element) is found in the container
+            // Return related Type-Name (left-element)
+            return search->second;
+        } // Function end: searchTypeMapByType()
 
 
     // Protected Class members
@@ -356,7 +552,7 @@ class Parameter
 
         // Get Name of Parameter Data-Type 
         // -------------------------------
-        /** \brief Converts Parameter Data-Type to a readable type-name
+        /** \brief Get and converts Parameter Data-Type to a readable type-name
         * \param type       Data-type to compare parameter against [XmlRpc::XmlRpcValue::Type]
         * \return Name of parameter-type represented [std::string]
         */

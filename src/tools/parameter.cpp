@@ -39,7 +39,7 @@ namespace Toolbox
         {
             // Report to terminal
             ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
-                << ": Failed! Parameter member [" << member << "] was not found");
+                << ": Failed! Given Parameter member [" << member << "] was NOT found");
 
             // Function return
             return false;
@@ -61,9 +61,8 @@ namespace Toolbox
         {
             // Report to terminal
             ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
-                << ": Failed! Parameter types does not match: "
-                << " Input-parameter XmlRpc-Type: [" << getDataTypeName(param.getType()) << "]" 
-                << " vs comparing XmlRpc-Type: [" << getDataTypeName(type) << "]");
+                << ": Failed! Given Parameter data-type [" << getDataTypeName(param.getType()) << "]"
+                << " does NOT match comparing type [" << getDataTypeName(type) << "]");
 
             // Function return
             return false;
@@ -94,8 +93,8 @@ namespace Toolbox
             default:
                 // Report to terminal
                 ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
-                    << ": Failed! Parameter data-type does not have a size: "
-                    << " Input-parameter XmlRpc-Type: [" << getDataTypeName(param.getType()) << "]");
+                    << ": Failed! Given Parameter data-type does NOT have a size "
+                    << " [" << getDataTypeName(param.getType()) << "]");
 
                 // Function return
                 return false;
@@ -106,9 +105,8 @@ namespace Toolbox
         {
             // Report to terminal
             ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
-                << ": Failed! Parameter size does not match: "
-                << " Input-parameter size: [" << param.size() << "]"
-                << " vs comparing size: [" << size << "]");
+                << ": Failed! Given Parameter size [" << param.size() << "]" 
+                << " does NOT match comparing size [" << size << "]");
 
             // Function return
             return false;
@@ -161,6 +159,250 @@ namespace Toolbox
     } // Function-End: checkParameter()
 
 
+    // Get Parameter Data: Bool 
+    // -------------------------------
+    boost::optional<bool> Parameter::getParamBool(
+        const XmlRpc::XmlRpcValue& param_xml,
+        const std::string& param_member)
+    {
+        // Check for parameter-member in given parameter-data
+        if(!checkMember(param_xml, param_member))
+        {
+            // Parameter validation failed
+            ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
+                << ": Failed! Parameter [" << param_member <<"] is missing");
+
+            // Function return
+            return boost::none;
+        } 
+
+        // Convert parameter-member to bool-type
+        boost::optional<bool> result = castParamToBool(param_xml[param_member]);
+        if(!result)
+        {
+            // Parameter validation failed
+            ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
+                << ": Failed! Parameter [" << param_member <<"] is configured incorrectly");
+
+            // Function return
+            return boost::none;
+        } 
+       
+        // Function return
+        return result;
+    } // Function-End: getParamBool()
+
+
+    // Get Parameter Data: Int 
+    // -------------------------------
+    boost::optional<int> Parameter::getParamInt(
+        const XmlRpc::XmlRpcValue& param_xml,
+        const std::string& param_member)
+    {
+        // Check for parameter-member in given parameter-data
+        if(!checkMember(param_xml, param_member))
+        {
+            // Parameter validation failed
+            ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
+                << ": Failed! Parameter [" << param_member <<"] is missing");
+
+            // Function return
+            return boost::none;
+        } 
+
+        // Convert parameter-member to int-type
+        boost::optional<int> result = castParamToInt(param_xml[param_member]);
+        if(!result)
+        {
+            // Parameter validation failed
+            ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
+                << ": Failed! Parameter [" << param_member <<"] is configured incorrectly");
+
+            // Function return
+            return boost::none;
+        } 
+       
+        // Function return
+        return result;
+    } // Function-End: getParamInt()
+
+
+    // Get Parameter Data: Double 
+    // -------------------------------
+    boost::optional<double> Parameter::getParamDouble(
+        const XmlRpc::XmlRpcValue& param_xml,
+        const std::string& param_member)
+    {
+        // Check for parameter-member in given parameter-data
+        if(!checkMember(param_xml, param_member))
+        {
+            // Parameter validation failed
+            ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
+                << ": Failed! Parameter [" << param_member <<"] is missing");
+
+            // Function return
+            return boost::none;
+        } 
+
+        // Convert parameter-member to string-type
+        boost::optional<double> result = castParamToDouble(param_xml[param_member]);
+        if(!result)
+        {
+            // Parameter validation failed
+            ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
+                << ": Failed! Parameter [" << param_member <<"] is configured incorrectly");
+
+            // Function return
+            return boost::none;
+        } 
+       
+        // Function return
+        return result;
+    } // Function-End: getParamDouble()
+
+
+    // Get Parameter Data: String 
+    // -------------------------------
+    boost::optional<std::string> Parameter::getParamString(
+        const XmlRpc::XmlRpcValue& param_xml,
+        const std::string& param_member)
+    {
+        // Check for parameter-member in given parameter-data
+        if(!checkMember(param_xml, param_member))
+        {
+            // Parameter validation failed
+            ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
+                << ": Failed! Parameter [" << param_member <<"] is missing");
+
+            // Function return
+            return boost::none;
+        } 
+
+        // Convert parameter-member to string-type
+        boost::optional<std::string> result = castParamToString(param_xml[param_member]);
+        if(!result)
+        {
+            // Parameter validation failed
+            ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
+                << ": Failed! Parameter [" << param_member <<"] is configured incorrectly");
+
+            // Function return
+            return boost::none;
+        } 
+       
+        // Function return
+        return result;
+    } // Function-End: getParamString()
+
+
+    // Convert Parameter Data to Bool-Value 
+    // -------------------------------
+    boost::optional<bool> Parameter::castParamToBool(
+        const XmlRpc::XmlRpcValue& param)
+    {
+        // Local variable(s)
+        // (copy input-parameter to remove const to allow type-casting)
+        XmlRpc::XmlRpcValue param_ = param;
+
+        // Check parameter against specified type
+        if(param_.getType() != XmlRpc::XmlRpcValue::TypeBoolean)
+        {
+            // Report to terminal
+            ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__
+                << ": Failed! Parameter [" << param_ << "]"
+                << " (XmlRpcType: " << getDataTypeName(param.getType()) << ")"
+                << " does NOT convert to a bool-type");
+
+            // Function return
+            return boost::none;
+        }
+
+        // Function return
+        return static_cast<bool>(param_);
+    } // Function-End: castParamToBool()
+
+    
+    // Convert Parameter Data to Int-Value 
+    // -------------------------------
+    boost::optional<int> Parameter::castParamToInt(
+        const XmlRpc::XmlRpcValue& param)
+    {
+        // Local variable(s)
+        // (copy input-parameter to remove const to allow type-casting)
+        XmlRpc::XmlRpcValue param_ = param;
+
+        // Check parameter against specified type
+        if(param_.getType() != XmlRpc::XmlRpcValue::TypeInt)
+        {
+            // Report to terminal
+            ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__
+                << ": Failed! Parameter [" << param_ << "]"
+                << " (XmlRpcType: " << getDataTypeName(param.getType()) << ")"
+                << " does NOT convert to an int-type");
+
+            // Function return
+            return boost::none;
+        }
+
+        // Function return
+        return static_cast<int>(param_);
+    } // Function-End: castParamToInt()
+
+
+     // Convert Parameter Data to Double-Value 
+    // -------------------------------
+    boost::optional<double> Parameter::castParamToDouble(
+        const XmlRpc::XmlRpcValue& param)
+    {
+        // Local variable(s)
+        // (copy parameter to remove const to allow type-casting)
+        XmlRpc::XmlRpcValue param_ = param;
+
+        // Check parameter against specified type
+        if(param_.getType() != XmlRpc::XmlRpcValue::TypeDouble)
+        {
+            // Report to terminal
+            ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__
+                << ": Failed! Parameter [" << param_ << "]"
+                << " (XmlRpcType: " << getDataTypeName(param.getType()) << ")"
+                << " does NOT convert to a double-type");
+
+            // Function return
+            return boost::none;
+        }
+
+        // Function return
+        return static_cast<double>(param_);
+    } // Function-End: castParamToDouble()
+
+
+    // Convert Parameter Data to String-Value
+    // -------------------------------
+    boost::optional<std::string> Parameter::castParamToString(
+        const XmlRpc::XmlRpcValue& param)
+    {
+        // Local variable(s)
+        // (copy input-parameter to remove const to allow type-casting)
+        XmlRpc::XmlRpcValue param_ = param;
+
+        // Check parameter against specified type
+        if(param_.getType() != XmlRpc::XmlRpcValue::TypeString)
+        {
+            // Report to terminal
+            ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__
+                << ": Failed! Parameter [" << param_ << "]"
+                << " (XmlRpcType: " << getDataTypeName(param.getType()) << ")"
+                << " does NOT convert to a string-type");
+
+            // Function return
+            return boost::none;
+        }
+
+        // Function return
+        return static_cast<std::string>(param_);
+    } // Function-End: castParamToString()
+
+    
     // Get Name of Parameter Data-Type
     // -------------------------------
     std::string Parameter::getDataTypeName(
