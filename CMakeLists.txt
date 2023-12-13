@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.0.2)
 project(robot_toolbox)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-add_compile_options(-std=c++17)
+add_compile_options(-std=c++11)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -178,6 +178,14 @@ target_link_libraries(test_toolbox_map
   ${PROJECT_NAME}
 )
 
+add_executable(test_toolbox_param 
+  test/test_toolbox_param.cpp)
+
+target_link_libraries(test_toolbox_param
+  ${catkin_LIBRARIES}
+  ${PROJECT_NAME}
+)
+
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
 ## target back to the shorter version for ease of user use
@@ -220,6 +228,7 @@ install(
     ${PROJECT_NAME}
     test_toolbox_node
     test_toolbox_map
+    test_toolbox_param
   ARCHIVE DESTINATION 
     ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION 
