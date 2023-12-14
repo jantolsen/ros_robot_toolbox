@@ -23,10 +23,11 @@
 
     // Boost
     #include <boost/optional.hpp>
+    #include <boost/bimap.hpp>
 
 namespace test
 {
-    enum KinematicSolverType
+    enum EnumType
     {
         A,
         B,
@@ -36,521 +37,1038 @@ namespace test
         F
     };
 
-    // Kinematic Solver Type Map
-    // (Matches the solver-types defined in InfoKinematics.msg)
-    static std::map<std::string, KinematicSolverType, Toolbox::Map::CaseInsensitiveComparator> const kinematicSolverTypeMap =
+    // Test: Map 1
+    // (Key: String - Value: Int)
+    static std::map<std::string, int> const stdMap_keyString_valueInt =
     {
-        {"KDL", KinematicSolverType::A},
-        {"OPW", KinematicSolverType::B},
-        {"TRACIK", KinematicSolverType::C},
-        {"LMA", KinematicSolverType::D},
-        {"CACHED_KDL", KinematicSolverType::E},
-        {"CACHED_TRACIK", KinematicSolverType::F}
+        {"KDL",     11},
+        {"OPW",     22},
+        {"TRACIK",  33},
+        {"LMA",     44}
+    };
+
+    // Test: Map 2
+    // (Key: Int - Value: String)
+    static std::map<int, std::string> const stdMap_keyInt_valueString =
+    {
+        {1,     "ONE"},
+        {2,     "TWO"},
+        {3,     "THREE"},
+        {4,     "FOUR"}
+    };
+
+    // Test: Map 3
+    // (Key: String - Value: Enum)
+    static std::map<std::string, EnumType> const stdMap_keyString_valueEnum =
+    {
+        {"AAA",     EnumType::A},
+        {"BBB",     EnumType::B},
+        {"CCC",     EnumType::C},
+        {"DDD",     EnumType::D}
+    };
+
+    // Test: Map 4
+    // (Key: Enum - Value: Double)
+    static std::map<EnumType, double> const stdMap_keyEnum_valueDouble =
+    {
+        {EnumType::A, 0.111},
+        {EnumType::B, 0.222},
+        {EnumType::C, 0.333},
+        {EnumType::D, 0.444}
     };
 
 
-    static std::map<int, std::string> const testMap_keyInt =
-    {
-        {1, "KDL"},
-        {2, "OPW"},
-        {3, "TRACIK"},
-        {4, "LMA"},
-        {5, "CACHED_KDL"},
-        {6, "CACHED_TRACIK"}
-    };
 
-    static std::map<std::string, int> const testMap_keyString =
-    {
-        {"KDL",1},
-        {"OPW",2},
-        {"TRACIK",3},
-        {"LMA",4},
-        {"CACHED_KDL",5},
-        {"CACHED_TRACIK",6}
-    };
 
-    static std::map<KinematicSolverType, std::string> const testMap_keyEnum =
-    {
-        {KinematicSolverType::A, "KDL"},
-        {KinematicSolverType::B, "OPW"},
-        {KinematicSolverType::C, "TRACIK"},
-        {KinematicSolverType::D, "LMA"},
-        {KinematicSolverType::E, "CACHED_KDL"},
-        {KinematicSolverType::F, "CACHED_TRACIK"}
-    };
+    // Test: Map 1
+    // (Key: String - Value: Int)
+    typedef boost::bimap<std::string, int> bimap_type1;
+    static bimap_type1 biMap_keyString_valueInt;
+    
 
-    // Test: Map Get Values
+    // Test: Map 2
+    // (Key: Int - Value: String)
+    typedef boost::bimap<int, std::string> bimap_type2;
+    static bimap_type2 biMap_keyInt_valueString;
+
+    // Test: Map 3
+    // (Key: String - Value: Enum)
+    typedef boost::bimap<std::string, EnumType> bimap_type3;
+    static bimap_type3 biMap_keyString_valueEnum;
+
+    // Test: Map 4
+    // (Key: Enum - Value: Double)
+    typedef boost::bimap<EnumType, double> bimap_type4;
+    static bimap_type4 biMap_keyEnum_valueDouble;
+
+    void populateBiMap()
+    {
+        biMap_keyString_valueInt.insert( bimap_type1::value_type("KDL",     11));
+        biMap_keyString_valueInt.insert( bimap_type1::value_type("OPW",     22));
+        biMap_keyString_valueInt.insert( bimap_type1::value_type("TRACIK",  33));
+        biMap_keyString_valueInt.insert( bimap_type1::value_type("LMA",     44));
+
+
+        biMap_keyInt_valueString.insert( bimap_type2::value_type(1,     "ONE"));
+        biMap_keyInt_valueString.insert( bimap_type2::value_type(2,     "TWO"));
+        biMap_keyInt_valueString.insert( bimap_type2::value_type(3,     "THREE"));
+        biMap_keyInt_valueString.insert( bimap_type2::value_type(4,     "FOUR"));
+
+
+        biMap_keyString_valueEnum.insert( bimap_type3::value_type("AAA",     EnumType::A));
+        biMap_keyString_valueEnum.insert( bimap_type3::value_type("BBB",     EnumType::B));
+        biMap_keyString_valueEnum.insert( bimap_type3::value_type("CCC",     EnumType::C));
+        biMap_keyString_valueEnum.insert( bimap_type3::value_type("DDD",     EnumType::D));
+
+        biMap_keyEnum_valueDouble.insert( bimap_type4::value_type(EnumType::A,  0.111));
+        biMap_keyEnum_valueDouble.insert( bimap_type4::value_type(EnumType::B,  0.222));
+        biMap_keyEnum_valueDouble.insert( bimap_type4::value_type(EnumType::C,  0.333));
+        biMap_keyEnum_valueDouble.insert( bimap_type4::value_type(EnumType::D,  0.444));
+    }
+
+    // Test: Std-Map Find by Keys
     // (Get Values in Maps using Keys)
     // -------------------------------
-    void testMapGetValues()
+    void stdMapFindByKey()
     {
+        std::string key_str;
+        int key_int;
+        EnumType key_enum;
+
         ROS_INFO("Map: Search value using key:");
         ROS_INFO("--------------------");
         
         ROS_INFO(" ");
-        ROS_INFO("Test-Map Key-Int:");
+        ROS_INFO("Test-Map 1: Std-Map");
+        ROS_INFO("Key: String - Value: Int");
         ROS_INFO("--------------------");
 
-            ROS_INFO("Test: 1");
-            int key_int = 2;
-            std::string value_str;
-            if(Toolbox::Map::mapSearch(key_int, test::testMap_keyInt, value_str))
-            {
-                ROS_INFO_STREAM("Key Found: " << key_int);
-                ROS_INFO_STREAM("Related Value: " << value_str);
-            }
-            else
-            {
-                ROS_ERROR_STREAM("Key NOT Found: " << key_int);
-                ROS_ERROR_STREAM("Value: NOT FOUND");
-            }
             ROS_INFO(" ");
-            ROS_INFO("Test: 2");
-            key_int = 22;
-            if(Toolbox::Map::mapSearch(key_int, test::testMap_keyInt, value_str))
+            ROS_INFO("  Test: 1");
+            ROS_INFO("--------------------");
+            key_str = "KDL";
+            if(auto res = Toolbox::Map::searchMapByKey(stdMap_keyString_valueInt, key_str))
             {
-                ROS_INFO_STREAM("Key Found: " << key_int);
-                ROS_INFO_STREAM("Related Value: " << value_str);
+                int test = *res;
+                ROS_INFO_STREAM("   Key Found: " << key_str);
+                ROS_INFO_STREAM("   Search Results: " << test);
             }
             else
             {
-                ROS_ERROR_STREAM("Key NOT Found: " << key_int);
-                ROS_ERROR_STREAM("Value: NOT FOUND");
+                ROS_ERROR_STREAM("  Key NOT Found: " << key_str);
+                ROS_ERROR_STREAM("  Results: Failed!");
             }
 
-
-        ROS_INFO(" ");
-        ROS_INFO("Test-Map Key-String:");
-        ROS_INFO("--------------------");
-
-            ROS_INFO("Test: 1");
-            std::string key_str = "LMA";
-            int value_int;
-            if(Toolbox::Map::mapSearch(key_str, test::testMap_keyString, value_int))
-            {
-                ROS_INFO_STREAM("Key Found: " << key_str);
-                ROS_INFO_STREAM("Related Value: " << value_int);
-            }
-            else
-            {
-                ROS_ERROR_STREAM("Key NOT Found: " << key_str);
-                ROS_ERROR_STREAM("Value: NOT FOUND");
-            }
             ROS_INFO(" ");
-            ROS_INFO("Test: 2");
+            ROS_INFO("  Test: 2");
+            ROS_INFO("--------------------");
+            key_str = "oPw";
+            if(auto res = Toolbox::Map::searchMapByKey(stdMap_keyString_valueInt, key_str))
+            {
+                int test = *res;
+                ROS_INFO_STREAM("   Key Found: " << key_str);
+                ROS_INFO_STREAM("   Search Results: " << test);
+            }
+            else
+            {
+                ROS_ERROR_STREAM("  Key NOT Found: " << key_str);
+                ROS_ERROR_STREAM("  Results: Failed!");
+            }
+
+            ROS_INFO(" ");
+            ROS_INFO("  Test: 3");
+            ROS_INFO("--------------------");
+            key_str = "asd";
+            if(auto res = Toolbox::Map::searchMapByKey(stdMap_keyString_valueInt, key_str))
+            {
+                int test = *res;
+                ROS_INFO_STREAM("   Key Found: " << key_str);
+                ROS_INFO_STREAM("   Search Results: " << test);
+            }
+            else
+            {
+                ROS_ERROR_STREAM("  Key NOT Found: " << key_str);
+                ROS_ERROR_STREAM("  Results: Failed!");
+            }
+
+            ROS_INFO(" ");
+            ROS_INFO("  Test: 4");
+            ROS_INFO("--------------------");
             key_str = "lma";
-            if(Toolbox::Map::mapSearch(key_str, test::testMap_keyString, value_int))
+            bool caseSensitive = false;
+            if(auto res = Toolbox::Map::searchMapByKey(stdMap_keyString_valueInt, key_str))
             {
-                ROS_INFO_STREAM("Key Found: " << key_str);
-                ROS_INFO_STREAM("Related Value: " << value_int);
+                int test = *res;
+                ROS_INFO_STREAM("   Key Found: " << key_str);
+                ROS_INFO_STREAM("   Search Results: " << test);
             }
             else
             {
-                ROS_ERROR_STREAM("Key NOT Found: " << key_str);
-                ROS_ERROR_STREAM("Value: NOT FOUND");
+                ROS_ERROR_STREAM("  Key NOT Found: " << key_str);
+                ROS_ERROR_STREAM("  Results: Failed!");
             }
 
         ROS_INFO(" ");
-        ROS_INFO("Test-Map Key-Enum:");
+        ROS_INFO("Test-Map 2: Std-Map");
+        ROS_INFO("Key: Int - Value: String");
         ROS_INFO("--------------------");
-        
-            ROS_INFO("Test: 1");
-            test::KinematicSolverType key_enum = test::KinematicSolverType::B;
-            if(Toolbox::Map::mapSearch(key_enum, test::testMap_keyEnum, value_str))
-            {
-                ROS_INFO_STREAM("Key Found: " << key_enum);
-                ROS_INFO_STREAM("Related Value: " << value_str);
-            }
-            else
-            {
-                ROS_ERROR_STREAM("Key NOT Found: " << key_enum);
-                ROS_ERROR_STREAM("Value: NOT FOUND");
-            }
+
             ROS_INFO(" ");
-            ROS_INFO("Test: 2");
-            key_enum = static_cast<test::KinematicSolverType>(22);
-            if(Toolbox::Map::mapSearch(key_enum, test::testMap_keyEnum, value_str))
+            ROS_INFO("  Test: 1");
+            ROS_INFO("--------------------");
+            key_int = 2;
+            if(auto res = Toolbox::Map::searchMapByKey(stdMap_keyInt_valueString, key_int))
             {
-                ROS_INFO_STREAM("Key Found: " << key_enum);
-                ROS_INFO_STREAM("Related Value: " << value_str);
+                std::string test = *res;
+                ROS_INFO_STREAM("   Key Found: " << key_int);
+                ROS_INFO_STREAM("   Search Results: " << test);
             }
             else
             {
-                ROS_ERROR_STREAM("Key NOT Found: " << key_enum);
-                ROS_ERROR_STREAM("Value: NOT FOUND");
+                ROS_ERROR_STREAM("  Key NOT Found: " << key_int);
+                ROS_ERROR_STREAM("  Results: Failed!");
             }
 
+            ROS_INFO(" ");
+            ROS_INFO("  Test: 2");
+            ROS_INFO("--------------------");
+            key_int = 4;
+            if(auto res = Toolbox::Map::searchMapByKey(stdMap_keyInt_valueString, key_int))
+            {
+                std::string test = *res;
+                ROS_INFO_STREAM("   Key Found: " << key_int);
+                ROS_INFO_STREAM("   Search Results: " << test);
+            }
+            else
+            {
+                ROS_ERROR_STREAM("  Key NOT Found: " << key_int);
+                ROS_ERROR_STREAM("  Results: Failed!");
+            }
 
-        // ROS_INFO(" ");
-        // ROS_INFO("Test-Map KinematicSolverType:");
-        // ROS_INFO("--------------------");
-        
-        //     ROS_INFO("Test: 1");
-        //     key_str = "LMA";
-        //     test::KinematicSolverType value_enum;
-        //     if(Toolbox::Map::mapSearch(key_str, test::kinematicSolverTypeMap, value_enum))
-        //     {
-        //         ROS_INFO_STREAM("Key Found: " << key_str);
-        //         ROS_INFO_STREAM("Related Value: " << value_enum);
-        //     }
-        //     else
-        //     {
-        //         ROS_ERROR_STREAM("Key NOT Found: " << key_str);
-        //         ROS_ERROR_STREAM("Value: NOT FOUND");
-        //     }
-        //     ROS_INFO(" ");
-        //     ROS_INFO("Test: 2");
-        //     key_str = "opw";
-        //     if(Toolbox::Map::mapSearch(key_str, test::kinematicSolverTypeMap, value_enum))
-        //     {
-        //         ROS_INFO_STREAM("Key Found: " << key_str);
-        //         ROS_INFO_STREAM("Related Value: " << value_str);
-        //     }
-        //     else
-        //     {
-        //         ROS_ERROR_STREAM("Key NOT Found: " << key_str);
-        //         ROS_ERROR_STREAM("Value: NOT FOUND");
-        //     }
-    } // Function end: testMapGetValues()
+            ROS_INFO(" ");
+            ROS_INFO("  Test: 3");
+            ROS_INFO("--------------------");
+            key_int = 123;
+            if(auto res = Toolbox::Map::searchMapByKey(stdMap_keyInt_valueString, key_int))
+            {
+                std::string test= *res;
+                ROS_INFO_STREAM("   Key Found: " << key_int);
+                ROS_INFO_STREAM("   Search Results: " << test);
+            }
+            else
+            {
+                ROS_ERROR_STREAM("  Key NOT Found: " << key_int);
+                ROS_ERROR_STREAM("  Results: Failed!");
+            }
+
+        ROS_INFO(" ");
+        ROS_INFO("Test-Map 3: Std-Map");
+        ROS_INFO("Key: String - Value: Enum");
+        ROS_INFO("--------------------");
+
+            ROS_INFO(" ");
+            ROS_INFO("  Test: 1");
+            ROS_INFO("--------------------");
+            key_str = "AAA";
+            if(auto res = Toolbox::Map::searchMapByKey(stdMap_keyString_valueEnum, key_str))
+            {
+                EnumType test = *res;
+                ROS_INFO_STREAM("   Key Found: " << key_str);
+                ROS_INFO_STREAM("   Search Results: " << test);
+            }
+            else
+            {
+                ROS_ERROR_STREAM("  Key NOT Found: " << key_int);
+                ROS_ERROR_STREAM("  Results: Failed!");
+            }
+
+            ROS_INFO(" ");
+            ROS_INFO("  Test: 2");
+            ROS_INFO("--------------------");
+            key_str = "bBb";
+            if(auto res = Toolbox::Map::searchMapByKey(stdMap_keyString_valueEnum, key_str))
+            {
+                EnumType test = *res;
+                ROS_INFO_STREAM("   Key Found: " << key_str);
+                ROS_INFO_STREAM("   Search Results: " << test);
+            }
+            else
+            {
+                ROS_ERROR_STREAM("  Key NOT Found: " << key_int);
+                ROS_ERROR_STREAM("  Results: Failed!");
+            }
+
+            ROS_INFO(" ");
+            ROS_INFO("  Test: 3");
+            ROS_INFO("--------------------");
+            key_str = "test";
+            if(auto res = Toolbox::Map::searchMapByKey(stdMap_keyString_valueEnum, key_str))
+            {
+                EnumType test = *res;
+                ROS_INFO_STREAM("   Key Found: " << key_str);
+                ROS_INFO_STREAM("   Search Results: " << test);
+            }
+            else
+            {
+                ROS_ERROR_STREAM("  Key NOT Found: " << key_int);
+                ROS_ERROR_STREAM("  Results: Failed!");
+            }
+
+            ROS_INFO(" ");
+            ROS_INFO("  Test: 4");
+            ROS_INFO("--------------------");
+            key_str = "aaA";
+            if(auto res = Toolbox::Map::searchMapByKey(stdMap_keyString_valueEnum, key_str))
+            {
+                EnumType test = *res;
+                ROS_INFO_STREAM("   Key Found: " << key_str);
+                ROS_INFO_STREAM("   Search Results: " << test);
+            }
+            else
+            {
+                ROS_ERROR_STREAM("  Key NOT Found: " << key_str);
+                ROS_ERROR_STREAM("  Results: Failed!");
+            }
+
+        ROS_INFO(" ");
+        ROS_INFO("Test-Map 4: Std-Map");
+        ROS_INFO("Key: Enum - Value: Double");
+        ROS_INFO("--------------------");
+
+            ROS_INFO(" ");
+            ROS_INFO("  Test: 1");
+            ROS_INFO("--------------------");
+            key_enum = EnumType::A;
+            if(auto res = Toolbox::Map::searchMapByKey(stdMap_keyEnum_valueDouble, key_enum))
+            {
+                double test = *res;
+                ROS_INFO_STREAM("   Key Found: " << key_enum);
+                ROS_INFO_STREAM("   Search Results: " << test);
+            }
+            else
+            {
+                ROS_ERROR_STREAM("  Key NOT Found: " << key_int);
+                ROS_ERROR_STREAM("  Results: Failed!");
+            }
+
+            ROS_INFO(" ");
+            ROS_INFO("  Test: 2");
+            ROS_INFO("--------------------");
+            key_enum = static_cast<EnumType>(2);
+            if(auto res = Toolbox::Map::searchMapByKey(stdMap_keyEnum_valueDouble, key_enum))
+            {
+                double test = *res;
+                ROS_INFO_STREAM("   Key Found: " << key_enum);
+                ROS_INFO_STREAM("   Search Results: " << test);
+            }
+            else
+            {
+                ROS_ERROR_STREAM("  Key NOT Found: " << key_int);
+                ROS_ERROR_STREAM("  Results: Failed!");
+            }
+
+            ROS_INFO(" ");
+            ROS_INFO("  Test: 3");
+            ROS_INFO("--------------------");
+            key_enum = static_cast<EnumType>(123);
+            if(auto res = Toolbox::Map::searchMapByKey(stdMap_keyEnum_valueDouble, key_enum))
+            {
+                double test = *res;
+                ROS_INFO_STREAM("   Key Found: " << key_enum);
+                ROS_INFO_STREAM("   Search Results: " << test);
+            }
+            else
+            {
+                ROS_ERROR_STREAM("  Key NOT Found: " << key_int);
+                ROS_ERROR_STREAM("  Results: Failed!");
+            }
+    } // Function end: stdMapFindByKey()
     
 
-    // Test: Map Get Keys
+    // Test: Bi-Map Find by Keys
+    // (Get Values in Maps using Keys)
+    // -------------------------------
+    void biMapFindByKey()
+    {
+        std::string key_str;
+        int key_int;
+        EnumType key_enum;
+
+        ROS_INFO("Map: Search value using key:");
+        ROS_INFO("--------------------");
+        
+        ROS_INFO(" ");
+        ROS_INFO("Test-Map 1: Std-Map");
+        ROS_INFO("Key: String - Value: Int");
+        ROS_INFO("--------------------");
+
+            ROS_INFO(" ");
+            ROS_INFO("  Test: 1");
+            ROS_INFO("--------------------");
+            key_str = "KDL";
+            if(auto res = Toolbox::Map::searchMapByKey(biMap_keyString_valueInt, key_str))
+            {
+                int test = *res;
+                ROS_INFO_STREAM("   Key Found: " << key_str);
+                ROS_INFO_STREAM("   Search Results: " << test);
+            }
+            else
+            {
+                ROS_ERROR_STREAM("  Key NOT Found: " << key_str);
+                ROS_ERROR_STREAM("  Results: Failed!");
+            }
+
+            ROS_INFO(" ");
+            ROS_INFO("  Test: 2");
+            ROS_INFO("--------------------");
+            key_str = "oPw";
+            if(auto res = Toolbox::Map::searchMapByKey(biMap_keyString_valueInt, key_str))
+            {
+                int test = *res;
+                ROS_INFO_STREAM("   Key Found: " << key_str);
+                ROS_INFO_STREAM("   Search Results: " << test);
+            }
+            else
+            {
+                ROS_ERROR_STREAM("  Key NOT Found: " << key_str);
+                ROS_ERROR_STREAM("  Results: Failed!");
+            }
+
+            ROS_INFO(" ");
+            ROS_INFO("  Test: 3");
+            ROS_INFO("--------------------");
+            key_str = "asd";
+            if(auto res = Toolbox::Map::searchMapByKey(biMap_keyString_valueInt, key_str))
+            {
+                int test = *res;
+                ROS_INFO_STREAM("   Key Found: " << key_str);
+                ROS_INFO_STREAM("   Search Results: " << test);
+            }
+            else
+            {
+                ROS_ERROR_STREAM("  Key NOT Found: " << key_str);
+                ROS_ERROR_STREAM("  Results: Failed!");
+            }
+
+            ROS_INFO(" ");
+            ROS_INFO("  Test: 4");
+            ROS_INFO("--------------------");
+            key_str = "lma";
+            bool caseSensitive = false;
+            if(auto res = Toolbox::Map::searchMapByKey(biMap_keyString_valueInt, key_str))
+            {
+                int test = *res;
+                ROS_INFO_STREAM("   Key Found: " << key_str);
+                ROS_INFO_STREAM("   Search Results: " << test);
+            }
+            else
+            {
+                ROS_ERROR_STREAM("  Key NOT Found: " << key_str);
+                ROS_ERROR_STREAM("  Results: Failed!");
+            }
+
+        ROS_INFO(" ");
+        ROS_INFO("Test-Map 2: Std-Map");
+        ROS_INFO("Key: Int - Value: String");
+        ROS_INFO("--------------------");
+
+            ROS_INFO(" ");
+            ROS_INFO("  Test: 1");
+            ROS_INFO("--------------------");
+            key_int = 2;
+            if(auto res = Toolbox::Map::searchMapByKey(biMap_keyInt_valueString, key_int))
+            {
+                std::string test = *res;
+                ROS_INFO_STREAM("   Key Found: " << key_int);
+                ROS_INFO_STREAM("   Search Results: " << test);
+            }
+            else
+            {
+                ROS_ERROR_STREAM("  Key NOT Found: " << key_int);
+                ROS_ERROR_STREAM("  Results: Failed!");
+            }
+
+            ROS_INFO(" ");
+            ROS_INFO("  Test: 2");
+            ROS_INFO("--------------------");
+            key_int = 4;
+            if(auto res = Toolbox::Map::searchMapByKey(biMap_keyInt_valueString, key_int))
+            {
+                std::string test = *res;
+                ROS_INFO_STREAM("   Key Found: " << key_int);
+                ROS_INFO_STREAM("   Search Results: " << test);
+            }
+            else
+            {
+                ROS_ERROR_STREAM("  Key NOT Found: " << key_int);
+                ROS_ERROR_STREAM("  Results: Failed!");
+            }
+
+            ROS_INFO(" ");
+            ROS_INFO("  Test: 3");
+            ROS_INFO("--------------------");
+            key_int = 123;
+            if(auto res = Toolbox::Map::searchMapByKey(biMap_keyInt_valueString, key_int))
+            {
+                std::string test= *res;
+                ROS_INFO_STREAM("   Key Found: " << key_int);
+                ROS_INFO_STREAM("   Search Results: " << test);
+            }
+            else
+            {
+                ROS_ERROR_STREAM("  Key NOT Found: " << key_int);
+                ROS_ERROR_STREAM("  Results: Failed!");
+            }
+
+        ROS_INFO(" ");
+        ROS_INFO("Test-Map 3: Std-Map");
+        ROS_INFO("Key: String - Value: Enum");
+        ROS_INFO("--------------------");
+
+            ROS_INFO(" ");
+            ROS_INFO("  Test: 1");
+            ROS_INFO("--------------------");
+            key_str = "AAA";
+            if(auto res = Toolbox::Map::searchMapByKey(biMap_keyString_valueEnum, key_str))
+            {
+                EnumType test = *res;
+                ROS_INFO_STREAM("   Key Found: " << key_str);
+                ROS_INFO_STREAM("   Search Results: " << test);
+            }
+            else
+            {
+                ROS_ERROR_STREAM("  Key NOT Found: " << key_int);
+                ROS_ERROR_STREAM("  Results: Failed!");
+            }
+
+            ROS_INFO(" ");
+            ROS_INFO("  Test: 2");
+            ROS_INFO("--------------------");
+            key_str = "bBb";
+            if(auto res = Toolbox::Map::searchMapByKey(biMap_keyString_valueEnum, key_str))
+            {
+                EnumType test = *res;
+                ROS_INFO_STREAM("   Key Found: " << key_str);
+                ROS_INFO_STREAM("   Search Results: " << test);
+            }
+            else
+            {
+                ROS_ERROR_STREAM("  Key NOT Found: " << key_int);
+                ROS_ERROR_STREAM("  Results: Failed!");
+            }
+
+            ROS_INFO(" ");
+            ROS_INFO("  Test: 3");
+            ROS_INFO("--------------------");
+            key_str = "test";
+            if(auto res = Toolbox::Map::searchMapByKey(biMap_keyString_valueEnum, key_str))
+            {
+                EnumType test = *res;
+                ROS_INFO_STREAM("   Key Found: " << key_str);
+                ROS_INFO_STREAM("   Search Results: " << test);
+            }
+            else
+            {
+                ROS_ERROR_STREAM("  Key NOT Found: " << key_int);
+                ROS_ERROR_STREAM("  Results: Failed!");
+            }
+
+            ROS_INFO(" ");
+            ROS_INFO("  Test: 4");
+            ROS_INFO("--------------------");
+            key_str = "aaA";
+            if(auto res = Toolbox::Map::searchMapByKey(biMap_keyString_valueEnum, key_str))
+            {
+                EnumType test = *res;
+                ROS_INFO_STREAM("   Key Found: " << key_str);
+                ROS_INFO_STREAM("   Search Results: " << test);
+            }
+            else
+            {
+                ROS_ERROR_STREAM("  Key NOT Found: " << key_str);
+                ROS_ERROR_STREAM("  Results: Failed!");
+            }
+
+        ROS_INFO(" ");
+        ROS_INFO("Test-Map 4: Std-Map");
+        ROS_INFO("Key: Enum - Value: Double");
+        ROS_INFO("--------------------");
+
+            ROS_INFO(" ");
+            ROS_INFO("  Test: 1");
+            ROS_INFO("--------------------");
+            key_enum = EnumType::A;
+            if(auto res = Toolbox::Map::searchMapByKey(biMap_keyEnum_valueDouble, key_enum))
+            {
+                double test = *res;
+                ROS_INFO_STREAM("   Key Found: " << key_enum);
+                ROS_INFO_STREAM("   Search Results: " << test);
+            }
+            else
+            {
+                ROS_ERROR_STREAM("  Key NOT Found: " << key_int);
+                ROS_ERROR_STREAM("  Results: Failed!");
+            }
+
+            ROS_INFO(" ");
+            ROS_INFO("  Test: 2");
+            ROS_INFO("--------------------");
+            key_enum = static_cast<EnumType>(2);
+            if(auto res = Toolbox::Map::searchMapByKey(biMap_keyEnum_valueDouble, key_enum))
+            {
+                double test = *res;
+                ROS_INFO_STREAM("   Key Found: " << key_enum);
+                ROS_INFO_STREAM("   Search Results: " << test);
+            }
+            else
+            {
+                ROS_ERROR_STREAM("  Key NOT Found: " << key_int);
+                ROS_ERROR_STREAM("  Results: Failed!");
+            }
+
+            ROS_INFO(" ");
+            ROS_INFO("  Test: 3");
+            ROS_INFO("--------------------");
+            key_enum = static_cast<EnumType>(123);
+            if(auto res = Toolbox::Map::searchMapByKey(biMap_keyEnum_valueDouble, key_enum))
+            {
+                double test = *res;
+                ROS_INFO_STREAM("   Key Found: " << key_enum);
+                ROS_INFO_STREAM("   Search Results: " << test);
+            }
+            else
+            {
+                ROS_ERROR_STREAM("  Key NOT Found: " << key_int);
+                ROS_ERROR_STREAM("  Results: Failed!");
+            }
+    } // Function end: biMapFindByKey()
+
+
+    // Test: Std-Map Find by Value
     // (Get Keys in Maps using Values)
     // -------------------------------
-    void testMapGetKeys()
+    void stdMapFindBValue()
     {
+        std::string value_str;
+        int value_int;
+        EnumType value_enum;
+        double value_double;
+
         ROS_INFO("Map: Search key using value:");
         ROS_INFO("--------------------");
         
         ROS_INFO(" ");
-        ROS_INFO("Test-Map Value-Int:");
+        ROS_INFO("Test-Map 1: Std-Map");
+        ROS_INFO("Key: String - Value: Int");
         ROS_INFO("--------------------");
 
-            ROS_INFO("Test: 1");
-            int value_int = 2;
-            std::string key_str;
-            if(Toolbox::Map::mapSearch(value_int, test::testMap_keyString, key_str))
-            {
-                ROS_INFO_STREAM("Value Found: " << value_int);
-                ROS_INFO_STREAM("Related Key: " << key_str);
-            }
-            else
-            {
-                ROS_ERROR_STREAM("Value NOT Found: " << value_int);
-                ROS_ERROR_STREAM("Key: NOT FOUND");
-            }
             ROS_INFO(" ");
-            ROS_INFO("Test: 2");
+            ROS_INFO("  Test: 1");
+            ROS_INFO("--------------------");
             value_int = 22;
-            if(Toolbox::Map::mapSearch(value_int, test::testMap_keyString, key_str))
+            if(auto res = Toolbox::Map::searchMapByValue(stdMap_keyString_valueInt, value_int))
             {
-                ROS_INFO_STREAM("Value Found: " << value_int);
-                ROS_INFO_STREAM("Related Key: " << key_str);
+                std::string test = *res;
+                ROS_INFO_STREAM("   Value Found: " << value_int);
+                ROS_INFO_STREAM("   Search Results: " << test);
             }
             else
             {
-                ROS_ERROR_STREAM("Value NOT Found: " << value_int);
-                ROS_ERROR_STREAM("Key: NOT FOUND");
+                ROS_ERROR_STREAM("  Value NOT Found: " << value_int);
+                ROS_ERROR_STREAM("  Results: Failed!");
+            }
+
+            ROS_INFO(" ");
+            ROS_INFO("  Test: 2");
+            ROS_INFO("--------------------");
+            value_int = 1;
+            if(auto res = Toolbox::Map::searchMapByValue(stdMap_keyString_valueInt, value_int))
+            {
+                std::string test = *res;
+                ROS_INFO_STREAM("   Value Found: " << value_int);
+                ROS_INFO_STREAM("   Search Results: " << test);
+            }
+            else
+            {
+                ROS_ERROR_STREAM("  Value NOT Found: " << value_int);
+                ROS_ERROR_STREAM("  Results: Failed!");
+            }
+
+        ROS_INFO(" ");
+        ROS_INFO("Test-Map 2: Std-Map");
+        ROS_INFO("Key: Int - Value: String");
+        ROS_INFO("--------------------");
+
+            ROS_INFO(" ");
+            ROS_INFO("  Test: 1");
+            ROS_INFO("--------------------");
+            value_str = "ONE";
+            if(auto res = Toolbox::Map::searchMapByValue(stdMap_keyInt_valueString, value_str))
+            {
+                int test = *res;
+                ROS_INFO_STREAM("   Value Found: " << value_str);
+                ROS_INFO_STREAM("   Search Results: " << test);
+            }
+            else
+            {
+                ROS_ERROR_STREAM("  Value NOT Found: " << value_str);
+                ROS_ERROR_STREAM("  Results: Failed!");
+            }
+
+            ROS_INFO(" ");
+            ROS_INFO("  Test: 2");
+            ROS_INFO("--------------------");
+            value_str = "three";
+            if(auto res = Toolbox::Map::searchMapByValue(stdMap_keyInt_valueString, value_str))
+            {
+                int test = *res;
+                ROS_INFO_STREAM("   Value Found: " << value_str);
+                ROS_INFO_STREAM("   Search Results: " << test);
+            }
+            else
+            {
+                ROS_ERROR_STREAM("  Value NOT Found: " << value_str);
+                ROS_ERROR_STREAM("  Results: Failed!");
+            }
+
+            ROS_INFO(" ");
+            ROS_INFO("  Test: 3");
+            ROS_INFO("--------------------");
+            value_str = "wrong_key";
+            if(auto res = Toolbox::Map::searchMapByValue(stdMap_keyInt_valueString, value_str))
+            {
+                int test= *res;
+                ROS_INFO_STREAM("   Value Found: " << value_str);
+                ROS_INFO_STREAM("   Search Results: " << test);
+            }
+            else
+            {
+                ROS_ERROR_STREAM("  Value NOT Found: " << value_str);
+                ROS_ERROR_STREAM("  Results: Failed!");
+            }
+
+        ROS_INFO(" ");
+        ROS_INFO("Test-Map 3: Std-Map");
+        ROS_INFO("Key: String - Value: Enum");
+        ROS_INFO("--------------------");
+
+            ROS_INFO(" ");
+            ROS_INFO("  Test: 1");
+            ROS_INFO("--------------------");
+            value_enum = EnumType::D;
+            if(auto res = Toolbox::Map::searchMapByValue(stdMap_keyString_valueEnum, value_enum))
+            {
+                std::string test = *res;
+                ROS_INFO_STREAM("   Value Found: " << value_enum);
+                ROS_INFO_STREAM("   Search Results: " << test);
+            }
+            else
+            {
+                ROS_ERROR_STREAM("  Value NOT Found: " << value_enum);
+                ROS_ERROR_STREAM("  Results: Failed!");
+            }
+
+            ROS_INFO(" ");
+            ROS_INFO("  Test: 2");
+            ROS_INFO("--------------------");
+            value_enum = static_cast<EnumType>(2);
+            if(auto res = Toolbox::Map::searchMapByValue(stdMap_keyString_valueEnum, value_enum))
+            {
+                std::string test = *res;
+                ROS_INFO_STREAM("   Value Found: " << value_enum);
+                ROS_INFO_STREAM("   Search Results: " << test);
+            }
+            else
+            {
+                ROS_ERROR_STREAM("  Value NOT Found: " << value_enum);
+                ROS_ERROR_STREAM("  Results: Failed!");
+            }
+
+            ROS_INFO(" ");
+            ROS_INFO("  Test: 3");
+            ROS_INFO("--------------------");
+            value_enum = static_cast<EnumType>(99);
+            if(auto res = Toolbox::Map::searchMapByValue(stdMap_keyString_valueEnum, value_enum))
+            {
+                std::string test = *res;
+                ROS_INFO_STREAM("   Value Found: " << value_enum);
+                ROS_INFO_STREAM("   Search Results: " << test);
+            }
+            else
+            {
+                ROS_ERROR_STREAM("  Value NOT Found: " << value_enum);
+                ROS_ERROR_STREAM("  Results: Failed!");
             }
 
 
         ROS_INFO(" ");
-        ROS_INFO("Test-Map Value-String:");
+        ROS_INFO("Test-Map 4: Std-Map");
+        ROS_INFO("Key: Enum - Value: Double");
         ROS_INFO("--------------------");
 
-            ROS_INFO("Test: 1");
-            std::string value_str = "LMA";
-            int key_int;
-            if(Toolbox::Map::mapSearch(value_str, test::testMap_keyInt, key_int))
-            {
-                ROS_INFO_STREAM("Value Found: " << value_str);
-                ROS_INFO_STREAM("Related Key: " << key_int);
-            }
-            else
-            {
-                ROS_ERROR_STREAM("Value NOT Found: " << value_str);
-                ROS_ERROR_STREAM("Key: NOT FOUND");
-            }
             ROS_INFO(" ");
-            ROS_INFO("Test: 2");
-            value_str = "lma";
-            if(Toolbox::Map::mapSearch(value_str, test::testMap_keyInt, key_int))
+            ROS_INFO("  Test: 1");
+            ROS_INFO("--------------------");
+            value_double = 0.333;
+            if(auto res = Toolbox::Map::searchMapByValue(stdMap_keyEnum_valueDouble, value_double))
             {
-                ROS_INFO_STREAM("Value Found: " << value_str);
-                ROS_INFO_STREAM("Related Key: " << key_int);
+                double test = *res;
+                ROS_INFO_STREAM("   Value Found: " << value_double);
+                ROS_INFO_STREAM("   Search Results: " << test);
             }
             else
             {
-                ROS_ERROR_STREAM("Value NOT Found: " << value_str);
-                ROS_ERROR_STREAM("Key: NOT FOUND");
+                ROS_ERROR_STREAM("  Value NOT Found: " << value_double);
+                ROS_ERROR_STREAM("  Results: Failed!");
+            }
+
+            ROS_INFO(" ");
+            ROS_INFO("  Test: 2");
+            ROS_INFO("--------------------");
+            value_double = 0.2;
+            if(auto res = Toolbox::Map::searchMapByValue(stdMap_keyEnum_valueDouble, value_double))
+            {
+                double test = *res;
+                ROS_INFO_STREAM("   Value Found: " << value_double);
+                ROS_INFO_STREAM("   Search Results: " << test);
+            }
+            else
+            {
+                ROS_ERROR_STREAM("  Value NOT Found: " << value_double);
+                ROS_ERROR_STREAM("  Results: Failed!");
+            }
+
+            ROS_INFO(" ");
+            ROS_INFO("  Test: 3");
+            ROS_INFO("--------------------");
+            value_double = 2;
+            if(auto res = Toolbox::Map::searchMapByValue(stdMap_keyEnum_valueDouble, value_double))
+            {
+                double test = *res;
+                ROS_INFO_STREAM("   Value Found: " << value_double);
+                ROS_INFO_STREAM("   Search Results: " << test);
+            }
+            else
+            {
+                ROS_ERROR_STREAM("  Value NOT Found: " << value_double);
+                ROS_ERROR_STREAM("  Results: Failed!");
+            }
+    } // Function end: stdMapFindByKey()
+
+
+    // Test: Bi-Map Find by Value
+    // (Get Keys in Maps using Values)
+    // -------------------------------
+    void biMapFindBValue()
+    {
+        std::string value_str;
+        int value_int;
+        EnumType value_enum;
+        double value_double;
+
+        ROS_INFO("Map: Search key using value:");
+        ROS_INFO("--------------------");
+        
+        ROS_INFO(" ");
+        ROS_INFO("Test-Map 1: Std-Map");
+        ROS_INFO("Key: String - Value: Int");
+        ROS_INFO("--------------------");
+
+            ROS_INFO(" ");
+            ROS_INFO("  Test: 1");
+            ROS_INFO("--------------------");
+            value_int = 22;
+            if(auto res = Toolbox::Map::searchMapByValue(biMap_keyString_valueInt, value_int))
+            {
+                std::string test = *res;
+                ROS_INFO_STREAM("   Value Found: " << value_int);
+                ROS_INFO_STREAM("   Search Results: " << test);
+            }
+            else
+            {
+                ROS_ERROR_STREAM("  Value NOT Found: " << value_int);
+                ROS_ERROR_STREAM("  Results: Failed!");
+            }
+
+            ROS_INFO(" ");
+            ROS_INFO("  Test: 2");
+            ROS_INFO("--------------------");
+            value_int = 1;
+            if(auto res = Toolbox::Map::searchMapByValue(biMap_keyString_valueInt, value_int))
+            {
+                std::string test = *res;
+                ROS_INFO_STREAM("   Value Found: " << value_int);
+                ROS_INFO_STREAM("   Search Results: " << test);
+            }
+            else
+            {
+                ROS_ERROR_STREAM("  Value NOT Found: " << value_int);
+                ROS_ERROR_STREAM("  Results: Failed!");
             }
 
         ROS_INFO(" ");
-        ROS_INFO("Test-Map Key-Enum:");
+        ROS_INFO("Test-Map 2: Std-Map");
+        ROS_INFO("Key: Int - Value: String");
         ROS_INFO("--------------------");
-        
-            ROS_INFO("Test: 1");
-            value_str = "LMA";
-            test::KinematicSolverType key_enum;
-            if(Toolbox::Map::mapSearch(value_str, test::testMap_keyEnum, key_enum))
-            {
-                ROS_INFO_STREAM("Value Found: " << value_str);
-                ROS_INFO_STREAM("Related Key: " << key_enum);
-            }
-            else
-            {
-                ROS_ERROR_STREAM("Value NOT Found: " << value_str);
-                ROS_ERROR_STREAM("Key: NOT FOUND");
-            }
+
             ROS_INFO(" ");
-            ROS_INFO("Test: 2");
-            value_str = "asd";
-            if(Toolbox::Map::mapSearch(value_str, test::testMap_keyEnum, key_enum))
+            ROS_INFO("  Test: 1");
+            ROS_INFO("--------------------");
+            value_str = "ONE";
+            if(auto res = Toolbox::Map::searchMapByValue(biMap_keyInt_valueString, value_str))
             {
-                ROS_INFO_STREAM("Value Found: " << value_str);
-                ROS_INFO_STREAM("Related Key: " << key_enum);
+                int test = *res;
+                ROS_INFO_STREAM("   Value Found: " << value_str);
+                ROS_INFO_STREAM("   Search Results: " << test);
             }
             else
             {
-                ROS_ERROR_STREAM("Value NOT Found: " << value_str);
-                ROS_ERROR_STREAM("Key: NOT FOUND");
+                ROS_ERROR_STREAM("  Value NOT Found: " << value_str);
+                ROS_ERROR_STREAM("  Results: Failed!");
+            }
+
+            ROS_INFO(" ");
+            ROS_INFO("  Test: 2");
+            ROS_INFO("--------------------");
+            value_str = "three";
+            if(auto res = Toolbox::Map::searchMapByValue(biMap_keyInt_valueString, value_str))
+            {
+                int test = *res;
+                ROS_INFO_STREAM("   Value Found: " << value_str);
+                ROS_INFO_STREAM("   Search Results: " << test);
+            }
+            else
+            {
+                ROS_ERROR_STREAM("  Value NOT Found: " << value_str);
+                ROS_ERROR_STREAM("  Results: Failed!");
+            }
+
+            ROS_INFO(" ");
+            ROS_INFO("  Test: 3");
+            ROS_INFO("--------------------");
+            value_str = "wrong_key";
+            if(auto res = Toolbox::Map::searchMapByValue(biMap_keyInt_valueString, value_str))
+            {
+                int test= *res;
+                ROS_INFO_STREAM("   Value Found: " << value_str);
+                ROS_INFO_STREAM("   Search Results: " << test);
+            }
+            else
+            {
+                ROS_ERROR_STREAM("  Value NOT Found: " << value_str);
+                ROS_ERROR_STREAM("  Results: Failed!");
+            }
+
+        ROS_INFO(" ");
+        ROS_INFO("Test-Map 3: Std-Map");
+        ROS_INFO("Key: String - Value: Enum");
+        ROS_INFO("--------------------");
+
+            ROS_INFO(" ");
+            ROS_INFO("  Test: 1");
+            ROS_INFO("--------------------");
+            value_enum = EnumType::D;
+            if(auto res = Toolbox::Map::searchMapByValue(biMap_keyString_valueEnum, value_enum))
+            {
+                std::string test = *res;
+                ROS_INFO_STREAM("   Value Found: " << value_enum);
+                ROS_INFO_STREAM("   Search Results: " << test);
+            }
+            else
+            {
+                ROS_ERROR_STREAM("  Value NOT Found: " << value_enum);
+                ROS_ERROR_STREAM("  Results: Failed!");
+            }
+
+            ROS_INFO(" ");
+            ROS_INFO("  Test: 2");
+            ROS_INFO("--------------------");
+            value_enum = static_cast<EnumType>(2);
+            if(auto res = Toolbox::Map::searchMapByValue(biMap_keyString_valueEnum, value_enum))
+            {
+                std::string test = *res;
+                ROS_INFO_STREAM("   Value Found: " << value_enum);
+                ROS_INFO_STREAM("   Search Results: " << test);
+            }
+            else
+            {
+                ROS_ERROR_STREAM("  Value NOT Found: " << value_enum);
+                ROS_ERROR_STREAM("  Results: Failed!");
+            }
+
+            ROS_INFO(" ");
+            ROS_INFO("  Test: 3");
+            ROS_INFO("--------------------");
+            value_enum = static_cast<EnumType>(99);
+            if(auto res = Toolbox::Map::searchMapByValue(biMap_keyString_valueEnum, value_enum))
+            {
+                std::string test = *res;
+                ROS_INFO_STREAM("   Value Found: " << value_enum);
+                ROS_INFO_STREAM("   Search Results: " << test);
+            }
+            else
+            {
+                ROS_ERROR_STREAM("  Value NOT Found: " << value_enum);
+                ROS_ERROR_STREAM("  Results: Failed!");
             }
 
 
-        // ROS_INFO(" ");
-        // ROS_INFO("Test-Map KinematicSolverType:");
-        // ROS_INFO("--------------------");
-        
-        //     ROS_INFO("Test: 1");
-        //     key_str;
-        //     test::KinematicSolverType value_enum = test::KinematicSolverType::D;
-        //     if(Toolbox::Map::mapSearch(value_enum, test::kinematicSolverTypeMap, key_str))
-        //     {
-        //         ROS_INFO_STREAM("Value Found: " << value_enum);
-        //         ROS_INFO_STREAM("Related Key: " << key_str);
-        //     }
-        //     else
-        //     {
-        //         ROS_ERROR_STREAM("Value NOT Found: " << value_enum);
-        //         ROS_ERROR_STREAM("Key: NOT FOUND");
-        //     }
-        //     ROS_INFO(" ");
-        //     ROS_INFO("Test: 2");
-        //     value_enum = static_cast<test::KinematicSolverType>(83);
-        //     if(Toolbox::Map::mapSearch(value_enum, test::kinematicSolverTypeMap, key_str))
-        //     {
-        //         ROS_INFO_STREAM("Value Found: " << value_enum);
-        //         ROS_INFO_STREAM("Related Key: " << key_str);
-        //     }
-        //     else
-        //     {
-        //         ROS_ERROR_STREAM("Value NOT Found: " << value_enum);
-        //         ROS_ERROR_STREAM("Key: NOT FOUND");
-        //     }
-    } // Function end: testMapGetKeys()
+        ROS_INFO(" ");
+        ROS_INFO("Test-Map 4: Std-Map");
+        ROS_INFO("Key: Enum - Value: Double");
+        ROS_INFO("--------------------");
 
+            ROS_INFO(" ");
+            ROS_INFO("  Test: 1");
+            ROS_INFO("--------------------");
+            value_double = 0.333;
+            if(auto res = Toolbox::Map::searchMapByValue(biMap_keyEnum_valueDouble, value_double))
+            {
+                double test = *res;
+                ROS_INFO_STREAM("   Value Found: " << value_double);
+                ROS_INFO_STREAM("   Search Results: " << test);
+            }
+            else
+            {
+                ROS_ERROR_STREAM("  Value NOT Found: " << value_double);
+                ROS_ERROR_STREAM("  Results: Failed!");
+            }
 
-    // // Test: Search in Type-Map(s)
-    // // (Get related key/value by searching in type-map)
-    // // -------------------------------
-    // void testSearchTypeMap()
-    // {
-    //     ROS_INFO("Type Map: Search in type-map to find correlated item:");
-    //     ROS_INFO("--------------------");
-        
-    //     ROS_INFO(" ");
-    //     ROS_INFO("Type Map: Key [String] Value [Int]:");
-    //     ROS_INFO("--------------------");
+            ROS_INFO(" ");
+            ROS_INFO("  Test: 2");
+            ROS_INFO("--------------------");
+            value_double = 0.2;
+            if(auto res = Toolbox::Map::searchMapByValue(biMap_keyEnum_valueDouble, value_double))
+            {
+                double test = *res;
+                ROS_INFO_STREAM("   Value Found: " << value_double);
+                ROS_INFO_STREAM("   Search Results: " << test);
+            }
+            else
+            {
+                ROS_ERROR_STREAM("  Value NOT Found: " << value_double);
+                ROS_ERROR_STREAM("  Results: Failed!");
+            }
 
-    //         int search_int;
-    //         int res_int;
-    //         std::string search_str;
-    //         std::string res_str;
-
-    //         ROS_INFO("Test 1: Find Value by Key");
-    //         search_str = "tracik";
-    //         if(Toolbox::Parameter::searchTypeIdentifierMap(search_str, test::testMap_keyString, res_int))
-    //         {
-    //             ROS_INFO_STREAM("Search Item Found: " << search_str);
-    //             ROS_INFO_STREAM("Resulting Item: " << res_int);
-    //         }
-    //         else
-    //         {
-    //             ROS_ERROR_STREAM("Search Item NOT Found: " << search_str);
-    //             ROS_ERROR_STREAM("Resulting Item: NOT FOUND");
-    //         }
-
-    //         ROS_INFO(" ");
-    //         ROS_INFO("Test 2: Find Value by Key");
-    //         search_str = "sadsad";
-    //         if(Toolbox::Parameter::searchTypeIdentifierMap(search_str, test::testMap_keyString, res_int))
-    //         {
-    //             ROS_INFO_STREAM("Search Item Found: " << search_str);
-    //             ROS_INFO_STREAM("Resulting Item: " << res_int);
-    //         }
-    //         else
-    //         {
-    //             ROS_ERROR_STREAM("Search Item NOT Found: " << search_str);
-    //             ROS_ERROR_STREAM("Resulting Item: NOT FOUND");
-    //         }
-
-    //         ROS_INFO(" ");
-    //         ROS_INFO("Test 3: Find Key by Value");
-    //         search_int = 4;
-    //         if(Toolbox::Parameter::searchTypeIdentifierMap(search_int, test::testMap_keyString, res_str))
-    //         {
-    //             ROS_INFO_STREAM("Search Item Found: " << search_int);
-    //             ROS_INFO_STREAM("Resulting Item: " << res_str);
-    //         }
-    //         else
-    //         {
-    //             ROS_ERROR_STREAM("Search Item NOT Found: " << search_int);
-    //             ROS_ERROR_STREAM("Resulting Item: NOT FOUND");
-    //         }
-
-    //         ROS_INFO(" ");
-    //         ROS_INFO("Test 4: Find Key by Value");
-    //         search_int = 44;
-    //         if(Toolbox::Parameter::searchTypeIdentifierMap(search_int, test::testMap_keyString, res_str))
-    //         {
-    //             ROS_INFO_STREAM("Search Item Found: " << search_int);
-    //             ROS_INFO_STREAM("Resulting Item: " << res_str);
-    //         }
-    //         else
-    //         {
-    //             ROS_ERROR_STREAM("Search Item NOT Found: " << search_int);
-    //             ROS_ERROR_STREAM("Resulting Item: NOT FOUND");
-    //         }
-
-    //     ROS_INFO(" ");
-    //     ROS_INFO("Type Map: Key [KinematicSolverType] Value [String]:");
-    //     ROS_INFO("--------------------");
-
-    //         KinematicSolverType search_enum;
-    //         KinematicSolverType res_enum;
-    //         search_str;
-    //         res_str;
-
-    //         ROS_INFO("Test 1: Find Value by Key");
-    //         search_enum = static_cast<KinematicSolverType>(4);
-    //         if(Toolbox::Parameter::searchTypeIdentifierMap(search_enum, test::testMap_keyEnum, res_str))
-    //         {
-    //             ROS_INFO_STREAM("Search Item Found: " << search_enum);
-    //             ROS_INFO_STREAM("Resulting Item: " << res_str);
-    //         }
-    //         else
-    //         {
-    //             ROS_ERROR_STREAM("Search Item NOT Found: " << search_enum);
-    //             ROS_ERROR_STREAM("Resulting Item: NOT FOUND");
-    //         }
-
-    //         ROS_INFO(" ");
-    //         ROS_INFO("Test 2: Find Value by Key");
-    //         search_enum = KinematicSolverType::E;
-    //         if(Toolbox::Parameter::searchTypeIdentifierMap(search_enum, test::testMap_keyEnum, res_str))
-    //         {
-    //             ROS_INFO_STREAM("Search Item Found: " << search_enum);
-    //             ROS_INFO_STREAM("Resulting Item: " << res_str);
-    //         }
-    //         else
-    //         {
-    //             ROS_ERROR_STREAM("Search Item NOT Found: " << search_enum);
-    //             ROS_ERROR_STREAM("Resulting Item: NOT FOUND");
-    //         }
-
-    //         ROS_INFO(" ");
-    //         ROS_INFO("Test 3: Find Key by Value");
-    //         search_str = "KDL";
-    //         if(Toolbox::Parameter::searchTypeIdentifierMap(search_str, test::testMap_keyEnum, res_enum))
-    //         {
-    //             ROS_INFO_STREAM("Search Item Found: " << search_str);
-    //             ROS_INFO_STREAM("Resulting Item: " << res_enum);
-    //         }
-    //         else
-    //         {
-    //             ROS_ERROR_STREAM("Search Item NOT Found: " << search_str);
-    //             ROS_ERROR_STREAM("Resulting Item: NOT FOUND");
-    //         }
-
-    //         ROS_INFO(" ");
-    //         ROS_INFO("Test 4: Find Key by Value");
-    //         search_int = 44;
-    //         // if(Toolbox::Parameter::searchTypeIdentifierMap(static_cast<KinematicSolverType>(22), test::testMap_keyEnum, res_str))
-    //         if(Toolbox::Parameter::searchTypeIdentifierMap(search_int, test::testMap_keyEnum, res_str))
-    //         {
-    //             ROS_INFO_STREAM("Search Item Found: " << search_int);
-    //             ROS_INFO_STREAM("Resulting Item: " << res_str);
-    //         }
-    //         else
-    //         {
-    //             ROS_ERROR_STREAM("Search Item NOT Found: " << search_int);
-    //             ROS_ERROR_STREAM("Resulting Item: NOT FOUND");
-    //         }
-
-        // ROS_INFO(" ");
-        // ROS_INFO("Test-Map KinematicSolverType:");
-        // ROS_INFO("Type Map: Value [String] Key [KinematicSolverType]:");
-        // ROS_INFO("--------------------");
-        
-        //     ROS_INFO("Test 1: Find Value by Key");
-        //     search_str = "Cached_kdl";
-        //     if(Toolbox::Parameter::searchTypeMap(search_str, test::kinematicSolverTypeMap, res_enum))
-        //     {
-        //         ROS_INFO_STREAM("Search Item Found: " << search_str);
-        //         ROS_INFO_STREAM("Resulting Item: " << res_enum);
-        //     }
-        //     else
-        //     {
-        //         ROS_ERROR_STREAM("Search Item NOT Found: " << search_str);
-        //         ROS_ERROR_STREAM("Resulting Item: NOT FOUND");
-        //     }
-
-        //     ROS_INFO(" ");
-        //     ROS_INFO("Test 2: Find Value by Key");
-        //     search_str = "jada";
-        //     if(Toolbox::Parameter::searchTypeMap(search_str, test::kinematicSolverTypeMap, res_enum))
-        //     {
-        //         ROS_INFO_STREAM("Search Item Found: " << search_str);
-        //         ROS_INFO_STREAM("Resulting Item: " << res_enum);
-        //     }
-        //     else
-        //     {
-        //         ROS_ERROR_STREAM("Search Item NOT Found: " << search_str);
-        //         ROS_ERROR_STREAM("Resulting Item: NOT FOUND");
-        //     }
-
-        //     ROS_INFO("Test 3: Find Key by Value");
-        //     search_enum = KinematicSolverType::F;
-        //     if(Toolbox::Parameter::searchTypeMap(search_enum, test::kinematicSolverTypeMap, res_str))
-        //     {
-        //         ROS_INFO_STREAM("Search Item Found: " << search_enum);
-        //         ROS_INFO_STREAM("Resulting Item: " << res_str);
-        //     }
-        //     else
-        //     {
-        //         ROS_ERROR_STREAM("Search Item NOT Found: " << search_enum);
-        //         ROS_ERROR_STREAM("Resulting Item: NOT FOUND");
-        //     }
-
-        //     ROS_INFO(" ");
-        //     ROS_INFO("Test 4: Find Value by Key");
-        //     search_int = 3;
-        //     // if(Toolbox::Parameter::searchTypeMap(static_cast<KinematicSolverType>(search_int), test::kinematicSolverTypeMap, res_str))
-        //     if(Toolbox::Parameter::searchTypeMap(search_int, test::kinematicSolverTypeMap, res_str))
-        //     {
-        //         ROS_INFO_STREAM("Search Item Found: " << search_int);
-        //         ROS_INFO_STREAM("Resulting Item: " << res_str);
-        //     }
-        //     else
-        //     {
-        //         ROS_ERROR_STREAM("Search Item NOT Found: " << search_int);
-        //         ROS_ERROR_STREAM("Resulting Item: NOT FOUND");
-        //     }
-    // } // Function End: testSearchTypeMap()
-
+            ROS_INFO(" ");
+            ROS_INFO("  Test: 3");
+            ROS_INFO("--------------------");
+            value_double = 2;
+            if(auto res = Toolbox::Map::searchMapByValue(biMap_keyEnum_valueDouble, value_double))
+            {
+                double test = *res;
+                ROS_INFO_STREAM("   Value Found: " << value_double);
+                ROS_INFO_STREAM("   Search Results: " << test);
+            }
+            else
+            {
+                ROS_ERROR_STREAM("  Value NOT Found: " << value_double);
+                ROS_ERROR_STREAM("  Results: Failed!");
+            }
+    } // Function end: biMapFindByKey()
 } // End: Namespace test
 
-boost::optional<std::string> checkInt(int test)
+boost::optional<std::string> checkInt1(int test)
 {
     std::string result;
 
@@ -595,51 +1113,12 @@ int main(int argc, char** argv)
 
     // Test(s)
     // -------------------------------
+        test::populateBiMap();
+        // test::stdMapFindByKey();
+        // test::biMapFindByKey();
 
-        test::testMapGetValues();
-        // test::testMapGetKeys();  
-        // test::testSearchTypeMap();
-
-    // // if(auto res = checkInt(2))
-    // // {
-    // //     std::string test1 = *res;
-
-    // //     ROS_INFO_STREAM("Test1 Result: " << test1);
-    // // }
-    
-
-    // // if(auto res = checkInt(0))
-    // // {
-    // //     std::string test1 = *res;
-
-    // //     ROS_INFO_STREAM("Test2 Result: " << test1);
-    // // }
-    // // else
-    // // {
-    // //     ROS_INFO_STREAM("Test2 Failed! ");
-    // // }
-
-    // // if(auto res = checkInt2(0))
-    // // {
-    // //     std::string test1 = *res;
-
-    // //     ROS_INFO_STREAM("Test3 Result: " << test1);
-    // // }
-    // // else
-    // // {
-    // //     ROS_INFO_STREAM("Test3 Failed! ");
-    // // }
-
-    // // if(auto res = checkInt2(3))
-    // // {
-    // //     std::string test1 = *res;
-
-    // //     ROS_INFO_STREAM("Test4 Result: " << test1);
-    // // }
-    // // else
-    // // {
-    // //     ROS_INFO_STREAM("Test4 Failed! ");
-    // // }
+        // test::stdMapFindBValue();
+        test::biMapFindBValue();
 
     
     // Shutdown

@@ -67,18 +67,18 @@ namespace test
         ROS_INFO("--------------------");
         
             ROS_INFO(" ");
-            ROS_INFO("Test: 1");
+            ROS_INFO("  Test: 1");
             ROS_INFO("--------------------");
 
             // bool test1 = Toolbox::Parameter::getParam<bool>(param, "param_bool1");
             if(auto res = Toolbox::Parameter::getParamBool(param, "param_bool1"))
             {
                 int test = *res;
-                ROS_INFO_STREAM("Results: " << test);
+                ROS_INFO_STREAM("   Results: " << test);
             }
             else
             {
-                ROS_ERROR_STREAM("Results: Failed!");
+                ROS_ERROR_STREAM("  Results: Failed!");
             }
 
             ROS_INFO(" ");
@@ -89,11 +89,11 @@ namespace test
             if(auto res = Toolbox::Parameter::getParamBool(param, "param_bool22"))
             {
                 int test = *res;
-                ROS_INFO_STREAM("Results: " << test);
+                ROS_INFO_STREAM("   Results: " << test);
             }
             else
             {
-                ROS_ERROR_STREAM("Results: Failed!");
+                ROS_ERROR_STREAM("  Results: Failed!");
             }
 
         ROS_INFO(" ");
@@ -108,11 +108,11 @@ namespace test
             if(auto res = Toolbox::Parameter::getParamInt(param, "param_int1"))
             {
                 int test = *res;
-                ROS_INFO_STREAM("Results: " << test);
+                ROS_INFO_STREAM("   Results: " << test);
             }
             else
             {
-                ROS_ERROR_STREAM("Results: Failed!");
+                ROS_ERROR_STREAM("  Results: Failed!");
             }
 
             ROS_INFO(" ");
@@ -122,15 +122,132 @@ namespace test
             if(auto res = Toolbox::Parameter::getParamInt(param, "param_int2"))
             {
                 int test = *res;
-                ROS_INFO_STREAM("Results: " << test);
+                ROS_INFO_STREAM("   Results: " << test);
             }
             else
             {
-                ROS_ERROR_STREAM("Results: Failed!");
+                ROS_ERROR_STREAM("  Results: Failed!");
             }
 
     } // Function end: testMapGetValues()
     
+
+    // Test: Type-Map
+    // -------------------------------
+    void testTypeMap()
+    {
+        std::string type_name;
+        KinematicSolverType type_info;
+
+        ROS_INFO(" ");
+        ROS_INFO("Test Type-Map: Get Type-Info");
+        ROS_INFO("--------------------");
+        
+            ROS_INFO(" ");
+            ROS_INFO("Test: 1");
+            ROS_INFO("--------------------");
+            type_name = "KDL";
+            if(auto res = Toolbox::Parameter::searchTypeMapByName(kinematicSolverTypeMap, type_name))
+            {
+                KinematicSolverType test = *res;
+                ROS_INFO_STREAM("   Type-Name Found: " << type_name);
+                ROS_INFO_STREAM("   Type-Info Results: " << test);
+            }
+            else
+            {
+                ROS_ERROR_STREAM("  Type-Name NOT Found: " << type_name);
+                ROS_ERROR_STREAM("  Results: Failed!");
+            }
+
+            ROS_INFO(" ");
+            ROS_INFO("Test: 2");
+            ROS_INFO("--------------------");
+            type_name = "oPw";
+            if(auto res = Toolbox::Parameter::searchTypeMapByName(kinematicSolverTypeMap, type_name))
+            {
+                KinematicSolverType test = *res;
+                ROS_INFO_STREAM("   Type-Name Found: " << type_name);
+                ROS_INFO_STREAM("   Type-Info Results: " << test);
+            }
+            else
+            {
+                ROS_ERROR_STREAM("  Type-Name NOT Found: " << type_name);
+                ROS_ERROR_STREAM("  Results: Failed!");
+            }
+
+            ROS_INFO(" ");
+            ROS_INFO("Test: 3");
+            ROS_INFO("--------------------");
+            type_name = "wrong-type";
+            if(auto res = Toolbox::Parameter::searchTypeMapByName(kinematicSolverTypeMap, type_name))
+            {
+                KinematicSolverType test = *res;
+                ROS_INFO_STREAM("   Type-Name Found: " << type_name);
+                ROS_INFO_STREAM("   Type-Info Results: " << test);
+            }
+            else
+            {
+                ROS_ERROR_STREAM("  Type-Name NOT Found: " << type_name);
+                ROS_ERROR_STREAM("  Results: Failed!");
+            }
+
+
+        ROS_INFO(" ");
+        ROS_INFO(" ");
+        ROS_INFO("Test Type-Map: Get Type-Name");
+        ROS_INFO("--------------------");
+        
+            ROS_INFO(" ");
+            ROS_INFO("Test: 1");
+            ROS_INFO("--------------------");
+            type_info = KinematicSolverType::C;
+            if(auto res = Toolbox::Parameter::searchTypeMapByType(kinematicSolverTypeMap, type_info))
+            {
+                std::string test = *res;
+                ROS_INFO_STREAM("   Type-Info Found: " << type_info);
+                ROS_INFO_STREAM("   Type-Name Results: " << test);
+            }
+            else
+            {
+                ROS_ERROR_STREAM("  Type-Info NOT Found: " << type_info);
+                ROS_ERROR_STREAM("  Results: Failed!");
+            }
+
+            ROS_INFO(" ");
+            ROS_INFO("Test: 2");
+            ROS_INFO("--------------------");
+            type_info = static_cast<KinematicSolverType>(4);
+            if(auto res = Toolbox::Parameter::searchTypeMapByType(kinematicSolverTypeMap, type_info))
+            {
+                std::string test = *res;
+                ROS_INFO_STREAM("   Type-Info Found: " << type_info);
+                ROS_INFO_STREAM("   Type-Name Results: " << test);
+            }
+            else
+            {
+                ROS_ERROR_STREAM("  Type-Info NOT Found: " << type_info);
+                ROS_ERROR_STREAM("  Results: Failed!");
+            }
+
+            ROS_INFO(" ");
+            ROS_INFO("Test: 3");
+            ROS_INFO("--------------------");
+            type_info = static_cast<KinematicSolverType>(-55);
+            if(auto res = Toolbox::Parameter::searchTypeMapByType(kinematicSolverTypeMap, type_info))
+            {
+                std::string test = *res;
+                ROS_INFO_STREAM("   Type-Info Found: " << type_info);
+                ROS_INFO_STREAM("   Type-Name Results: " << test);
+            }
+            else
+            {
+                ROS_ERROR_STREAM("  Type-Info NOT Found: " << type_info);
+                ROS_ERROR_STREAM("  Results: Failed!");
+            }
+
+    } // Function end: testMapGetValues()
+
+
     XmlRpc::XmlRpcValue testLoadParams()
     {
         XmlRpc::XmlRpcValue params;
@@ -148,7 +265,7 @@ namespace test
         // Return parameters
         return params;
     }
-   
+    
 
 } // End: Namespace test
 
@@ -171,9 +288,9 @@ int main(int argc, char** argv)
     // Test(s)
     // -------------------------------
         XmlRpc::XmlRpcValue params = test::testLoadParams();
-        test::testParamFunc(params);
+        // test::testParamFunc(params);
 
-        // int test = static_cast<int>(params["param_string1"]);
+        test::testTypeMap();
 
 
     

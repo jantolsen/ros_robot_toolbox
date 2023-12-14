@@ -370,177 +370,135 @@ class Parameter
             const XmlRpc::XmlRpcValue& param);
 
 
-        // // Search Type-Map: Find by Type-Name
-        // // -------------------------------
-        // /** \brief Search for given type-name in supplied type-map. 
-        // * If given type-name is found within the map, function returns the related type-name of the container-pair.
-        // * If no search-item is found within the map, function returns false 
-        // * \param type_map   Type-Map to search thorugh [std::map<std::string, typename TypeInfo>]
-        // * \param type_name  Type-Name to search for (key) [std::string]
-        // * \return Function return: Successful: type-name value [typename TypeInfo] / Unsuccessful: false [bool]
-        // */
-        // template<typename TypeInfo>
-        // static boost::optional<TypeInfo> searchTypeMapByName(
-        //     const std::map<std::string, TypeInfo>& type_map,
-        //     const std::string& type_name)
-        // {
-        //     // Search for key type-name in map
-        //     auto search = type_map.left.find(type_name);
-
-        //     // Check if searched key is found in the container
-        //     if(search == type_map.left.end())
-        //     {
-        //         // Map search failed! Type-Info key is NOT found in the container
-        //         ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
-        //             << ": Failed! Given type-name [" << type_name <<"] was NOT found in given type-map");
-                
-        //         // Function return
-        //         return boost::none;
-        //     }
-
-        //     // Map search success! Type-Name key is found in the container
-        //     // Return related Type-Info
-        //     return search->second;
-        // } // Function end: searchTypeMapByName()
-
-
-        // // Search Type-Map: Find by Type-Name
-        // // -------------------------------
-        // /** \brief Search for given type-name in supplied type-map. 
-        // * If given type-name is found within the map, function returns the related type-name of the container-pair.
-        // * If no search-item is found within the map, function returns false 
-        // * Supplied map contains operator 
-        // * (typically CaseInsensitiveComparator used to ignore capitalization of letters in key-string)
-        // * \param type_map   Type-Map to search thorugh [std::map<std::string, typename TypeInfo, Operator>]
-        // * \param type_name  Type-Name to search for (key) [std::string]
-        // * \return Function return: Successful: type-name value [typename TypeInfo] / Unsuccessful: false [bool]
-        // */
-        // template<typename TypeInfo>
-        // static boost::optional<TypeInfo> searchTypeMapByName(
-        //     const std::map<std::string, TypeInfo, Toolbox::Map::CaseInsensitiveComparator>& type_map,
-        //     const std::string& type_name)
-        // {
-        //     // Search for key type-name in map
-        //     auto search = type_map.left.find(type_name);
-
-        //     // Check if searched key is found in the container
-        //     if(search == type_map.left.end())
-        //     {
-        //         // Map search failed! Type-Info key is NOT found in the container
-        //         ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
-        //             << ": Failed! Given type-name [" << type_name <<"] was NOT found in given type-map");
-                
-        //         // Function return
-        //         return boost::none;
-        //     }
-
-        //     // Map search success! Type-Name key is found in the container
-        //     // Return related Type-Info
-        //     return search->second;
-        // } // Function end: searchTypeMapByName()
-
-
         // Search Type-Map: Find by Type-Name
+        // (std::map)
         // -------------------------------
+        // (Function Overloading)
         /** \brief Search for given type-name in supplied type-map. 
         * If given type-name is found within the map, function returns the related type-name of the container-pair.
         * If no search-item is found within the map, function returns false 
+        * Map search will ignore capitalization of letters in key-string.
         * \param type_map   Type-Map to search thorugh [boost::bimap<std::string, typename TypeInfo>]
         * \param type_name  Type-Name to search for (key) [std::string]
-        * \return Function return: Successful: type-name value [typename TypeInfo] / Unsuccessful: false [bool]
+        * \return Function return: Successful: Type-Info value [typename TypeInfo] / Unsuccessful: false [bool]
+        */
+        template<typename TypeInfo>
+        static boost::optional<TypeInfo> searchTypeMapByName(
+            const std::map<std::string, TypeInfo>& type_map,
+            const std::string& type_name)
+        {
+            // Call map search function
+            boost::optional<TypeInfo> result = Toolbox::Map::searchMapByKey(type_map, type_name);
+            if(!result)
+            {
+                // Map search failed! Type-Info key (left-element) is NOT found in the container
+                ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
+                    << ": Failed! Given type-name [" << type_name <<"] was NOT found in given type-map");
+
+                // Function return
+                return boost::none;
+            } 
+        
+            // Function return
+            return result;
+        } // Function-End: searchTypeMapByName()
+
+
+        // Search Type-Map: Find by Type-Name
+        // (boost::bimap)
+        // -------------------------------
+        // (Function Overloading)
+        /** \brief Search for given type-name in supplied type-map. 
+        * If given type-name is found within the map, function returns the related type-name of the container-pair.
+        * If no search-item is found within the map, function returns false 
+        * Map search will ignore capitalization of letters in key-string.
+        * \param type_map   Type-Map to search thorugh [boost::bimap<std::string, typename TypeInfo>]
+        * \param type_name  Type-Name to search for (key) [std::string]
+        * \return Function return: Successful: Type-Info value [typename TypeInfo] / Unsuccessful: false [bool]
         */
         template<typename TypeInfo>
         static boost::optional<TypeInfo> searchTypeMapByName(
             const boost::bimap<std::string, TypeInfo>& type_map,
             const std::string& type_name)
         {
-            // Search for key type-name (left-element) in map
-            auto search = type_map.left.find(type_name);
-
-            // Check if searched key is found in the container
-            if(search == type_map.left.end())
+            // Call map search function
+            boost::optional<TypeInfo> result = Toolbox::Map::searchMapByKey(type_map, type_name);
+            if(!result)
             {
                 // Map search failed! Type-Info key (left-element) is NOT found in the container
                 ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
                     << ": Failed! Given type-name [" << type_name <<"] was NOT found in given type-map");
-                
+
                 // Function return
                 return boost::none;
-            }
-
-            // Map search success! Type-Name key (left-element) is found in the container
-            // Return related Type-Info (right-element)
-            return search->second;
-        } // Function end: searchTypeMapByName()
-
-
-        // Search Type-Map: Find by Type-Name
-        // -------------------------------
-        /** \brief Search for given type-name in supplied type-map. 
-        * If given type-name is found within the map, function returns the related type-name of the container-pair.
-        * If no search-item is found within the map, function returns false 
-        * Supplied map contains operator 
-        * (typically CaseInsensitiveComparator used to ignore capitalization of letters in key-string)
-        * \param type_map   Type-Map to search thorugh [boost::bimap<std::string, typename TypeInfo, Operator>]
-        * \param type_name  Type-Name to search for (key) [std::string]
-        * \return Function return: Successful: type-name value [typename TypeInfo] / Unsuccessful: false [bool]
-        */
-        template<typename TypeInfo>
-        static boost::optional<TypeInfo> searchTypeMapByName(
-            const boost::bimap<std::string, TypeInfo, Toolbox::Map::CaseInsensitiveComparator>& type_map,
-            const std::string& type_name)
-        {
-            // Search for key type-name (left-element) in map
-            auto search = type_map.left.find(type_name);
-
-            // Check if searched key is found in the container
-            if(search == type_map.left.end())
-            {
-                // Map search failed! Type-Info key (left-element) is NOT found in the container
-                ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
-                    << ": Failed! Given type-name [" << type_name <<"] was NOT found in given type-map");
-                
-                // Function return
-                return boost::none;
-            }
-
-            // Map search success! Type-Name key (left-element) is found in the container
-            // Return related Type-Info (right-element)
-            return search->second;
-        } // Function end: searchTypeMapByName()
+            } 
+        
+            // Function return
+            return result;
+        } // Function-End: searchTypeMapByName()
 
 
-        // Search Type-Map: Find by Type-Info 
+        // Search Type-Map: Find by Type-Info
+        // (std::map) 
         // -------------------------------
         /** \brief Search for given type-info in supplied type-map. 
         * If given type-info is found within map, function returns the related type-name of the container-pair.
         * If no search-item is found within the map, function returns false 
         * \param type_map   Type-Map to search thorugh [boost::bimap<std::string, typename TypeInfo>]
         * \param type_name  Type-Info to search for (key) [typename TypeInfo]
-        * \return Function return: Successful: type-name value [std::string] / Unsuccessful: false [bool]
+        * \return Function return: Successful: Type-Name value [std::string] / Unsuccessful: false [bool]
+        */
+        template<typename TypeInfo>
+        static boost::optional<std::string> searchTypeMapByType(
+            const std::map<std::string, TypeInfo>& type_map,
+            const TypeInfo& type_info)
+        {
+            // Call map search function
+            boost::optional<std::string> result = Toolbox::Map::searchMapByValue(type_map, type_info);
+            if(!result)
+            {
+                // Map search failed! Type-Info key (right-element) is NOT found in the container
+                ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
+                    << ": Failed! Given type-info [" << type_info <<"] was NOT found in given type-map");
+
+                // Function return
+                return boost::none;
+            } 
+        
+            // Function return
+            return result;
+        } // Function end: searchTypeMapByType()
+
+
+        // Search Type-Map: Find by Type-Info 
+        // (boost::bimap)
+        // -------------------------------
+        /** \brief Search for given type-info in supplied type-map. 
+        * If given type-info is found within map, function returns the related type-name of the container-pair.
+        * If no search-item is found within the map, function returns false 
+        * \param type_map   Type-Map to search thorugh [boost::bimap<std::string, typename TypeInfo>]
+        * \param type_name  Type-Info to search for (key) [typename TypeInfo]
+        * \return Function return: Successful: Type-Name value [std::string] / Unsuccessful: false [bool]
         */
         template<typename TypeInfo>
         static boost::optional<std::string> searchTypeMapByType(
             const boost::bimap<std::string, TypeInfo>& type_map,
             const TypeInfo& type_info)
         {
-            // Search for key type-info (right-element) in map
-            auto search = type_map.right.find(type_info);
-
-            // Check if searched key is found in the container
-            if(search == type_map.right.end())
+            // Call map search function
+            boost::optional<std::string> result = Toolbox::Map::searchMapByValue(type_map, type_info);
+            if(!result)
             {
                 // Map search failed! Type-Info key (right-element) is NOT found in the container
                 ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
                     << ": Failed! Given type-info [" << type_info <<"] was NOT found in given type-map");
-                
+
                 // Function return
                 return boost::none;
-            }
-
-            // Map search success! Type-Info key (right-element) is found in the container
-            // Return related Type-Name (left-element)
-            return search->second;
+            } 
+        
+            // Function return
+            return result;
         } // Function end: searchTypeMapByType()
 
 
