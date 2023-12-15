@@ -30,6 +30,8 @@
     // Standard
     #include <vector>
     #include <map>
+    #include <algorithm>
+    #include <cctype>  // For std::toupper
 
     // Ros
     #include <ros/ros.h>
@@ -70,6 +72,17 @@ class Convert
         * \return An angle given in degrees
         */
         static double radToDeg(double rad = 1.0);
+        
+        
+        // Convert String to Upper-Case String
+        // -------------------------------
+        // (Function Overloading)
+        /** \brief Converts given string to all upper-case letters
+        * \param input Input string [std::string]
+        * \return Upper-Case String [std::string]
+        */
+        static std::string stringToUpperCase(
+            std::string input);
 
 
         // Convert Euler to Quaternion 

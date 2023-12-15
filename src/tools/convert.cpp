@@ -54,6 +54,23 @@ namespace Toolbox
         return deg;
     }
 
+    // Convert String to Upper-Case String
+    // -------------------------------
+    std::string Convert::stringToUpperCase(std::string input)
+    {
+        // Define local variable(s)
+        std::string output;
+
+        // Resize output to match input size
+        output.resize(input.size());
+
+        // Convert string to upper-case
+        std::transform(input.begin(), input.end(), output.begin(), ::toupper);
+
+        // Function return
+        return output;
+    } 
+
 
     // Convert Euler to Quaternion (eigen-vector)
     // -------------------------------
