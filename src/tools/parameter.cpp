@@ -294,7 +294,7 @@ namespace Toolbox
         return result;
     } // Function-End: getParamString()
 
-
+    
     // Convert Parameter Data to Bool-Value 
     // -------------------------------
     boost::optional<bool> Parameter::castParamToBool(
