@@ -61,9 +61,11 @@ class Map
         /** \brief Search for given key in supplied map. 
         * If given key is found within the map, function returns the related value of the container-pair.
         * If no key is found within the map, function returns false.
+        * 
         * Map search will ignore capitalization of letters in key-string.
         * \param map    Map to search thorugh [std::map<typename Key, typename Value>]
         * \param key    Key to search for [typename Key]
+        * 
         * \return Function return: Successful: value [typename Value] / Unsuccessful: false [bool]
         */
         template<typename Key, typename Value>
@@ -83,9 +85,11 @@ class Map
         /** \brief Search for given key in supplied map. 
         * If given key is found within the map, function returns the related value of the container-pair.
         * If no key is found within the map, function returns false.
+        * 
         * Map search will ignore capitalization of letters in key-string.
         * \param map    Map to search thorugh [boost::bimap<typename Key, typename Value>]
         * \param key    Key to search for [typename Key]
+        * 
         * \return Function return: Successful: value [typename Value] / Unsuccessful: false [bool]
         */
         template<typename Key, typename Value>
@@ -103,11 +107,14 @@ class Map
         // (std::map)
         // (Function Overloading)
         /** \brief Search for given value in supplied map. 
+        * 
         * If given value is found within the map, function returns the related key of the container-pair.
         * If no value is found within the map, function returns false. 
         * Map search will ignore capitalization of letters in key-string.
+        * 
         * \param map    Map to search thorugh [std::map<typename Key, typename Value>]
         * \param value  Value to search for [typename Value]
+        * 
         * \return Function return: Successful: value [typename Key] / Unsuccessful: false [bool]
         */
         template<typename Key, typename Value>
@@ -124,12 +131,15 @@ class Map
         // -------------------------------
         // (boost::bimap)
         // (Function Overloading)
-        /** \brief Search for given value in supplied map. 
+        /** \brief Search for given value in supplied map.
+        *  
         * If given value is found within the map, function returns the related key of the container-pair.
         * If no value is found within the map, function returns false.
         * Map search will ignore capitalization of letters in key-string.
+        * 
         * \param map    Map to search thorugh [boost::bimap<typename Key, typename Value>]
         * \param value  Value to search for [typename Value]
+        * 
         * \return Function return: Successful: value [typename Key] / Unsuccessful: false [bool]
         */
         template<typename Key, typename Value>
@@ -168,10 +178,13 @@ class Map
         // -------------------------------
         // (Function Overloading)
         /** \brief Search for given key in supplied map. 
+        * 
         * If given key is found within the map, function returns the related value of the container-pair.
         * If no key is found within the map, function returns false 
+        * 
         * \param map    Map to search thorugh [std::map<typename Key, typename Value>]
         * \param key    Key to search for [typename Key]
+        * 
         * \return Function return: Successful: value [typename Value] / Unsuccessful: false [bool]
         */
         template<typename Key, typename Value>
@@ -204,11 +217,14 @@ class Map
         // -------------------------------
         // (Function Overloading)
         /** \brief Search for given key in supplied map.
+        * 
         * Map search will ignore capitalization of letters in key-string.
         * If given key is found within the map, function returns the related value of the container-pair.
         * If no key is found within the map, function returns false.
+        * 
         * \param map    Map to search thorugh [std::map<std::string, typename Value>]
         * \param key    Key to search for [std::string]
+        * 
         * \return Function return: Successful: value [typename Value] / Unsuccessful: false [bool]
         */
         template<typename Value>
@@ -248,8 +264,10 @@ class Map
         /** \brief Search for given key in supplied map. 
         * If given key is found within the map, function returns the related value of the container-pair.
         * If no key is found within the map, function returns false 
+        * 
         * \param map    Map to search thorugh [boost::bimap<typename Key, typename Value>]
         * \param key    Key to search for [typename Key]
+        * 
         * \return Function return: Successful: value [typename Value] / Unsuccessful: false [bool]
         */
         template<typename Key, typename Value>
@@ -285,8 +303,10 @@ class Map
         * Map search will ignore capitalization of letters in key-string.
         * If given key is found within the map, function returns the related value of the container-pair.
         * If no key is found within the map, function returns false.
+        * 
         * \param map    Map to search thorugh [boost::bimap<std::string, typename Value>]
         * \param key    Key to search for [std::string]
+        * 
         * \return Function return: Successful: value [typename Value] / Unsuccessful: false [bool]
         */
         template<typename Value>
@@ -332,8 +352,10 @@ class Map
         /** \brief Search for given value in supplied map. 
         * If given value is found within the map, function returns the related key of the container-pair.
         * If no value is found within the map, function returns false 
+        * 
         * \param map    Map to search thorugh [std::map<typename Key, typename Value>]
         * \param value  Value to search for [typename Value]
+        * 
         * \return Function return: Successful: value [typename Key] / Unsuccessful: false [bool]
         */
         template<typename Key, typename Value>
@@ -371,8 +393,10 @@ class Map
         * Map search will ignore capitalization of letters in value-string.
         * If given value is found within the map, function returns the related key of the container-pair.
         * If no value is found within the map, function returns false 
+        * 
         * \param map    Map to search thorugh [std::map<std::string, typename Value>]
         * \param key    Value to search for [std::string]
+        * 
         * \return Function return: Successful: value [typename Value] / Unsuccessful: false [bool]
         */
         template<typename Key>
@@ -409,8 +433,10 @@ class Map
         /** \brief Search for given value in supplied map. 
         * If given value is found within the map, function returns the related key of the container-pair.
         * If no value is found within the map, function returns false 
+        * 
         * \param map    Map to search thorugh [boost::bimap<typename Key, typename Value>]
         * \param value  Value to search for [typename Value]
+        * 
         * \return Function return: Successful: value [typename Key] / Unsuccessful: false [bool]
         */
         template<typename Key, typename Value>
@@ -446,8 +472,10 @@ class Map
         * Map search will ignore capitalization of letters in value-string.
         * If given value is found within the map, function returns the related key of the container-pair.
         * If no value is found within the map, function returns false 
+        * 
         * \param map    Map to search thorugh [std::map<typename Key, std::string>]
         * \param key    Value to search for [std::string]
+        * 
         * \return Function return: Successful: value [typename Key] / Unsuccessful: false [bool]
         */
         template<typename Key>
