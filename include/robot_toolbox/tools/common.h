@@ -99,5 +99,41 @@ namespace Toolbox
         extern AxisType AXIS_Y;
         extern AxisType AXIS_Z;
 
+
+    // Case-Insensitive String Comparator
+    // -------------------------------
+    /** \brief Case-Insensitive String Comperator.
+    *  
+    * Compare and ignores capilization of letters in given strings.
+    * Function returns true if strings are found to be equal.
+    * 
+    * \param string1    First string to compare [std::string]
+    * \param string2    Second string to compare [std::string]
+    * 
+    * \return Function return: Successful/Unsuccessful (true/false) [bool]
+    */
+    static bool compareStringsCaseInsensitive(
+        const std::string& string1, 
+        const std::string& string2) 
+    {
+        // Compare size of the given strings
+        if (string1.size() != string2.size())
+        {
+            // Function return
+            return false;
+        }
+
+        // Case-insenstive comparison of strings
+        if((strcasecmp(string1.c_str(), string2.c_str()) != 0))
+        {
+            // Function return
+            return false;
+        }
+
+        // Function return
+        return true;
+    } // Function end: compareStringsCaseInsensitive()
+
+
 } // End Namespace: Robotics Toolbox
 #endif // COMMON_TOOL_H
