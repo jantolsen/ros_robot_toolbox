@@ -510,6 +510,6 @@ class Map
         static const std::string CLASS_PREFIX;
 
 
-}; // End Class: Common
+}; // End Class: Map
 } // End Namespace: Robotics Toolbox
 #endif // MAP_TOOL_H 
