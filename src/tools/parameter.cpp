@@ -450,5 +450,144 @@ namespace Toolbox
                 return "Type-Invalid";
         }
     } // Function-End: getTypeName()
-    
+
+
+    // XmlRpcValue Converter
+    // (Specialization for Bool)
+    // -------------------------------
+    // (Template Specialization)
+    /** \brief Converts XmlRpcValue to fundemental types
+    * 
+    * \param param  Parameter to be converted [XmlRpc::XmlRpcValue]
+    * 
+    * \return Function return: Successful: parameter value [bool] / Unsuccessful: false [bool]
+    */
+    template<>
+    struct Parameter::XmlRpcValueConverter<bool>
+    {
+        static boost::optional<bool> convert(
+            const XmlRpc::XmlRpcValue& param) 
+        {
+            // Local variable(s)
+            // (copy input-parameter to remove const to allow type-casting)
+            XmlRpc::XmlRpcValue param_ = param;
+
+            // Check parameter against specified type
+            if(param_.getType() != XmlRpc::XmlRpcValue::TypeBoolean)
+            {
+                // Report to terminal
+                ROS_ERROR_STREAM(Parameter::CLASS_PREFIX << __FUNCTION__
+                    << ": Failed! Parameter [" << param_ << "]"
+                    << " (XmlRpcType: " << getDataTypeName(param.getType()) << ")"
+                    << " does NOT convert to a bool-type");
+
+                // Function return
+                return boost::none;
+            }
+
+            // Function return
+            return static_cast<bool>(param_);
+        }
+    };
+
+
+    // XmlRpcValue Converter
+    // (Specialization for Int)
+    // -------------------------------
+    // (Template Specialization)
+    template<>
+    struct Parameter::XmlRpcValueConverter<int>
+    {
+        static boost::optional<int> convert(
+            const XmlRpc::XmlRpcValue& param) 
+        {
+            // Local variable(s)
+            // (copy input-parameter to remove const to allow type-casting)
+            XmlRpc::XmlRpcValue param_ = param;
+
+            // Check parameter against specified type
+            if(param_.getType() != XmlRpc::XmlRpcValue::TypeInt)
+            {
+                // Report to terminal
+                ROS_ERROR_STREAM(Parameter::CLASS_PREFIX << __FUNCTION__
+                    << ": Failed! Parameter [" << param_ << "]"
+                    << " (XmlRpcType: " << getDataTypeName(param.getType()) << ")"
+                    << " does NOT convert to a int-type");
+
+                // Function return
+                return boost::none;
+            }
+
+            // Function return
+            return static_cast<int>(param_);
+        }
+    };
+
+
+    // XmlRpcValue Converter
+    // (Specialization for Double)
+    // -------------------------------
+    // (Template Specialization)
+    template<>
+    struct Parameter::XmlRpcValueConverter<double>
+    {
+        static boost::optional<double> convert(
+            const XmlRpc::XmlRpcValue& param) 
+        {
+            // Local variable(s)
+            // (copy input-parameter to remove const to allow type-casting)
+            XmlRpc::XmlRpcValue param_ = param;
+
+            // Check parameter against specified type
+            if(param_.getType() != XmlRpc::XmlRpcValue::TypeDouble)
+            {
+                // Report to terminal
+                ROS_ERROR_STREAM(Parameter::CLASS_PREFIX << __FUNCTION__
+                    << ": Failed! Parameter [" << param_ << "]"
+                    << " (XmlRpcType: " << getDataTypeName(param.getType()) << ")"
+                    << " does NOT convert to a double-type");
+
+                // Function return
+                return boost::none;
+            }
+
+            // Function return
+            return static_cast<double>(param_);
+        }
+    };
+
+
+    // XmlRpcValue Converter
+    // (Specialization for String)
+    // -------------------------------
+    // (Template Specialization)
+    template<>
+    struct Parameter::XmlRpcValueConverter<std::string>
+    {
+        static boost::optional<std::string> convert(
+            const XmlRpc::XmlRpcValue& param) 
+        {
+            // Local variable(s)
+            // (copy input-parameter to remove const to allow type-casting)
+            XmlRpc::XmlRpcValue param_ = param;
+
+            // Check parameter against specified type
+            if(param_.getType() != XmlRpc::XmlRpcValue::TypeString)
+            {
+                // Report to terminal
+                ROS_ERROR_STREAM(Parameter::CLASS_PREFIX << __FUNCTION__
+                    << ": Failed! Parameter [" << param_ << "]"
+                    << " (XmlRpcType: " << getDataTypeName(param.getType()) << ")"
+                    << " does NOT convert to a string-type");
+
+                // Function return
+                return boost::none;
+            }
+
+            // Function return
+            return static_cast<std::string>(param_);
+        }
+    };
+
+
 } // End Namespace: Robotics Toolbox
