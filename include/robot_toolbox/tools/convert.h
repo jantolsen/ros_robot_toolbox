@@ -84,6 +84,38 @@ class Convert
         static std::string stringToUpperCase(
             std::string input);
 
+        // Get Variable Data-Type name
+        // -------------------------------
+        // (Function Overloading)
+        /** \brief Get data-type name of given variable
+        * Uses boost::demangle to obtain and return a human-readable type-name
+        * \param input  Input variable to get type name of [typename Type]
+        * \return Return human-readable type-name [std::string]
+        */
+        template <typename Type>
+        static std::string getTypeName(
+            const Type& input)
+        {
+            // Return human-readable type-name
+            return boost::core::demangle(typeid(Type).name());
+        } // Function-End: getTypeName()
+
+
+        // Get Data-Type name
+        // -------------------------------
+        // (Function Overloading)
+        /** \brief Get data-type name of given fundamental type
+        * Uses boost::demangle to obtain and return a human-readable type-name
+        * \param type_info Fundamental data type to get type name of [std::type_info&]
+        * \return Return human-readable type-name [std::string]
+        */
+        static std::string getTypeName(
+            const std::type_info& type_info)
+        {
+            // Return human-readable type-name
+            return boost::core::demangle(type_info.name());
+        } // Function-End: getTypeName()
+
 
         // Convert Euler to Quaternion 
         // -------------------------------
