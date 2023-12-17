@@ -70,11 +70,10 @@ namespace test
             ROS_INFO("  Test: 1");
             ROS_INFO("--------------------");
 
-            // bool test1 = Toolbox::Parameter::getParam<bool>(param, "param_bool1");
-            if(auto res = Toolbox::Parameter::getParamBool(param, "param_bool1"))
+            auto res = Toolbox::Parameter::getParamData<bool>(param, "param_bool1");
+            if(res)
             {
-                int test = *res;
-                ROS_INFO_STREAM("   Results: " << test);
+                ROS_INFO_STREAM("   Results: " << res.value());
             }
             else
             {
@@ -85,11 +84,10 @@ namespace test
             ROS_INFO("Test: 2");
             ROS_INFO("--------------------");
 
-            // bool test1 = Toolbox::Parameter::getParam<bool>(param, "param_bool1");
-            if(auto res = Toolbox::Parameter::getParamBool(param, "param_bool22"))
+            res = Toolbox::Parameter::getParamData<bool>(param, "param_bool2");
+            if(res)
             {
-                int test = *res;
-                ROS_INFO_STREAM("   Results: " << test);
+                ROS_INFO_STREAM("   Results: " << res.value());
             }
             else
             {
@@ -105,10 +103,10 @@ namespace test
             ROS_INFO("Test: 1");
             ROS_INFO("--------------------");
 
-            if(auto res = Toolbox::Parameter::getParamInt(param, "param_int1"))
+            res = Toolbox::Parameter::getParamData<int>(param, "param_int1");
+            if(res)
             {
-                int test = *res;
-                ROS_INFO_STREAM("   Results: " << test);
+                ROS_INFO_STREAM("   Results: " << res.value());
             }
             else
             {
@@ -119,10 +117,10 @@ namespace test
             ROS_INFO("Test: 2");
             ROS_INFO("--------------------");
 
-            if(auto res = Toolbox::Parameter::getParamInt(param, "param_int2"))
+            res = Toolbox::Parameter::getParamData<int>(param, "param_int2");
+            if(res)
             {
-                int test = *res;
-                ROS_INFO_STREAM("   Results: " << test);
+                ROS_INFO_STREAM("   Results: " << res.value());
             }
             else
             {
@@ -265,7 +263,6 @@ namespace test
         // Return parameters
         return params;
     }
-    
 
 } // End: Namespace test
 
@@ -290,8 +287,11 @@ int main(int argc, char** argv)
         XmlRpc::XmlRpcValue params = test::testLoadParams();
         // test::testParamFunc(params);
 
+        int test = 123;
+        ROS_ERROR_STREAM("TEST 1: Fundamental type:" << Toolbox::Convert::getTypeName(typeid(params)));
+        ROS_ERROR_STREAM("TEST 2: Fundamental type:" << Toolbox::Convert::getTypeName(typeid(XmlRpc::XmlRpcValue)));
+        ROS_ERROR_STREAM("TEST 2: Variable type:" << Toolbox::Convert::getTypeName(params));
         // test::testTypeMap();
-
 
     
     // Shutdown
