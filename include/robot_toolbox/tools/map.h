@@ -62,7 +62,9 @@ class Map
         *
         * If given key is found within the map, function returns the related value of the container-pair.
         * If no key is found within the map, function returns false.
+        * Special case: 
         * Map search will ignore capitalization of letters in search-string.
+        * If search-string is found, it will be updated according to entry in map
         *
         * \param map    Map to search thorugh [std::map<typename Key, typename Value>]
         * \param key    Key to search for [typename Key]
@@ -72,7 +74,7 @@ class Map
         template<typename Key, typename Value>
         static boost::optional<Value> searchMapByKey(
             const std::map<Key, Value>& map,
-            const Key& key)
+            Key& key)
         {
             // Search map by key
             boost::optional<Value> result = searchStdMapByKey(map, key);
@@ -99,7 +101,9 @@ class Map
         *
         * If given key is found within the map, function returns the related value of the container-pair.
         * If no key is found within the map, function returns false.
+        * Special case: 
         * Map search will ignore capitalization of letters in search-string.
+        * If search-string is found, it will be updated according to entry in map
         * 
         * \param map    Map to search thorugh [boost::bimap<typename Key, typename Value>]
         * \param key    Key to search for [typename Key]
@@ -109,7 +113,7 @@ class Map
         template<typename Key, typename Value>
         static boost::optional<Value> searchMapByKey(
             const boost::bimap<Key, Value>& map,
-            const Key& key)
+            Key& key)
         {
             // Search map by key
             boost::optional<Value> result = searchBiMapByKey(map, key);
@@ -136,7 +140,9 @@ class Map
         * 
         * If given value is found within the map, function returns the related key of the container-pair.
         * If no value is found within the map, function returns false. 
+        * Special case: 
         * Map search will ignore capitalization of letters in search-string.
+        * If search-string is found, it will be updated according to entry in map
         * 
         * \param map    Map to search thorugh [std::map<typename Key, typename Value>]
         * \param value  Value to search for [typename Value]
@@ -146,7 +152,7 @@ class Map
         template<typename Key, typename Value>
         static boost::optional<Key> searchMapByValue(
             const std::map<Key, Value>& map,
-            const Value& value)
+            Value& value)
         {
             // Search map by value
             boost::optional<Key> result = searchStdMapByValue(map, value);
@@ -172,7 +178,9 @@ class Map
         *  
         * If given value is found within the map, function returns the related key of the container-pair.
         * If no value is found within the map, function returns false.
+        * Special case: 
         * Map search will ignore capitalization of letters in search-string.
+        * If search-string is found, it will be updated according to entry in map
         * 
         * \param map    Map to search thorugh [boost::bimap<typename Key, typename Value>]
         * \param value  Value to search for [typename Value]
@@ -182,7 +190,7 @@ class Map
         template<typename Key, typename Value>
         static boost::optional<Key> searchMapByValue(
             const boost::bimap<Key, Value>& map,
-            const Value& value)
+            Value& value)
         {
             // Search map by value
             boost::optional<Key> result = searchBiMapByValue(map, value);
@@ -250,6 +258,7 @@ class Map
         * If given key is found within the map, function returns the related value of the container-pair.
         * If no key is found within the map, function returns false.
         * Map search will ignore capitalization of letters in search-string.
+        * If search-string is found, it will be updated according to entry in map
         * 
         * \param map    Map to search thorugh [std::map<std::string, typename Value>]
         * \param key    Key to search for [std::string]
@@ -259,7 +268,7 @@ class Map
         template<typename Value>
         static boost::optional<Value> searchStdMapByKey(
             const std::map<std::string, Value>& map,
-            const std::string& key)
+            std::string& key)
         {
             // Iterate through given map
             for (const auto& entry : map) 
@@ -269,6 +278,10 @@ class Map
                 if (compareStringsCaseInsensitive(entry.first, key)) 
                 {
                     // Map search success! Key is found in the map
+
+                    // Update Key with entry found in map
+                    key = entry.first;
+
                     // Return related value
                     return boost::make_optional(entry.second);
                 }
@@ -322,6 +335,7 @@ class Map
         * If given key is found within the map, function returns the related value of the container-pair.
         * If no key is found within the map, function returns false.
         * Map search will ignore capitalization of letters in search-string.
+        * If search-string is found, it will be updated according to entry in map
         * 
         * \param map    Map to search thorugh [boost::bimap<std::string, typename Value>]
         * \param key    Key to search for [std::string]
@@ -331,7 +345,7 @@ class Map
         template<typename Value>
         static boost::optional<Value> searchBiMapByKey(
             const boost::bimap<std::string, Value>& map,
-            const std::string& key)
+            std::string& key)
         {
             // Iterate through given map (left-element)
             for (const auto& entry : map.left) 
@@ -341,6 +355,10 @@ class Map
                 if (compareStringsCaseInsensitive(entry.first, key)) 
                 {
                     // Map search success! Key (left-element) is found in the container
+
+                    // Update Key with entry found in map
+                    key = entry.first;
+
                     // Return related Value (right-element)
                     return boost::make_optional(entry.second);
                 }
@@ -397,6 +415,7 @@ class Map
         * If given value is found within the map, function returns the related key of the container-pair.
         * If no value is found within the map, function returns false 
         * Map search will ignore capitalization of letters in search-string.
+        * If search-string is found, it will be updated according to entry in map
         * 
         * \param map    Map to search thorugh [std::map<std::string, typename Value>]
         * \param key    Value to search for [std::string]
@@ -406,7 +425,7 @@ class Map
         template<typename Key>
         static boost::optional<Key> searchStdMapByValue(
             const std::map<Key, std::string>& map,
-            const std::string& value)
+            std::string& value)
         {
             // Iterate through given map
             for (const auto& entry : map) 
@@ -416,6 +435,10 @@ class Map
                 if (compareStringsCaseInsensitive(entry.second, value)) 
                 {
                     // Map search success! Value is found in the map
+                    
+                    // Update Value with entry found in map
+                    value = entry.second;
+
                     // Return related key
                     return boost::make_optional(entry.first);
                 }
@@ -471,6 +494,7 @@ class Map
         * If given value is found within the map, function returns the related key of the container-pair.
         * If no value is found within the map, function returns false 
         * Map search will ignore capitalization of letters in search-string.
+        * If search-string is found, it will be updated according to entry in map
         * 
         * \param map    Map to search thorugh [std::map<typename Key, std::string>]
         * \param key    Value to search for [std::string]
@@ -480,7 +504,7 @@ class Map
         template<typename Key>
         static boost::optional<Key> searchBiMapByValue(
             const boost::bimap<Key, std::string>& map,
-            const std::string& value)
+            std::string& value)
         {
             // Iterate through given map (right-element)
             for (const auto& entry : map.right) 
@@ -490,6 +514,10 @@ class Map
                 if (compareStringsCaseInsensitive(entry.first, value)) 
                 {
                     // Map search success! Value (right-element) is found in the map
+
+                    // Update Value with entry found in map
+                    value = entry.first;
+
                     // Return related Key (left-element)
                     return boost::make_optional(entry.second);
                 }
