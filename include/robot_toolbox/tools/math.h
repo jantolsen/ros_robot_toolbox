@@ -549,6 +549,24 @@ class Math
             int euler_seq = XYZ);
 
 
+        // Numerical Differentiation
+        // -------------------------------
+        /** \brief Numerically differentiation a set of values
+        *
+        * Calculated the derivative between f(x) and f(x-dt)
+        *  
+        * \param x          Current value [double]
+        * \param x_prev     Previous value [double]
+        * \param dt         Difference between values [double]
+        *
+        * \return           Return derivative x_dt [double]
+        */
+        static double numericalDifferentiation(
+            double x, 
+            double x_prev, 
+            double dt);
+
+
     // Protected Class members
     // -------------------------------
     // Accessible within the class which defines them, 

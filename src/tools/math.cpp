@@ -843,4 +843,24 @@ namespace Toolbox
         return tm;                       
     }
 
+
+    // Numerical Differentiation
+    // -------------------------------
+    static double Math::numericalDifferentiation(
+        double x, 
+        double x_prev, 
+        double dt)
+    {
+        // Define derivative
+        double x_dt;
+
+        // Check for postive dt
+        if(dt < 0) return 0.0;
+
+        // Calculate derivative using numerical differentiation
+        x_dt = (x - x_prev) / dt;
+
+        // Function return
+        return x_dt;
+    }
 } // End Namespace: Robotics Toolbox
