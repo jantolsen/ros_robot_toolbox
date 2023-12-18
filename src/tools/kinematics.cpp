@@ -137,7 +137,7 @@ namespace Toolbox
         if(print_result)
         {
             // Convert Quaternion-Orientation to Euler-Orientation
-            geometry_msgs::Vector3 rpy = Convert::quaternionToEuler(transform.transform.rotation, XYZ);
+            geometry_msgs::Point rpy = Convert::quaternionToEuler(transform.transform.rotation, XYZ);
 
             ROS_INFO("Toolbox:getCurrentTransform:");
             ROS_INFO("--------------------");

@@ -169,7 +169,7 @@ namespace Toolbox
     // -------------------------------
     // (Function Overloading)
     geometry_msgs::Quaternion Convert::eulerToQuaternion(
-        geometry_msgs::Vector3 euler,
+        geometry_msgs::Point euler,
         int seq)
     {
         // Define local variable(s)
@@ -282,7 +282,7 @@ namespace Toolbox
     // Convert Quaternion to Euler (geometry_msgs)
     // -------------------------------
     // (Function Overloading)
-    geometry_msgs::Vector3 Convert::quaternionToEuler(
+    geometry_msgs::Point Convert::quaternionToEuler(
             geometry_msgs::Quaternion q,
             int seq)
     {
@@ -290,7 +290,7 @@ namespace Toolbox
         Eigen::Quaternion<double> q_eigen;
         Eigen::Vector3d euler_eigen;
         geometry_msgs::Point euler_point;
-        geometry_msgs::Vector3 euler;
+        geometry_msgs::Point euler;
         
         // Convert Geometry-Message to Eigen-Message
         Eigen::fromMsg(q, q_eigen);
@@ -475,6 +475,56 @@ namespace Toolbox
 
         // Function Return
         return pose_stamped;
+    }
+
+
+    // Convert Pose [m, rad] to Pose RPY [m, deg]
+    // -------------------------------
+     robot_toolbox::PoseRPY Convert::poseToPoseRPY(
+        geometry_msgs::Pose pose)
+    {
+        // Define PoseRPY variable holder
+        robot_toolbox::PoseRPY pose_rpy;
+
+        // Convert Pose to PoseRPY
+        // Translation
+        pose_rpy.position = pose.position;
+
+        // Orientation
+        pose_rpy.orientation = quaternionToEuler(pose.orientation);
+
+        // Convert from rad to deg
+        pose_rpy.orientation.x = radToDeg(pose_rpy.orientation.x);
+        pose_rpy.orientation.y = radToDeg(pose_rpy.orientation.y);
+        pose_rpy.orientation.z = radToDeg(pose_rpy.orientation.z);
+
+        // Function Return
+        return pose_rpy;
+    }
+
+
+    // Convert Pose RPY [m, deg] to Pose [m, rad]
+    // -------------------------------
+    geometry_msgs::Pose Convert::poseRPYToPose(
+        robot_toolbox::PoseRPY poseRPY)
+    {
+        // Define Pose variable holder
+        geometry_msgs::Pose pose;
+
+        // Convert from deg to rad
+        poseRPY.orientation.x = degToRad(poseRPY.orientation.x);
+        poseRPY.orientation.y = degToRad(poseRPY.orientation.y);
+        poseRPY.orientation.z = degToRad(poseRPY.orientation.z);
+
+        // Convert PoseRPY to Pose
+        // Translation
+        pose.position = poseRPY.position;
+
+        // Orientation
+        pose.orientation = eulerToQuaternion(poseRPY.orientation);
+
+        // Function Return
+        return pose;
     }
         
 } // End Namespace: Robotics Toolbox

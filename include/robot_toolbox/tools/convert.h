@@ -39,6 +39,10 @@
     // Toolbox
     #include "robot_toolbox/tools/common.h"
 
+    // Messages
+    #include "robot_toolbox/PoseRPY.h"
+
+
     // Eigen
     #include <Eigen/Geometry>
 
@@ -152,14 +156,14 @@ class Convert
         // Convert Euler to Quaternion 
         // -------------------------------
         // (Function Overloading)
-        /** \brief Convert an euler rotation (geometry_msgs::Vector3) 
+        /** \brief Convert an euler rotation (geometry_msgs::Point) 
         * to a Quaternion (geometry_msgs::Quaternion)
-        * \param euler Euler-Rotation (rad) [geometry_msgs::Vector3]
+        * \param euler Euler-Rotation (rad) [geometry_msgs::Point]
         * \param seq Euler-Sequence for rotation (XYZ = 0, ZYX = 1, ZXZ = 2, ZYZ = 3) [int]
         * \return Rotation in Quaternion [geometry_msgs::Quaternion]
         */
         static geometry_msgs::Quaternion eulerToQuaternion(
-            geometry_msgs::Vector3 euler,
+            geometry_msgs::Point euler,
             int seq = XYZ);
 
 
@@ -201,12 +205,12 @@ class Convert
         // -------------------------------
         // (Function Overloading)
         /** \brief Convert a quaternion rotation (geometry_msgs::Quaternion) 
-        * to an euler-rotation (geometry_msgs::Vector3) 
+        * to an euler-rotation (geometry_msgs::Point) 
         * \param q Quaternion-Rotation (rad) [geometry_msgs::Quaternion]
         * \param seq Euler-Sequence for rotation (XYZ = 0, ZYX = 1, ZXZ = 2, ZYZ = 3) [int]
         * \return Rotation in Euler-Angles [geometry_msgs::Vector3d]
         */
-        static geometry_msgs::Vector3 quaternionToEuler(
+        static geometry_msgs::Point quaternionToEuler(
             geometry_msgs::Quaternion q,
             int seq = XYZ);
 
@@ -303,6 +307,26 @@ class Convert
         */
         static geometry_msgs::PoseStamped transformToPose(
             geometry_msgs::TransformStamped transform_stamped);
+
+
+        // Convert Pose to Pose RPY
+        // -------------------------------
+        /** \brief Convert Pose to Pose RPY
+        * \param pose Pose [m, rad] [geometry_msgs::Pose] 
+        * \return PoseRPY [m, deg] [robot_toolbox::PoseRPY] 
+        */
+        static robot_toolbox::PoseRPY poseToPoseRPY(
+            geometry_msgs::Pose pose);
+
+
+        // Convert Pose RPY to Pose
+        // -------------------------------
+        /** \brief Convert Pose RPY to Pose
+        * \param pose PoseRPY [m, deg] [robot_toolbox::PoseRPY]
+        * \return Pose [m, rad] [geometry_msgs::Pose]
+        */
+        static geometry_msgs::Pose poseRPYToPose(
+            robot_toolbox::PoseRPY poseRPY);
 
 
     // Protected Class members
