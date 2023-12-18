@@ -9,12 +9,12 @@ add_compile_options(-std=c++11)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   message_generation
-  eigen_conversions
   roscpp
   rospy
   std_msgs
   geometry_msgs
   sensor_msgs
+  eigen_conversions
   tf2_eigen
   tf2_ros
   tf_conversions
@@ -160,10 +160,11 @@ target_link_libraries(
   ${catkin_LIBRARIES}
 )
 
-## Add cmake target dependencies of the library
-## as an example, code may need to be generated before libraries
-## either from message generation or dynamic reconfigure
-# add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+# Add cmake target dependencies of the library
+# as an example, code may need to be generated before libraries
+# either from message generation or dynamic reconfigure
+add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(robot_toolbox robot_toolbox_generate_messages_cpp)
 
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
@@ -234,6 +235,7 @@ target_link_libraries(test_toolbox_param
 install(
   TARGETS 
     ${PROJECT_NAME}
+    robot_toolbox
     test_toolbox_node
     test_toolbox_map
     test_toolbox_param
