@@ -847,9 +847,9 @@ namespace Toolbox
     // Numerical Differentiation
     // -------------------------------
     double Math::numericalDifferentiation(
-        double& x, 
-        double& x_prev, 
-        double& dt)
+        const double& x, 
+        const double& x_prev, 
+        const double& dt)
     {
         // Check for postive dt
         if(dt < 0) return 0.0;

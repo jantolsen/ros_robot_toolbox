@@ -562,9 +562,9 @@ class Math
         * \return           Return derivative x_dt [double]
         */
         static double numericalDifferentiation(
-            double& x, 
-            double& x_prev, 
-            double& dt);
+            const double& x, 
+            const double& x_prev, 
+            const double& dt);
 
 
     // Protected Class members
