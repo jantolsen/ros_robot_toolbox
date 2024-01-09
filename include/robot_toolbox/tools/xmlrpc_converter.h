@@ -217,5 +217,182 @@ namespace Toolbox
         } // Function-End: convert<std::string>()
     }; // Struct-End: XmlRpcValueConverter<std::string>()
 
+
+    // XmlRpcValue Converter
+    // (Specialization for std::vector<bool>)
+    // -------------------------------
+    // (Template Specialization)
+    template<>
+    struct XmlRpcValueConverter<std::vector<bool>>
+    {
+        // Convert XmlRpcValue Parameter
+        // -------------------------------
+        static boost::optional<std::vector<bool>> convert(
+            const XmlRpc::XmlRpcValue& param)
+        {
+            // Local variable(s)
+            XmlRpc::XmlRpcValue param_ = param;
+            std::vector<bool> result;
+
+            // Check parameter against specified type
+            if (param_.getType() != XmlRpc::XmlRpcValue::TypeArray)
+            {
+                // Parameter type mismatch, return false
+                return boost::none;
+            }
+            
+            // Iterate through the array
+            for (int i = 0; i < param_.size(); ++i)
+            {
+                // Check if each element is an boolean
+                if (param_[i].getType() == XmlRpc::XmlRpcValue::TypeBoolean)
+                {
+                    result.push_back(static_cast<bool>(param_[i]));
+                }
+                else
+                {
+                    // Element type mismatch, return false
+                    return boost::none;
+                }
+            }
+
+            // Function return
+            return result;
+        } // Function-End: convert<std::vector<bool>>()
+    }; // Struct-End: XmlRpcValueConverter<std::vector<bool>()
+
+    
+    // XmlRpcValue Converter
+    // (Specialization for std::vector<int>)
+    // -------------------------------
+    // (Template Specialization)
+    template<>
+    struct XmlRpcValueConverter<std::vector<int>>
+    {
+        // Convert XmlRpcValue Parameter
+        // -------------------------------
+        static boost::optional<std::vector<int>> convert(
+            const XmlRpc::XmlRpcValue& param)
+        {
+            // Local variable(s)
+            XmlRpc::XmlRpcValue param_ = param;
+            std::vector<int> result;
+
+            // Check parameter against specified type
+            if (param_.getType() != XmlRpc::XmlRpcValue::TypeArray)
+            {
+                // Parameter type mismatch, return false
+                return boost::none;
+            }
+
+            // Iterate through the array
+            for (int i = 0; i < param_.size(); ++i)
+            {
+                // Check if each element is an integer
+                if (param_[i].getType() == XmlRpc::XmlRpcValue::TypeInt)
+                {
+                    result.push_back(static_cast<int>(param_[i]));
+                }
+                else
+                {
+                    // Element type mismatch, return false
+                    return boost::none;
+                }
+            }
+
+            // Function return
+            return result;
+        } // Function-End: convert<std::vector<int>>()
+    }; // Struct-End: XmlRpcValueConverter<std::vector<int>()
+
+
+    // XmlRpcValue Converter
+    // (Specialization for std::vector<double>)
+    // -------------------------------
+    // (Template Specialization)
+    template<>
+    struct XmlRpcValueConverter<std::vector<double>>
+    {
+        // Convert XmlRpcValue Parameter
+        // -------------------------------
+        static boost::optional<std::vector<double>> convert(
+            const XmlRpc::XmlRpcValue& param)
+        {
+            // Local variable(s)
+            XmlRpc::XmlRpcValue param_ = param;
+            std::vector<double> result;
+
+            // Check parameter against specified type
+            if (param_.getType() != XmlRpc::XmlRpcValue::TypeArray)
+            {
+                // Parameter type mismatch, return false
+                return boost::none;
+            }
+
+            // Iterate through the array
+            for (int i = 0; i < param_.size(); ++i)
+            {
+                // Check if each element is a double
+                if (param_[i].getType() == XmlRpc::XmlRpcValue::TypeDouble)
+                {
+                    result.push_back(static_cast<double>(param_[i]));
+                }
+                else
+                {
+                    // Element type mismatch, return false
+                    return boost::none;
+                }
+            }
+
+            // Function return
+            return result;
+        } // Function-End: convert<std::vector<double>>()
+    }; // Struct-End: XmlRpcValueConverter<std::vector<double>>()
+
+
+    // XmlRpcValue Converter
+    // (Specialization for std::vector<std::string>)
+    // -------------------------------
+    // (Template Specialization)
+    template<>
+    struct XmlRpcValueConverter<std::vector<std::string>>
+    {
+        // Convert XmlRpcValue Parameter
+        // -------------------------------
+        static boost::optional<std::vector<std::string>> convert(
+            const XmlRpc::XmlRpcValue& param)
+        {
+            // Local variable(s)
+            XmlRpc::XmlRpcValue param_ = param;
+            std::vector<std::string> result;
+
+            // Check parameter against specified type
+            if (param_.getType() != XmlRpc::XmlRpcValue::TypeArray)
+            {
+                // Parameter type mismatch, return false
+                return boost::none;
+            }
+
+            // Iterate through the array
+            for (int i = 0; i < param_.size(); ++i)
+            {
+                // Check if each element is a string
+                if (param_[i].getType() == XmlRpc::XmlRpcValue::TypeString)
+                {
+                    result.push_back(static_cast<std::string>(param_[i]));
+                }
+                else
+                {
+                    // Element type mismatch, return false
+                    return boost::none;
+                }
+            }
+
+            // Function return
+            return result;
+        } // Function-End: convert<std::vector<std::string>>()
+    }; // Struct-End: XmlRpcValueConverter<std::vector<std::string>>()
+    
+
 } // End Namespace: Robotics Toolbox
 #endif // XMLRPC_CONVERTER_H 
