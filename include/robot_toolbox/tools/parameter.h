@@ -28,6 +28,7 @@
     // Standard
     #include <vector>
     #include <map>
+    #include <stdexcept>
 
     // Boost
     #include <boost/optional.hpp>
@@ -179,6 +180,44 @@ class Parameter
         } // Function end: loadParamData()
 
 
+        // Load Parameter Data
+        // -------------------------------
+        /** \brief Load Parameter Data.
+        *
+        * Gets parameter value from given parameter data.
+        * If parameter-member is found within parameter-data, and conversion of data-type is successful, 
+        * the function returns with the acquired parameter-data.
+        * If given parameter-member is not found in parameter data or if configured incorrectly,
+        * an error message is given and a runtime expection is thrown.
+        *
+        * \param param_xml      Parameter data to be checked [const XmlRpc::XmlRpcValue&]
+        * \param param_member   Parameter member to search for [const std::string&]
+        * 
+        * \return Function return: parameter data [typename ItemType]
+        */
+        template<typename ItemType>
+        static ItemType loadParamData(
+            const XmlRpc::XmlRpcValue& param_xml,
+            const std::string& param_member)
+        {
+            // Get parameter data 
+            auto result = getParamData<ItemType>(param_xml, param_member);
+            if (!result)
+            {
+                // Parameter validation failed
+                ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
+                    << ": Failed! Parameter [" << param_member <<"] is missing or configured incorrectly");
+
+                // Throw runtime exception
+                throw std::runtime_error(CLASS_PREFIX + __FUNCTION__ 
+                    + ": Failed! Parameter [" + param_member + "] is missing or configured incorrectly");
+            }
+
+            // Return parameter value
+            return result.value();
+        } // Function end: loadParamData()
+
+
         // Load Parameter Item-Key
         // -------------------------------
         /** \brief Load Parameter Item-Key to given Target variable.
@@ -223,6 +262,47 @@ class Parameter
         } // Function end: loadParamItemKey()
 
 
+        // Load Parameter Item-Key
+        // -------------------------------
+        /** \brief Load Parameter Item-Key Data.
+        *
+        * Gets parameter value from given parameter data and validates it against supplied item-map.
+        * If parameter-member is found within parameter-data, conversion of data-type 
+        * and validation of parameter against supplied map is successful,
+        * the function returns with the acquired parameter-data.
+        * If given parameter-member is not found in parameter data, configured incorrectly, 
+        * or not part of given item-map, is given and a runtime expection is thrown.
+        *
+        * \param item_map       Item-Map to act as lookup and validation for parameter-member [std::map<ItemKey, ItemValue>]
+        * \param param_xml      Parameter data to be checked [const XmlRpc::XmlRpcValue&]
+        * \param param_member   Parameter member to search for [const std::string&]
+        * 
+        * \return Function return: parameter data [typename ItemType]
+        */
+        template<typename ItemType, typename ItemKey, typename ItemValue>
+        static ItemType loadParamItemKey(
+            const std::map<ItemKey, ItemValue>& item_map,
+            const XmlRpc::XmlRpcValue& param_xml,
+            const std::string& param_member)
+        {
+            // Get parameter item key 
+            auto result = getParamItemKey<ItemType>(item_map, param_xml, param_member);
+            if (!result)
+            {
+                // Parameter validation failed
+                ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
+                    << ": Failed! Parameter [" << param_member <<"] is missing or configured incorrectly");
+
+                // Throw runtime exception
+                throw std::runtime_error(CLASS_PREFIX + __FUNCTION__ 
+                    + ": Failed! Parameter [" + param_member + "] is missing or configured incorrectly");
+            }
+
+            // Return parameter value
+            return result.value();
+        } // Function end: loadParamItemKey()
+
+
         // Load Parameter Item-Value
         // -------------------------------
         /** \brief Load Parameter Item-Value to given Target variable.
@@ -264,6 +344,47 @@ class Parameter
 
             // Function return
             return true;
+        } // Function end: loadParamItemValue()
+
+
+        // Load Parameter Item-Value
+        // -------------------------------
+        /** \brief Load Parameter Item-Value data.
+        *
+        * Gets parameter value from given parameter data and validates it against supplied item-map.
+        * If parameter-member is found within parameter-data, conversion of data-type 
+        * and validation of parameter against supplied map is successful,
+        * the function returns with the acquired parameter-data.
+        * If given parameter-member is not found in parameter data, configured incorrectly, 
+        * or not part of given item-map, is given and a runtime expection is thrown.
+        *
+        * \param item_map       Item-Map to act as lookup and validation for parameter-member [std::map<ItemKey, ItemValue>]
+        * \param param_xml      Parameter data to be checked [const XmlRpc::XmlRpcValue&]
+        * \param param_member   Parameter member to search for [const std::string&]
+        * 
+        * \return Function return: parameter data [typename ItemType]
+        */
+        template<typename ItemType, typename ItemKey, typename ItemValue>
+        static ItemType loadParamItemValue(
+            const std::map<ItemKey, ItemValue>& item_map,
+            const XmlRpc::XmlRpcValue& param_xml,
+            const std::string& param_member)
+        {
+            // Get parameter item value 
+            auto result = getParamItemValue<ItemType>(item_map, param_xml, param_member);
+            if (!result)
+            {
+                // Parameter validation failed
+                ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
+                    << ": Failed! Parameter [" << param_member <<"] is missing or configured incorrectly");
+
+                // Throw runtime exception
+                throw std::runtime_error(CLASS_PREFIX + __FUNCTION__ 
+                    + ": Failed! Parameter [" + param_member + "] is missing or configured incorrectly");
+            }
+
+            // Return parameter value
+            return result.value();
         } // Function end: loadParamItemValue()
 
 
