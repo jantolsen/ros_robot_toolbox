@@ -59,7 +59,6 @@ add_message_files(
   FILES
   PoseRPY.msg
   TranslationVector.msg
-  UserFrame.msg
 )
 
 ## Generate services in the 'srv' folder
