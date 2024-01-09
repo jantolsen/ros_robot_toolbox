@@ -301,4 +301,115 @@ namespace Toolbox
         return false;
     }
 
+
+    // Check for empty pose
+    // -------------------------------
+    // (Function Overloading)
+    bool Kinematics::isPoseEmpty(
+        const geometry_msgs::Pose& pose)
+    {
+        // Check if pose is empty
+        if (pose.position.x == 0.0 
+            && pose.position.y == 0.0 
+            && pose.position.z == 0.0 
+            && pose.orientation.x == 0.0 
+            && pose.orientation.y == 0.0 
+            && pose.orientation.z == 0.0 
+            && pose.orientation.w == 0.0)
+        {
+            // Function return
+            return true;
+        }
+
+        // Function return
+        return false;
+    } // Function end: isPoseEmpty()
+
+
+    // Check for empty pose
+    // -------------------------------
+    // (Function Overloading)
+    bool Kinematics::isPoseEmpty(
+        const geometry_msgs::PoseStamped& poseStamped)
+    {
+        // Check if pose is empty
+        if (poseStamped.header.stamp == ros::Time(0)
+            && isPoseEmpty(poseStamped.pose))
+        {
+            // Function return
+            return true;
+        }
+        {
+            // Function return
+            return true;
+        }
+
+        // Function return
+        return false;
+    } // Function end: isPoseEmpty()
+
+
+    // Check for empty pose
+    // -------------------------------
+    // (Function Overloading)
+    bool Kinematics::isPoseEmpty(
+        const robot_toolbox::PoseRPY poseRPY)
+    {
+        // Check if pose is empty
+        if (poseRPY.position.x == 0.0 
+            && poseRPY.position.y == 0.0 
+            && poseRPY.position.z == 0.0 
+            && poseRPY.orientation.x == 0.0 
+            && poseRPY.orientation.y == 0.0 
+            && poseRPY.orientation.z == 0.0)
+        {
+            // Function return
+            return true;
+        }
+
+        // Function return
+        return false;
+    } // Function end: isPoseEmpty()
+
+
+    // Check for empty transform
+    // -------------------------------
+    bool Kinematics::isTransformEmpty(
+        const geometry_msgs::Transform& transform)
+    {
+        // Check if transform is empty
+        if (transform.translation.x == 0.0 
+            && transform.translation.y == 0.0 
+            && transform.translation.z == 0.0 
+            && transform.rotation.x == 0.0 
+            && transform.rotation.y == 0.0 
+            && transform.rotation.z == 0.0 
+            && transform.rotation.w == 0.0)
+        {
+            // Function return
+            return true;
+        }
+
+        // Function return
+        return false;
+    } // Function end: isTransformEmpty()
+
+
+    // Check for empty transform
+    // -------------------------------
+    bool Kinematics::isTransformEmpty(
+        const geometry_msgs::TransformStamped& transformStamped)
+    {
+        // Check if pose is empty
+        if (transformStamped.header.stamp == ros::Time(0)
+            && isTransformEmpty(transformStamped.transform))
+        {
+            // Function return
+            return true;
+        }
+
+        // Function return
+        return false;
+    } // Function end: isTransformEmpty()
+
 } // End Namespace: Robotics Toolbox
