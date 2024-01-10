@@ -209,7 +209,7 @@ class Parameter
                     << ": Failed! Parameter [" << param_member <<"] is missing or configured incorrectly");
 
                 // Throw runtime exception
-                throw std::runtime_error(CLASS_PREFIX + __FUNCTION__ 
+                throw std::runtime_error("Runtime exception! " + CLASS_PREFIX + __FUNCTION__ 
                     + ": Failed! Parameter [" + param_member + "] is missing or configured incorrectly");
             }
 
@@ -294,7 +294,7 @@ class Parameter
                     << ": Failed! Parameter [" << param_member <<"] is missing or configured incorrectly");
 
                 // Throw runtime exception
-                throw std::runtime_error(CLASS_PREFIX + __FUNCTION__ 
+                throw std::runtime_error("Runtime exception! " + CLASS_PREFIX + __FUNCTION__ 
                     + ": Failed! Parameter [" + param_member + "] is missing or configured incorrectly");
             }
 
@@ -379,7 +379,7 @@ class Parameter
                     << ": Failed! Parameter [" << param_member <<"] is missing or configured incorrectly");
 
                 // Throw runtime exception
-                throw std::runtime_error(CLASS_PREFIX + __FUNCTION__ 
+                throw std::runtime_error("Runtime exception! " + CLASS_PREFIX + __FUNCTION__ 
                     + ": Failed! Parameter [" + param_member + "] is missing or configured incorrectly");
             }
 
