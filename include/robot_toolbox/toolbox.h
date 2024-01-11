@@ -34,5 +34,5 @@
     #include "robot_toolbox/tools/trajectory.h"
     #include "robot_toolbox/tools/parameter.h"
     #include "robot_toolbox/tools/xmlrpc_converter.h"
-
+    #include "robot_toolbox/tools/param.h"
 #endif // TOOLBOX_H 
