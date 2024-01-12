@@ -135,5 +135,72 @@ namespace Toolbox
     } // Function end: compareStringsCaseInsensitive()
 
 
+    // Validate against Validation Set
+    // -------------------------------
+    // (Function Overloading)
+    /** \brief Validate against Validation Set
+    *  
+    * Validate given value against a given variable-set (vector)
+    * If given value is found in validation-set the function returns true.
+    * If not found, the function returns false.
+    *
+    * \param value          Value to be validated [std::string]
+    * \param validation_set Validation set to compare against [std::string]
+    * 
+    * \return Function return: Successful/Unsuccessful (true/false) [bool]
+    */
+    template <typename T>
+    static bool validateAgainstSet(
+        const T& value,        
+        const std::vector<T>& validation_set)
+    {
+        // Search for given value against validation set
+        auto it = std::find(validation_set.begin(), validation_set.end(), value);
+        if (it != validation_set.end()) 
+        {
+            // Function return
+            return true;
+        }
+        
+        // Function return
+        return false;
+    } // Function end: validateAgainstSet()
+
+
+    // Validate against Validation Set
+    // -------------------------------
+    // (Function Overloading)
+    /** \brief Validate against Validation Set
+    *  
+    * Validate given value against a given variable-set (vector)
+    * If given value is found in validation-set the function returns true.
+    * If not found, the function returns false.
+    *
+    * \param value          Value to be validated [std::string]
+    * \param validation_set Validation set to compare against [std::string]
+    * 
+    * \return Function return: Successful/Unsuccessful (true/false) [bool]
+    */
+    static bool validateAgainstSet(
+        std::string& value,        
+        const std::vector<std::string>& validation_set)
+    {
+        // Compare given value against validation set
+        for (const auto& validation_value : validation_set)
+        {
+            // Compare given value against validation value
+            if (compareStringsCaseInsensitive(value, validation_value))
+            {
+                // Update value to match validation-value in the case of different capilization
+                value = validation_value;
+
+                // Function return
+                return true;
+            }
+        }
+        // Function return
+        return false;
+    } // Function end: validateAgainstSet()
+    
 } // End Namespace: Robotics Toolbox
 #endif // COMMON_TOOL_H

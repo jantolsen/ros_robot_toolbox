@@ -20,7 +20,7 @@
 //      If header-file not earlier included, it continues and defines the rest of the file 
 //  #endif: 
 //      End of include guard
-#ifndef PARAMETER_TOOL_H       
+#ifndef PARAMETER_TOOL_H
 #define PARAMETER_TOOL_H
 
 // Include Header-files:

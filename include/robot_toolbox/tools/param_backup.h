@@ -44,7 +44,8 @@
     #include "robot_toolbox/tools/common.h"
     #include "robot_toolbox/tools/convert.h"
     #include "robot_toolbox/tools/map.h"
-    #include "robot_toolbox/tools/xmlrpc_converter.h"
+    // #include "robot_toolbox/tools/xmlrpc_converter.h"
+    // #include "robot_toolbox/tools/xmlrpc_converter.inl"
     
 
 // Namespace: Robotics Toolbox
@@ -170,6 +171,7 @@ namespace Toolbox
             // Function return
             return true;
         } // Function-End: checkSize()
+
 
         // Get Name of Parameter Data-Type 
         // -------------------------------
@@ -361,7 +363,7 @@ namespace Toolbox
             const XmlRpc::XmlRpcValue& param_xml)
         {
             // Convert given parameter to respective item-type
-            boost::optional<ItemType> result_param = Toolbox::XmlRpcValueConverter<ItemType>::convert(param_xml);
+            boost::optional<ItemType> result_param = XmlRpcValueConverterTest2<ItemType>::convert(param_xml);
             if(!result_param)
             {
                 // Get human-readable type-names of given parameter and typename item-type
@@ -419,6 +421,9 @@ namespace Toolbox
             return boost::none;
         } // Function-End: getParamData<std::string>()
     }; // Struct-End: ParameterLoader<std::string>()
+
+
+    
 
 } // End Namespace: Robotics Toolbox
 #endif // PARAM_TOOL_H

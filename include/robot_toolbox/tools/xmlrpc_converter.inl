@@ -20,8 +20,8 @@
 //      If header-file not earlier included, it continues and defines the rest of the file 
 //  #endif: 
 //      End of include guard
-#ifndef XMLRPC_CONVERTER_H
-#define XMLRPC_CONVERTER_H
+// #ifndef XMLRPC_CONVERTER_H       
+// #define XMLRPC_CONVERTER_H
 
 // Include Header-files:
 // -------------------------------
@@ -45,7 +45,7 @@ namespace Toolbox
     // -------------------------------
     // (Template Specialization)
     template<typename ParamType>
-    struct XmlRpcValueConverter
+    struct XmlRpcValueConverterTest2
     {
         // Convert XmlRpcValue Parameter
         // -------------------------------
@@ -64,7 +64,7 @@ namespace Toolbox
             // Unsupported type!
             return boost::none;
         } // Function-End: convert()
-    }; // Struct-End: XmlRpcValueConverter()
+    }; // Struct-End: XmlRpcValueConverterTest2()
 
 
     // XmlRpcValue Converter
@@ -72,7 +72,7 @@ namespace Toolbox
     // -------------------------------
     // (Template Specialization)
     template<>
-    struct XmlRpcValueConverter<bool>
+    struct XmlRpcValueConverterTest2<bool>
     {
         // Convert XmlRpcValue Parameter
         // -------------------------------
@@ -101,7 +101,7 @@ namespace Toolbox
             // Function return
             return static_cast<bool>(param_);
         } // Function-End: convert<bool>()
-    }; // Struct-End: XmlRpcValueConverter<bool>()
+    }; // Struct-End: XmlRpcValueConverterTest2<bool>()
 
 
     // XmlRpcValue Converter
@@ -109,7 +109,7 @@ namespace Toolbox
     // -------------------------------
     // (Template Specialization)
     template<>
-    struct XmlRpcValueConverter<int>
+    struct XmlRpcValueConverterTest2<int>
     {
         // Convert XmlRpcValue Parameter
         // -------------------------------
@@ -139,7 +139,7 @@ namespace Toolbox
             // Function return
             return static_cast<int>(param_);
         } // Function-End: convert<int>()
-    }; // Struct-End: XmlRpcValueConverter<int>()
+    }; // Struct-End: XmlRpcValueConverterTest2<int>()
 
 
     // XmlRpcValue Converter
@@ -147,7 +147,7 @@ namespace Toolbox
     // -------------------------------
     // (Template Specialization)
     template<>
-    struct XmlRpcValueConverter<double>
+    struct XmlRpcValueConverterTest2<double>
     {
         // Convert XmlRpcValue Parameter
         // -------------------------------
@@ -177,7 +177,7 @@ namespace Toolbox
             // Function return
             return static_cast<double>(param_);
         } // Function-End: convert<double>()
-    }; // Struct-End: XmlRpcValueConverter<double>()
+    }; // Struct-End: XmlRpcValueConverterTest2<double>()
 
 
     // XmlRpcValue Converter
@@ -185,7 +185,7 @@ namespace Toolbox
     // -------------------------------
     // (Template Specialization)
     template<>
-    struct XmlRpcValueConverter<std::string>
+    struct XmlRpcValueConverterTest2<std::string>
     {
         // Convert XmlRpcValue Parameter
         // -------------------------------
@@ -215,7 +215,7 @@ namespace Toolbox
             // Function return
             return static_cast<std::string>(param_);
         } // Function-End: convert<std::string>()
-    }; // Struct-End: XmlRpcValueConverter<std::string>()
+    }; // Struct-End: XmlRpcValueConverterTest2<std::string>()
 
 
     // XmlRpcValue Converter
@@ -223,7 +223,7 @@ namespace Toolbox
     // -------------------------------
     // (Template Specialization)
     template<>
-    struct XmlRpcValueConverter<std::vector<bool>>
+    struct XmlRpcValueConverterTest2<std::vector<bool>>
     {
         // Convert XmlRpcValue Parameter
         // -------------------------------
@@ -259,7 +259,7 @@ namespace Toolbox
             // Function return
             return result;
         } // Function-End: convert<std::vector<bool>>()
-    }; // Struct-End: XmlRpcValueConverter<std::vector<bool>()
+    }; // Struct-End: XmlRpcValueConverterTest2<std::vector<bool>()
 
     
     // XmlRpcValue Converter
@@ -267,7 +267,7 @@ namespace Toolbox
     // -------------------------------
     // (Template Specialization)
     template<>
-    struct XmlRpcValueConverter<std::vector<int>>
+    struct XmlRpcValueConverterTest2<std::vector<int>>
     {
         // Convert XmlRpcValue Parameter
         // -------------------------------
@@ -303,7 +303,7 @@ namespace Toolbox
             // Function return
             return result;
         } // Function-End: convert<std::vector<int>>()
-    }; // Struct-End: XmlRpcValueConverter<std::vector<int>()
+    }; // Struct-End: XmlRpcValueConverterTest2<std::vector<int>()
 
 
     // XmlRpcValue Converter
@@ -311,7 +311,7 @@ namespace Toolbox
     // -------------------------------
     // (Template Specialization)
     template<>
-    struct XmlRpcValueConverter<std::vector<double>>
+    struct XmlRpcValueConverterTest2<std::vector<double>>
     {
         // Convert XmlRpcValue Parameter
         // -------------------------------
@@ -347,7 +347,7 @@ namespace Toolbox
             // Function return
             return result;
         } // Function-End: convert<std::vector<double>>()
-    }; // Struct-End: XmlRpcValueConverter<std::vector<double>>()
+    }; // Struct-End: XmlRpcValueConverterTest2<std::vector<double>>()
 
 
     // XmlRpcValue Converter
@@ -355,7 +355,7 @@ namespace Toolbox
     // -------------------------------
     // (Template Specialization)
     template<>
-    struct XmlRpcValueConverter<std::vector<std::string>>
+    struct XmlRpcValueConverterTest2<std::vector<std::string>>
     {
         // Convert XmlRpcValue Parameter
         // -------------------------------
@@ -391,8 +391,8 @@ namespace Toolbox
             // Function return
             return result;
         } // Function-End: convert<std::vector<std::string>>()
-    }; // Struct-End: XmlRpcValueConverter<std::vector<std::string>>()
+    }; // Struct-End: XmlRpcValueConverterTest2<std::vector<std::string>>()
     
 
 } // End Namespace: Robotics Toolbox
-#endif // XMLRPC_CONVERTER_H 
+// #endif // XMLRPC_CONVERTER_H 

@@ -58,76 +58,76 @@ namespace test
         {"CACHED_TRACIK",6}
     };
 
-    // Test: Test Param func
-    // -------------------------------
-    void testParamFunc(XmlRpc::XmlRpcValue& param)
-    {
-        ROS_INFO(" ");
-        ROS_INFO("Param: Test: Bool");
-        ROS_INFO("--------------------");
+    // // Test: Test Param func
+    // // -------------------------------
+    // void testParamFunc(XmlRpc::XmlRpcValue& param)
+    // {
+    //     ROS_INFO(" ");
+    //     ROS_INFO("Param: Test: Bool");
+    //     ROS_INFO("--------------------");
         
-            ROS_INFO(" ");
-            ROS_INFO("  Test: 1");
-            ROS_INFO("--------------------");
+    //         ROS_INFO(" ");
+    //         ROS_INFO("  Test: 1");
+    //         ROS_INFO("--------------------");
 
-            auto res = Toolbox::Parameter::getParamData<bool>(param, "param_bool1");
-            if(res)
-            {
-                ROS_INFO_STREAM("   Results: " << res.value());
-            }
-            else
-            {
-                ROS_ERROR_STREAM("  Results: Failed!");
-            }
+    //         auto res = Toolbox::Parameter::getParamData<bool>(param, "param_bool1");
+    //         if(res)
+    //         {
+    //             ROS_INFO_STREAM("   Results: " << res.value());
+    //         }
+    //         else
+    //         {
+    //             ROS_ERROR_STREAM("  Results: Failed!");
+    //         }
 
-            ROS_INFO(" ");
-            ROS_INFO("Test: 2");
-            ROS_INFO("--------------------");
+    //         ROS_INFO(" ");
+    //         ROS_INFO("Test: 2");
+    //         ROS_INFO("--------------------");
 
-            res = Toolbox::Parameter::getParamData<bool>(param, "param_bool2");
-            if(res)
-            {
-                ROS_INFO_STREAM("   Results: " << res.value());
-            }
-            else
-            {
-                ROS_ERROR_STREAM("  Results: Failed!");
-            }
+    //         res = Toolbox::Parameter::getParamData<bool>(param, "param_bool2");
+    //         if(res)
+    //         {
+    //             ROS_INFO_STREAM("   Results: " << res.value());
+    //         }
+    //         else
+    //         {
+    //             ROS_ERROR_STREAM("  Results: Failed!");
+    //         }
 
-        ROS_INFO(" ");
-        ROS_INFO(" ");
-        ROS_INFO("Param: Test: Int");
-        ROS_INFO("--------------------");
+    //     ROS_INFO(" ");
+    //     ROS_INFO(" ");
+    //     ROS_INFO("Param: Test: Int");
+    //     ROS_INFO("--------------------");
         
-            ROS_INFO(" ");
-            ROS_INFO("Test: 1");
-            ROS_INFO("--------------------");
+    //         ROS_INFO(" ");
+    //         ROS_INFO("Test: 1");
+    //         ROS_INFO("--------------------");
 
-            res = Toolbox::Parameter::getParamData<int>(param, "param_int1");
-            if(res)
-            {
-                ROS_INFO_STREAM("   Results: " << res.value());
-            }
-            else
-            {
-                ROS_ERROR_STREAM("  Results: Failed!");
-            }
+    //         res = Toolbox::Parameter::getParamData<int>(param, "param_int1");
+    //         if(res)
+    //         {
+    //             ROS_INFO_STREAM("   Results: " << res.value());
+    //         }
+    //         else
+    //         {
+    //             ROS_ERROR_STREAM("  Results: Failed!");
+    //         }
 
-            ROS_INFO(" ");
-            ROS_INFO("Test: 2");
-            ROS_INFO("--------------------");
+    //         ROS_INFO(" ");
+    //         ROS_INFO("Test: 2");
+    //         ROS_INFO("--------------------");
 
-            res = Toolbox::Parameter::getParamData<int>(param, "param_int2");
-            if(res)
-            {
-                ROS_INFO_STREAM("   Results: " << res.value());
-            }
-            else
-            {
-                ROS_ERROR_STREAM("  Results: Failed!");
-            }
+    //         res = Toolbox::Parameter::getParamData<int>(param, "param_int2");
+    //         if(res)
+    //         {
+    //             ROS_INFO_STREAM("   Results: " << res.value());
+    //         }
+    //         else
+    //         {
+    //             ROS_ERROR_STREAM("  Results: Failed!");
+    //         }
 
-    } // Function end: testMapGetValues()
+    // } // Function end: testMapGetValues()
     
 
     // // Test: Type-Map

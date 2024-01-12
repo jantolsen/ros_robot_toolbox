@@ -19,7 +19,7 @@
 //      If header-file not earlier included, it continues and defines the rest of the file 
 //  #endif: 
 //      End of include guard
-#ifndef TOOLBOX_H       
+#ifndef TOOLBOX_H
 #define TOOLBOX_H
 
 // Include Header-files:
@@ -34,5 +34,7 @@
     #include "robot_toolbox/tools/trajectory.h"
     #include "robot_toolbox/tools/parameter.h"
     #include "robot_toolbox/tools/xmlrpc_converter.h"
-    #include "robot_toolbox/tools/param.h"
+    #include "robot_toolbox/tools/param_helper.h"
+    #include "robot_toolbox/tools/param_converter.h"
+    #include "robot_toolbox/tools/param_loader.h"
 #endif // TOOLBOX_H 
