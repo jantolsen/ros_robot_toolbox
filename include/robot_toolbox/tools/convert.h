@@ -62,26 +62,59 @@ class Convert
 
         // Convert Degrees to Radians
         // -------------------------------
+        // (Function Overloading)
         /** \brief Convert an angle (double) from Degrees to Radians
+        *
         * \param deg An angle given in degrees
+        *
         * \return An angle given in radians
         */
         static double degToRad(double deg = 1.0);
 
 
+        // Convert Degrees to Radians
+        // -------------------------------
+        // (Function Overloading)
+        /** \brief Convert a vector of angles (double) from Degrees to Radians
+        *
+        * \param deg_vec    Vector of angles given in degrees
+        *
+        * \return Vector of angles given in radians
+        */
+        static std::vector<double> degToRad(
+            std::vector<double> deg_vec);
+
+
         // Convert Radians to Degrees 
         // -------------------------------
+        // (Function Overloading)
         /** \brief Convert an angle (double) from Radians to Degrees 
+        *
         * \param rad An angle given in radians
+        *
         * \return An angle given in degrees
         */
         static double radToDeg(double rad = 1.0);
+
+
+        // Convert Radians to Degrees 
+        // -------------------------------
+        // (Function Overloading)
+        /** \brief Convert a vector of angles (double) from Radians to Degrees 
+        *
+        * \param rad_vec Vector of angles given in radians
+        *
+        * \return A vector of angles given in degrees
+        */
+        static std::vector<double> radToDeg(
+            std::vector<double> rad_vec);
         
         
         // Convert String to Upper-Case String
         // -------------------------------
         // (Function Overloading)
         /** \brief Converts given string to all upper-case letters
+        *
         * \param input Input string [std::string]
         * \return Upper-Case String [std::string]
         */
@@ -92,7 +125,9 @@ class Convert
         // -------------------------------
         // (Function Overloading)
         /** \brief Get data-type name of given variable
+        *
         * Uses boost::demangle to obtain and return a human-readable type-name
+        *
         * \param input  Input variable to get type name of [typename Type]
         * \return Return human-readable type-name [std::string]
         */
@@ -109,7 +144,9 @@ class Convert
         // -------------------------------
         // (Function Overloading)
         /** \brief Get data-type name of given fundamental type
+        *
         * Uses boost::demangle to obtain and return a human-readable type-name
+        *
         * \param type_info Fundamental data type to get type name of [std::type_info&]
         * \return Return human-readable type-name [std::string]
         */
@@ -125,7 +162,9 @@ class Convert
         // -------------------------------
         // (Function Overloading)
         /** \brief Convert an euler rotation (Eigen::Vector3d) 
+        *
         * to a Quaternion (Eigen::Quaternion<double>)
+        *
         * \param euler Euler-Rotation (rad) [Eigen::Vector3d]
         * \param seq Euler-Sequence for rotation (XYZ = 0, ZYX = 1, ZXZ = 2, ZYZ = 3) [int]
         * \return Rotation in Quaternion [Eigen::Quaterniond]
@@ -140,6 +179,7 @@ class Convert
         // (Function Overloading)
         /** \brief Convert an euler rotation (double) 
         * to a Quaternion (Eigen::Quaternion<double>)
+        *
         * \param phi    1st axis-rotation (deg) [double]
         * \param theta  2nd axis rotation (deg) [double]
         * \param psi    3rd axis rotation (deg) [double]
@@ -158,6 +198,7 @@ class Convert
         // (Function Overloading)
         /** \brief Convert an euler rotation (geometry_msgs::Point) 
         * to a Quaternion (geometry_msgs::Quaternion)
+        *
         * \param euler Euler-Rotation (rad) [geometry_msgs::Point]
         * \param seq Euler-Sequence for rotation (XYZ = 0, ZYX = 1, ZXZ = 2, ZYZ = 3) [int]
         * \return Rotation in Quaternion [geometry_msgs::Quaternion]
@@ -172,6 +213,7 @@ class Convert
         // (Function Overloading)
         /** \brief Convert a quaternion rotation (Eigen::Quaternion<double>) 
         * to an euler-rotation (Eigen::Vector3d) 
+        *
         * \param q Quaternion-Rotation (rad) [Eigen::Quaternion<double>]
         * \param seq Euler-Sequence for rotation (XYZ = 0, ZYX = 1, ZXZ = 2, ZYZ = 3) [int]
         * \return Rotation in Euler-Angles [Eigen::Vector3d]
@@ -186,6 +228,7 @@ class Convert
         // (Function Overloading)
         /** \brief Convert a quaternion rotation (Eigen::Quaternion<double>) 
         * to an euler-rotation (Eigen::Vector3d) 
+        *
         * \param w Quaternion scalar coefficient W [double]
         * \param x Quaternion scalar coefficient [double]
         * \param y Quaternion scalar coefficient [double]
@@ -206,6 +249,7 @@ class Convert
         // (Function Overloading)
         /** \brief Convert a quaternion rotation (geometry_msgs::Quaternion) 
         * to an euler-rotation (geometry_msgs::Point) 
+        *
         * \param q Quaternion-Rotation (rad) [geometry_msgs::Quaternion]
         * \param seq Euler-Sequence for rotation (XYZ = 0, ZYX = 1, ZXZ = 2, ZYZ = 3) [int]
         * \return Rotation in Euler-Angles [geometry_msgs::Vector3d]
@@ -218,6 +262,7 @@ class Convert
         // Convert Eigen-Vector to Std-Vector 
         // -------------------------------
         /** \brief Convert a Eigen::Vector to Std::Vector
+        *
         * \param v_in input vector [Eigen::VectorXd]
         * \return converted vector [std::vector<double>]
         */
@@ -228,6 +273,7 @@ class Convert
         // Convert Std-Vector to Eigen-Vector
         // -------------------------------
         /** \brief Convert a Eigen::Vector to Std::Vector
+        *
         * \param vec input vector [std::vector<double>]
         * \return converted vector [Eigen::VectorXd]
         */
@@ -237,10 +283,9 @@ class Convert
 
         // Convert Pose to Transform
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Convert Pose to Transform
+        *
         * \param pose Pose [geometry_msgs::Pose]
         * \return Transform [geometry_msgs::Transform]
         */
@@ -252,6 +297,7 @@ class Convert
         // -------------------------------
         // (Function Overloading)
         /** \brief Convert Pose to Transform-Stamped
+        *
         * \param pose Pose [geometry_msgs::Pose]
         * \param parent_frame Frame of which pose is relative to
         * \param child_frame Frame of which to accquire pose
@@ -267,6 +313,7 @@ class Convert
         // -------------------------------
         // (Function Overloading)
         /** \brief Convert Pose-Stamped to Transform-Stamped
+        *
         * \param pose_stamped Pose-Stamped [geometry_msgs::PoseStamped]
         * \return Transform-Stamped [geometry_msgs::TransformStamped]
         */
@@ -278,6 +325,7 @@ class Convert
         // -------------------------------
         // (Function Overloading)
         /** \brief Convert Transform to Pose
+        *
         * \param transform Transform [geometry_msgs::Transform]
         * \return Pose [geometry_msgs::Pose]
         */
@@ -289,6 +337,7 @@ class Convert
         // -------------------------------
         // (Function Overloading)
         /** \brief Convert Transform to Pose-Stamped
+        *
         * \param transform Transform [geometry_msgs::Transform]
         * \param parent_frame Frame of which transform is relative to
         * \return Pose-Stamped [geometry_msgs::Pose]
@@ -302,6 +351,7 @@ class Convert
         // -------------------------------
         // (Function Overloading)
         /** \brief Convert Transform-Stamped to Pose-Stamped
+        *
         * \param transform Transform-Stamped [geometry_msgs::TransformStamped]
         * \return Pose-Stamped [geometry_msgs::PoseStamped]
         */
@@ -312,6 +362,7 @@ class Convert
         // Convert Pose to Pose RPY
         // -------------------------------
         /** \brief Convert Pose to Pose RPY
+        *
         * \param pose Pose [m, rad] [geometry_msgs::Pose] 
         * \return PoseRPY [m, deg] [robot_toolbox::PoseRPY] 
         */
@@ -322,6 +373,7 @@ class Convert
         // Convert Pose RPY to Pose
         // -------------------------------
         /** \brief Convert Pose RPY to Pose
+        *
         * \param pose PoseRPY [m, deg] [robot_toolbox::PoseRPY]
         * \return Pose [m, rad] [geometry_msgs::Pose]
         */

@@ -33,7 +33,9 @@ namespace Toolbox
 
     // Convert Degrees to Radians
     // -------------------------------
-    double Convert::degToRad(double deg)
+    // (Function Overloading)
+    double Convert::degToRad(
+        double deg)
     {
         // Convert deg to rad
         double rad = deg * M_PI / 180.0;
@@ -43,9 +45,31 @@ namespace Toolbox
     }
 
 
+    // Convert Degrees to Radians
+    // -------------------------------
+    std::vector<double> Convert::degToRad(
+        std::vector<double> deg_vec)
+    {
+        // Local variable
+        std::vector<double> rad_vec;
+
+        // Iterate over given vector of angles
+        for (int i = 0; i < deg_vec.size(); i++)
+        {
+            // Convert deg to rad
+            rad_vec.push_back(deg_vec[i] * M_PI / 180.0);
+        }
+        
+        // Function Output
+        return rad_vec;
+    }
+
+
     // Convert Radians to Degrees
     // -------------------------------
-    double Convert::radToDeg(double rad)
+    // (Function Overloading)
+    double Convert::radToDeg(
+        double rad)
     {
         // Convert deg to rad
         double deg = rad * 180.0 / M_PI;
@@ -53,6 +77,28 @@ namespace Toolbox
         // Function Output
         return deg;
     }
+
+
+    // Convert Radians to Degrees
+    // -------------------------------
+    // (Function Overloading)
+    std::vector<double> Convert::radToDeg(
+        std::vector<double> rad_vec)
+    {
+        // Local variable
+        std::vector<double> deg_vec;
+
+        // Iterate over given vector of angles
+        for (int i = 0; i < rad_vec.size(); i++)
+        {
+            // Convert deg to rad
+            deg_vec.push_back(rad_vec[i] * 180.0 / M_PI);
+        }
+
+        // Function Output
+        return deg_vec;
+    }
+
 
     // Convert String to Upper-Case String
     // -------------------------------
