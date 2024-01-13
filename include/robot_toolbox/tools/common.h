@@ -135,10 +135,10 @@ namespace Toolbox
     } // Function end: compareStringsCaseInsensitive()
 
 
-    // Validate against Validation Set
+    // Is Value in Validation-Set
     // -------------------------------
     // (Function Overloading)
-    /** \brief Validate against Validation Set
+    /** \brief Is value in validation-set
     *  
     * Validate given value against a given variable-set (vector)
     * If given value is found in validation-set the function returns true.
@@ -150,7 +150,7 @@ namespace Toolbox
     * \return Function return: Successful/Unsuccessful (true/false) [bool]
     */
     template <typename T>
-    static bool validateAgainstSet(
+    static bool isValueInSet(
         const T& value,        
         const std::vector<T>& validation_set)
     {
@@ -164,15 +164,15 @@ namespace Toolbox
         
         // Function return
         return false;
-    } // Function end: validateAgainstSet()
+    } // Function end: isValueInSet()
 
 
-    // Validate against Validation Set
+    // Is Value in Validation-Set
     // -------------------------------
     // (Function Overloading)
-    /** \brief Validate against Validation Set
+    /** \brief Is value in validation-set
     *  
-    * Validate given value against a given variable-set (vector)
+    * Validate given value against a given validation-set (vector)
     * If given value is found in validation-set the function returns true.
     * If not found, the function returns false.
     *
@@ -181,7 +181,7 @@ namespace Toolbox
     * 
     * \return Function return: Successful/Unsuccessful (true/false) [bool]
     */
-    static bool validateAgainstSet(
+    static bool isValueInSet(
         std::string& value,        
         const std::vector<std::string>& validation_set)
     {
@@ -200,7 +200,7 @@ namespace Toolbox
         }
         // Function return
         return false;
-    } // Function end: validateAgainstSet()
+    } // Function end: isValueInSet()
     
 } // End Namespace: Robotics Toolbox
 #endif // COMMON_TOOL_H

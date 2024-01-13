@@ -142,9 +142,7 @@ namespace Toolbox
     /** \brief Parameter Converter Class
     *
     * Parameter Converter contains utility functions for conversion 
-    * of XmlRpc::XmlRpcValue to fundamental types. 
-    * Functionality is implemented as template-class
-    * with member function implemented with template specialization(s).
+    * of XmlRpc::XmlRpcValue to fundamental types.
     */
     class ParameterConverter
     {
@@ -191,8 +189,9 @@ namespace Toolbox
     // -------------------------------
     /** \brief Parameter Loader Class
     *
-    * Parameter Loader contains utility functions for loading and validating 
-    * parameter-data from given parameter-container obtained from parameter-server.
+    * Parameter Loader contains utility functions for loading
+    * and validating of parameter-data from parameter-container
+    * obtained from the parameter-server. 
     */
     class ParameterLoader
     {   
@@ -201,12 +200,12 @@ namespace Toolbox
         // Accessible for everyone
         public:
 
-            // Get Parameter Data
+            // Load Parameter Data
             // -------------------------------
             // (Function Overloading)
-            /** \brief Get Parameter Data.
+            /** \brief Load Parameter Data.
             *
-            * Gets parameter-data from given parameter-container. 
+            * Loads parameter-data from given parameter-container. 
             * The parameter-name is used to as a key to search through the parameter-container.
             * Succesful search and type conversion the function returns with parameter-data.
             * If parameter-name is not found in the parameter-container or if parameter is configured incorrectly, 
@@ -218,17 +217,17 @@ namespace Toolbox
             * \return Function return: parameter data [typename ItemType]
             */
             template<typename ParamData>
-            static boost::optional<ParamData> getParamData(
+            static boost::optional<ParamData> loadParamData(
                 const XmlRpc::XmlRpcValue& param_xml,
                 const std::string& param_name);
 
 
-            // Get Parameter Data
+            // Load Parameter Data
             // -------------------------------
             // (Function Overloading)
-            /** \brief Get Parameter Data.
+            /** \brief Load Parameter Data.
             *
-            * Gets parameter-data from given parameter-container and checks it against validation set. 
+            * Loads parameter-data from given parameter-container and checks it against validation set. 
             * The parameter-name is used to as a key to search through the parameter-container.
             * Succesful search, type conversion and validation check the function returns with parameter-data.
             * If parameter-name is not found in the parameter-container or if parameter is configured incorrectly, 
@@ -241,18 +240,18 @@ namespace Toolbox
             * \return Function return: parameter data [typename ItemType]
             */
             template<typename ParamData>
-            static boost::optional<ParamData> getParamData(
+            static boost::optional<ParamData> loadParamData(
                 const XmlRpc::XmlRpcValue& param_xml,
                 const std::string& param_name,
                 const std::vector<ParamData>& validation_set);
 
 
-            // Get Parameter Data
-            // (Template: Primary/Default)
+            // Load Parameter Data
             // -------------------------------
-            /** \brief Get Parameter Data.
+            // (Function Overloading)
+            /** \brief Load Parameter Data.
             *
-            * Gets parameter-data from given parameter-container
+            * Loads parameter-data from given parameter-container
             * and uses it as a key to find the corresponding paired value in the given map.
             * The parameter-name is used to as a key to search through the parameter-container.
             * Succesful search, type conversion and the paired parameter-data is found within the map
@@ -267,7 +266,7 @@ namespace Toolbox
             * \return Function return: parameter data [typename ItemType]
             */
             template<typename ParamData, typename MapKey, typename MapValue>
-            static boost::optional<ParamData> getParamData(
+            static boost::optional<ParamData> loadParamData(
                 const XmlRpc::XmlRpcValue& param_xml,
                 const std::string& param_name,
                 const std::map<MapKey, MapValue>& item_map);
@@ -293,5 +292,6 @@ namespace Toolbox
 // Include implementation-file:
 // -------------------------------
 #include <robot_toolbox/tools/param_converter.inl>
+#include <robot_toolbox/tools/param_loader.inl>
 
 #endif // PARAM_TOOL_H 

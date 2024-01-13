@@ -1,0 +1,15 @@
+
+# ----- Test Parameters ----- #
+test_params:
+  value_bool:   false
+  value_int:    3
+  value_double: 123.456
+  value_string: test-string
+  color: grEEn
+  value_vec:  [1, 2, 3, 4, 5, 6]
+  map_key: yellOWk
+
+  
+
+  
+

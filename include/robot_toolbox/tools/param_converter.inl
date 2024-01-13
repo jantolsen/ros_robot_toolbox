@@ -4,8 +4,6 @@
 //      Toolbox for Robotics
 //      Parameter Converter contains utility functions for conversion 
 //      of XmlRpc::XmlRpcValue to fundamental types. 
-//      Functionality is implemented as template-class (utilizing struct)
-//      and template specialization(s) function(s).
 //
 // Version:
 //  0.2 -   Split Parameter Tools implementation
@@ -16,7 +14,6 @@
 //          [17.12.2023]  -   Jan T. Olsen
 //
 // -------------------------------
-
 
 // Include guard:
 // -------------------------------

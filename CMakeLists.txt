@@ -190,10 +190,10 @@ target_link_libraries(test_toolbox_map
   ${PROJECT_NAME}
 )
 
-add_executable(test_toolbox_param 
-  test/test_toolbox_param.cpp)
+add_executable(test_param 
+  test/test_param.cpp)
 
-target_link_libraries(test_toolbox_param
+target_link_libraries(test_param
   ${catkin_LIBRARIES}
   ${PROJECT_NAME}
 )
@@ -241,7 +241,6 @@ install(
     robot_toolbox
     test_toolbox_node
     test_toolbox_map
-    test_toolbox_param
   ARCHIVE DESTINATION 
     ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION 
