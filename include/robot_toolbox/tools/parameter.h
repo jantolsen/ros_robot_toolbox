@@ -149,6 +149,30 @@ namespace Toolbox
                 const std::string& param_name);
 
 
+            // Get Parameter Data
+            // -------------------------------
+            // (Function Overloading)
+            /** \brief Get Parameter Data.
+            *
+            * Get parameter-data from given parameter-container. 
+            * The parameter-name is used to as a key to search through the parameter-container.
+            * Succesful search and type conversion the function returns with parameter-data.
+            * If parameter-name is not found in the parameter-container or if parameter is configured incorrectly, 
+            * a warning message is given and the given default value is returned.
+            * 
+            * \param param_xml          Parameter-container to search through [const XmlRpc::XmlRpcValue&]
+            * \param param_name         Parameter-name to search for [const std::string&]
+            * \param data_default       Default parameter-data (returns of loading fails) [typename ParamData]
+            * 
+            * \return Function return: parameter data [typename ParamData]
+            */
+            template<typename ParamData>
+            static ParamData getParamData(
+                const XmlRpc::XmlRpcValue& param_xml,
+                const std::string& param_name,
+                const ParamData& data_default);
+
+
             // Load Parameter Data
             // -------------------------------
             // (Function Overloading)
@@ -242,6 +266,30 @@ namespace Toolbox
             static boost::optional<ParamData> loadParamData(
                 const XmlRpc::XmlRpcValue& param_xml,
                 const std::string& param_name);
+
+
+            // Load Parameter Data
+            // -------------------------------
+            // (Function Overloading)
+            /** \brief Load Parameter Data.
+            *
+            * Loads parameter-data from given parameter-container. 
+            * The parameter-name is used to as a key to search through the parameter-container.
+            * Succesful search and type conversion the function returns with parameter-data.
+            * If parameter-name is not found in the parameter-container or if parameter is configured incorrectly, 
+            * an warning message is given and the given default parameter-data is returned.
+            * 
+            * \param param_xml          Parameter-container to search through [const XmlRpc::XmlRpcValue&]
+            * \param param_name         Parameter-name to search for [const std::string&]
+            * \param data_default       Default parameter-data (returns of loading fails) [typename ParamData]
+            * 
+            * \return Function return: parameter data [typename ItemType]
+            */
+            template<typename ParamData>
+            static boost::optional<ParamData> loadParamData(
+                const XmlRpc::XmlRpcValue& param_xml,
+                const std::string& param_name,
+                const ParamData& data_default);
 
 
             // Load Parameter Data

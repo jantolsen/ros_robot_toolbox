@@ -75,6 +75,32 @@ namespace Toolbox
     inline ParamData Parameter::getParamData(
         const XmlRpc::XmlRpcValue& param_xml,
         const std::string& param_name,
+        const ParamData& data_default)
+    {
+        // Load parameter data
+        auto result_data = Parameter::loadParamData<ParamData>(param_xml, param_name, data_default);
+        if (!result_data)
+        {
+            // Parameter loading failed!
+            // Throw runtime exception
+            throw std::runtime_error("Runtime exception! " + Parameter::CLASS_PREFIX + __FUNCTION__ 
+                + ": Failed! Parameter [" + param_name + "] is missing or configured incorrectly");
+        }
+
+        // Parameter loading success!
+        // Return parameter value
+        return result_data.value();
+    } // Function-End: getParamData()
+
+
+    // Get Parameter Data
+    // (Template: Primary/Default)
+    // -------------------------------
+    // (Function Overloading)
+    template<typename ParamData>
+    inline ParamData Parameter::getParamData(
+        const XmlRpc::XmlRpcValue& param_xml,
+        const std::string& param_name,
         const std::vector<ParamData>& data_set)
     {
         // Load parameter data
@@ -128,12 +154,16 @@ namespace Toolbox
         const XmlRpc::XmlRpcValue& param_xml,
         const std::string& param_name)
     {
-        // Check for parameter-member in given parameter-data
-        if(!Parameter::checkMember(param_xml, param_name))
+        // Check parameter-data for specified parameter-member
+        if(!param_xml.hasMember(param_name))
         {
             // Parameter search failed
+            ROS_ERROR_STREAM(CLASS_PREFIX << __FUNCTION__ 
+                << ": Failed! Parameter [" << param_name << "] was NOT found");
+
+            // Function return
             return boost::none;
-        } 
+        }
 
         // Convert parameter-member to respective data-type
         boost::optional<ParamData> result_data = Parameter::convertParamType<ParamData>(param_xml[param_name]);
@@ -145,6 +175,46 @@ namespace Toolbox
 
             // Function return
             return boost::none;
+        }
+
+        // Function return
+        return result_data;
+    } // Function-End: loadParamData()
+
+
+    // Load Parameter Data
+    // (Template: Primary/Default)
+    // -------------------------------
+    // (Function Overloading)
+    template<typename ParamData>
+    inline boost::optional<ParamData> Parameter::loadParamData(
+        const XmlRpc::XmlRpcValue& param_xml,
+        const std::string& param_name,
+        const ParamData& data_default)
+    {
+        // Check parameter-data for specified parameter-member
+        if(!param_xml.hasMember(param_name))
+        {
+            // Report to terminal
+            ROS_WARN_STREAM(CLASS_PREFIX << __FUNCTION__ 
+                << ": Failed! Parameter [" << param_name << "] was NOT found."
+                << " Using default-data");
+
+            // Parameter search failed
+            return data_default;
+        }
+
+        // Convert parameter-member to respective data-type
+        boost::optional<ParamData> result_data = Parameter::convertParamType<ParamData>(param_xml[param_name]);
+        if(!result_data)
+        {
+            // Parameter convertion failed
+            ROS_WARN_STREAM(Parameter::CLASS_PREFIX << __FUNCTION__ 
+                << ": Failed! Parameter [" << param_name << "] is configured incorrectly."
+                << " Using default-data");
+
+            // Function return
+            return data_default;
         }
 
         // Function return
