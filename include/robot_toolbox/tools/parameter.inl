@@ -1,9 +1,11 @@
-// Robotics Toolbox - Parameter Converter
+// Robotics Toolbox - Parameter Tools
 // -------------------------------
 // Description:
 //      Toolbox for Robotics
-//      Parameter Converter contains utility functions for conversion 
-//      of XmlRpc::XmlRpcValue to fundamental types. 
+//      Parameter Tools contains utility functions for
+//      loading, convertion and validation of 
+//      parameter-data from parameter-container
+//      obtained from the parameter-server. 
 //
 // Version:
 //  0.2 -   Split Parameter Tools implementation
@@ -17,8 +19,8 @@
 
 // Include guard:
 // -------------------------------
-#ifndef PARAM_CONVERTER_INL
-#define PARAM_CONVERTER_INL
+#ifndef PARAMETER_TOOL_INL
+#define PARAMETER_TOOL_INL
 
 // Include Header-files:
 // -------------------------------
@@ -37,20 +39,201 @@
 // -------------------------------
 namespace Toolbox
 {   
-    // Parameter Converter Class - Member(s)
+    // Parameter Loader Class - Member(s)
     // -------------------------------
+
+    // Get Parameter Data
+    // (Template: Primary/Default)
+    // -------------------------------
+    // (Function Overloading)
+    template<typename ParamData>
+    inline ParamData Parameter::getParamData(
+        const XmlRpc::XmlRpcValue& param_xml,
+        const std::string& param_name)
+    {
+        // Load parameter data
+        auto result_data = Parameter::loadParamData<ParamData>(param_xml, param_name);
+        if (!result_data)
+        {
+            // Parameter loading failed!
+            // Throw runtime exception
+            throw std::runtime_error("Runtime exception! " + Parameter::CLASS_PREFIX + __FUNCTION__ 
+                + ": Failed! Parameter [" + param_name + "] is missing or configured incorrectly");
+        }
+
+        // Parameter loading success!
+        // Return parameter value
+        return result_data.value();
+    } // Function-End: getParamData()
+
+
+    // Get Parameter Data
+    // (Template: Primary/Default)
+    // -------------------------------
+    // (Function Overloading)
+    template<typename ParamData>
+    inline ParamData Parameter::getParamData(
+        const XmlRpc::XmlRpcValue& param_xml,
+        const std::string& param_name,
+        const std::vector<ParamData>& data_set)
+    {
+        // Load parameter data
+        auto result_data = Parameter::loadParamData<ParamData>(param_xml, param_name, data_set);
+        if (!result_data)
+        {
+            // Parameter loading failed!
+            // Throw runtime exception
+            throw std::runtime_error("Runtime exception! " + Parameter::CLASS_PREFIX + __FUNCTION__ 
+                + ": Failed! Parameter [" + param_name + "] is missing or configured incorrectly");
+        }
+
+        // Parameter loading success!
+        // Return parameter value
+        return result_data.value();
+    } // Function-End: getParamData()
+
+
+    // Get Parameter Data
+    // (Template: Primary/Default)
+    // -------------------------------
+    // (Function Overloading)
+    template<typename ParamData, typename MapKey, typename MapValue>
+    inline ParamData Parameter::getParamData(
+        const XmlRpc::XmlRpcValue& param_xml,
+        const std::string& param_name,
+        const std::map<MapKey, MapValue>& data_map)
+    {
+        // Load parameter data
+        auto result_data = Parameter::loadParamData<ParamData>(param_xml, param_name, data_map);
+        if (!result_data)
+        {
+            // Parameter loading failed!
+            // Throw runtime exception
+            throw std::runtime_error("Runtime exception! " + Parameter::CLASS_PREFIX + __FUNCTION__ 
+                + ": Failed! Parameter [" + param_name + "] is missing or configured incorrectly");
+        }
+
+        // Parameter loading success!
+        // Return parameter value
+        return result_data.value();
+    } // Function-End: getParamData()
+
+
+    // Load Parameter Data
+    // (Template: Primary/Default)
+    // -------------------------------
+    // (Function Overloading)
+    template<typename ParamData>
+    inline boost::optional<ParamData> Parameter::loadParamData(
+        const XmlRpc::XmlRpcValue& param_xml,
+        const std::string& param_name)
+    {
+        // Check for parameter-member in given parameter-data
+        if(!Parameter::checkMember(param_xml, param_name))
+        {
+            // Parameter search failed
+            return boost::none;
+        } 
+
+        // Convert parameter-member to respective data-type
+        boost::optional<ParamData> result_data = Parameter::convertParamType<ParamData>(param_xml[param_name]);
+        if(!result_data)
+        {
+            // Parameter convertion failed
+            ROS_ERROR_STREAM(Parameter::CLASS_PREFIX << __FUNCTION__ 
+                << ": Failed! Parameter [" << param_name << "] is configured incorrectly");
+
+            // Function return
+            return boost::none;
+        }
+
+        // Function return
+        return result_data;
+    } // Function-End: loadParamData()
+
+
+    // Load Parameter Data
+    // (Template: Primary/Default)
+    // -------------------------------
+    // (Function Overloading)
+    template<typename ParamData>
+    inline boost::optional<ParamData> Parameter::loadParamData(
+        const XmlRpc::XmlRpcValue& param_xml,
+        const std::string& param_name,
+        const std::vector<ParamData>& data_set)
+    {
+        // Call overloading parameter loading function
+        boost::optional<ParamData> result_data = loadParamData<ParamData>(param_xml, param_name);
+        if(!result_data)
+        {
+            // Function return
+            return boost::none;
+        }
+
+        // Validate parameter-data against given validation-set
+        if(!isValueInSet(result_data.value(), data_set))
+        {
+            // Parameter validation failed
+            ROS_ERROR_STREAM(Parameter::CLASS_PREFIX << __FUNCTION__ 
+                << ": Failed! Parameter [" << param_name <<"] with value"
+                << " [" << result_data.value() << "] is NOT a valid entry");
+
+            // Function return
+            return boost::none;
+        }
+
+        // Function return
+        return result_data;
+    } // Function-End: loadParamData()
+
+
+    // Load Parameter Data
+    // (Template: Primary/Default)
+    // -------------------------------
+    // (Function Overloading)
+    template<typename ParamData, typename MapKey, typename MapValue>
+    inline boost::optional<ParamData> Parameter::loadParamData(
+        const XmlRpc::XmlRpcValue& param_xml,
+        const std::string& param_name,
+        const std::map<MapKey, MapValue>& data_map)
+    {
+        // Call overloading parameter loading function
+        boost::optional<MapKey> result_data = loadParamData<MapKey>(param_xml, param_name);
+        if(!result_data)
+        {
+            // Function return
+            return boost::none;
+        }
+
+        // Using paramter-data as key, search for paired value in given item-map
+        boost::optional<MapValue> result_search = Toolbox::Map::searchMapByKey(data_map, result_data.value());
+        if(!result_search)
+        {
+            // Parameter validation failed
+            ROS_ERROR_STREAM(Parameter::CLASS_PREFIX << __FUNCTION__ 
+                << ": Failed! Parameter [" << param_name <<"] with value"
+                << " [" << result_data.value() << "] is NOT a valid valid key in given item-map");
+
+            // Function return
+            return boost::none;
+        }
+        // Map search success! paramter-data is found in the container
+        // Cast and return related item-value
+        return static_cast<ParamData>(result_search.value());
+    } // Function-End: loadParamData()
+
 
     // Convert XmlRpcValue Parameter
     // (Template: Primary/Default)
     // -------------------------------
     template<typename ParamType>
-    inline boost::optional<ParamType> ParameterConverter::convertParamType(
+    inline boost::optional<ParamType> Parameter::convertParamType(
         const XmlRpc::XmlRpcValue& param)
     {
         // Report to terminal
-        ROS_ERROR_STREAM("Toolbox::ParameterConverter::" << __FUNCTION__
+        ROS_ERROR_STREAM(Parameter::CLASS_PREFIX << __FUNCTION__
             << ": Failed! Parameter (" << param << ")"
-            << " [XmlRpcValueType: " << ParameterTool::getParamTypeName(param) << "]"
+            << " [XmlRpcValueType: " << Parameter::getParamTypeName(param) << "]"
             << " is unsupporeted for conversion");
 
         // Unsupported type!
@@ -62,7 +245,7 @@ namespace Toolbox
     // -------------------------------
     // (Template Specialization: Bool)
     template<>
-    inline boost::optional<bool> ParameterConverter::convertParamType(
+    inline boost::optional<bool> Parameter::convertParamType(
         const XmlRpc::XmlRpcValue& param)
     {
         // Local variable(s)
@@ -73,9 +256,9 @@ namespace Toolbox
         if(param_.getType() != XmlRpc::XmlRpcValue::TypeBoolean)
         {
             // Report to terminal
-            ROS_ERROR_STREAM("Toolbox::ParameterConverter::" << __FUNCTION__
+            ROS_ERROR_STREAM(Parameter::CLASS_PREFIX << __FUNCTION__
                 << ": Failed! Parameter (" << param << ")"
-                << " [XmlRpcValueType: " << ParameterTool::getParamTypeName(param) << "]"
+                << " [XmlRpcValueType: " << Parameter::getParamTypeName(param) << "]"
                 << " does NOT convert to [boolean]");
 
             // Parameter type mismatch, return false
@@ -90,7 +273,7 @@ namespace Toolbox
     // -------------------------------
     // (Template Specialization: Int)
     template<>
-    inline boost::optional<int> ParameterConverter::convertParamType(
+    inline boost::optional<int> Parameter::convertParamType(
         const XmlRpc::XmlRpcValue& param) 
     {
         // Local variable(s)
@@ -101,9 +284,9 @@ namespace Toolbox
         if(param_.getType() != XmlRpc::XmlRpcValue::TypeInt)
         {
             // Report to terminal
-            ROS_ERROR_STREAM("Toolbox::ParameterConverter::" << __FUNCTION__
+            ROS_ERROR_STREAM(Parameter::CLASS_PREFIX << __FUNCTION__
                 << ": Failed! Parameter (" << param << ")"
-                << " [XmlRpcValueType: " << ParameterTool::getParamTypeName(param) << "]"
+                << " [XmlRpcValueType: " << Parameter::getParamTypeName(param) << "]"
                 << " does NOT convert to [int]");
 
             // Parameter type mismatch, return false
@@ -119,7 +302,7 @@ namespace Toolbox
     // -------------------------------
     // (Template Specialization: Double)
     template<>
-    inline boost::optional<double> ParameterConverter::convertParamType(
+    inline boost::optional<double> Parameter::convertParamType(
         const XmlRpc::XmlRpcValue& param)
     {
         // Local variable(s)
@@ -130,9 +313,9 @@ namespace Toolbox
         if(param_.getType() != XmlRpc::XmlRpcValue::TypeDouble)
         {
             // Report to terminal
-            ROS_ERROR_STREAM("Toolbox::ParameterConverter::" << __FUNCTION__
+            ROS_ERROR_STREAM(Parameter::CLASS_PREFIX << __FUNCTION__
                 << ": Failed! Parameter (" << param << ")"
-                << " [XmlRpcValueType: " << ParameterTool::getParamTypeName(param) << "]"
+                << " [XmlRpcValueType: " << Parameter::getParamTypeName(param) << "]"
                 << " does NOT convert to [double]");
 
             // Parameter type mismatch, return false
@@ -147,7 +330,7 @@ namespace Toolbox
     // -------------------------------
     // (Template Specialization: String)
     template<>
-    inline boost::optional<std::string> ParameterConverter::convertParamType(
+    inline boost::optional<std::string> Parameter::convertParamType(
         const XmlRpc::XmlRpcValue& param) 
     {
         // Local variable(s)
@@ -158,9 +341,9 @@ namespace Toolbox
         if(param_.getType() != XmlRpc::XmlRpcValue::TypeString)
         {
             // Report to terminal
-            ROS_ERROR_STREAM("Toolbox::ParameterConverter::" << __FUNCTION__
+            ROS_ERROR_STREAM(Parameter::CLASS_PREFIX << __FUNCTION__
                 << ": Failed! Parameter (" << param << ")"
-                << " [XmlRpcValueType: " << ParameterTool::getParamTypeName(param) << "]"
+                << " [XmlRpcValueType: " << Parameter::getParamTypeName(param) << "]"
                 << " does NOT convert to [string]");
 
             // Parameter type mismatch, return false
@@ -176,7 +359,7 @@ namespace Toolbox
     // -------------------------------
     // (Template Specialization: std::vector<bool>)
     template<>
-    inline boost::optional<std::vector<bool>> ParameterConverter::convertParamType(
+    inline boost::optional<std::vector<bool>> Parameter::convertParamType(
         const XmlRpc::XmlRpcValue& param)
     {
         // Local variable(s)
@@ -187,9 +370,9 @@ namespace Toolbox
         if (param_.getType() != XmlRpc::XmlRpcValue::TypeArray)
         {
             // Report to terminal
-            ROS_ERROR_STREAM("Toolbox::ParameterConverter::" << __FUNCTION__
+            ROS_ERROR_STREAM(Parameter::CLASS_PREFIX << __FUNCTION__
                 << ": Failed! Parameter (" << param << ")"
-                << " [XmlRpcValueType: " << ParameterTool::getParamTypeName(param) << "]"
+                << " [XmlRpcValueType: " << Parameter::getParamTypeName(param) << "]"
                 << " is NOT an array");
 
             // Parameter type mismatch, return false
@@ -207,9 +390,9 @@ namespace Toolbox
             else
             {
                 // Report to terminal
-                ROS_ERROR_STREAM("Toolbox::ParameterConverter::" << __FUNCTION__
+                ROS_ERROR_STREAM(Parameter::CLASS_PREFIX << __FUNCTION__
                     << ": Failed! Parameter-Element (" << param_[i] << ")" 
-                    << " [XmlRpcValueType: " << ParameterTool::getParamTypeName(param_[i]) << "]"
+                    << " [XmlRpcValueType: " << Parameter::getParamTypeName(param_[i]) << "]"
                     << " within Paramter (" << param << ")"
                     << " does NOT convert to [bool]");
 
@@ -227,7 +410,7 @@ namespace Toolbox
     // -------------------------------
     // (Template Specialization: std::vector<int>)
     template<>
-    inline boost::optional<std::vector<int>> ParameterConverter::convertParamType(
+    inline boost::optional<std::vector<int>> Parameter::convertParamType(
         const XmlRpc::XmlRpcValue& param)
     {
         // Local variable(s)
@@ -238,9 +421,9 @@ namespace Toolbox
         if (param_.getType() != XmlRpc::XmlRpcValue::TypeArray)
         {
             // Report to terminal
-            ROS_ERROR_STREAM("Toolbox::ParameterConverter::" << __FUNCTION__
+            ROS_ERROR_STREAM(Parameter::CLASS_PREFIX << __FUNCTION__
                 << ": Failed! Parameter (" << param << ")"
-                << " [XmlRpcValueType: " << ParameterTool::getParamTypeName(param) << "]"
+                << " [XmlRpcValueType: " << Parameter::getParamTypeName(param) << "]"
                 << " is NOT an array");
 
             // Parameter type mismatch, return false
@@ -258,9 +441,9 @@ namespace Toolbox
             else
             {
                 // Report to terminal
-                ROS_ERROR_STREAM("Toolbox::ParameterConverter::" << __FUNCTION__
+                ROS_ERROR_STREAM(Parameter::CLASS_PREFIX << __FUNCTION__
                     << ": Failed! Parameter-Element (" << param_[i] << ")" 
-                    << " [XmlRpcValueType: " << ParameterTool::getParamTypeName(param_[i]) << "]"
+                    << " [XmlRpcValueType: " << Parameter::getParamTypeName(param_[i]) << "]"
                     << " within Paramter (" << param << ")"
                     << " does NOT convert to [int]");
 
@@ -278,7 +461,7 @@ namespace Toolbox
     // -------------------------------
     // (Template Specialization: std::vector<double>)
     template<>
-    inline boost::optional<std::vector<double>> ParameterConverter::convertParamType(
+    inline boost::optional<std::vector<double>> Parameter::convertParamType(
         const XmlRpc::XmlRpcValue& param)
     {
         // Local variable(s)
@@ -289,9 +472,9 @@ namespace Toolbox
         if (param_.getType() != XmlRpc::XmlRpcValue::TypeArray)
         {
             // Report to terminal
-            ROS_ERROR_STREAM("Toolbox::ParameterConverter::" << __FUNCTION__
+            ROS_ERROR_STREAM(Parameter::CLASS_PREFIX << __FUNCTION__
                 << ": Failed! Parameter (" << param << ")"
-                << " [XmlRpcValueType: " << ParameterTool::getParamTypeName(param) << "]"
+                << " [XmlRpcValueType: " << Parameter::getParamTypeName(param) << "]"
                 << " is NOT an array");
 
             // Parameter type mismatch, return false
@@ -309,9 +492,9 @@ namespace Toolbox
             else
             {
                 // Report to terminal
-                ROS_ERROR_STREAM("Toolbox::ParameterConverter::" << __FUNCTION__
+                ROS_ERROR_STREAM(Parameter::CLASS_PREFIX << __FUNCTION__
                     << ": Failed! Parameter-Element (" << param_[i] << ")" 
-                    << " [XmlRpcValueType: " << ParameterTool::getParamTypeName(param_[i]) << "]"
+                    << " [XmlRpcValueType: " << Parameter::getParamTypeName(param_[i]) << "]"
                     << " within Paramter (" << param << ")"
                     << " does NOT convert to [double]");
 
@@ -329,7 +512,7 @@ namespace Toolbox
     // -------------------------------
     // (Template Specialization: std::vector<std::string>)
     template<>
-    inline boost::optional<std::vector<std::string>> ParameterConverter::convertParamType(
+    inline boost::optional<std::vector<std::string>> Parameter::convertParamType(
         const XmlRpc::XmlRpcValue& param)
     {
         // Local variable(s)
@@ -340,9 +523,9 @@ namespace Toolbox
         if (param_.getType() != XmlRpc::XmlRpcValue::TypeArray)
         {
             // Report to terminal
-            ROS_ERROR_STREAM("Toolbox::ParameterConverter::" << __FUNCTION__
+            ROS_ERROR_STREAM(Parameter::CLASS_PREFIX << __FUNCTION__
                 << ": Failed! Parameter (" << param << ")"
-                << " [XmlRpcValueType: " << ParameterTool::getParamTypeName(param) << "]"
+                << " [XmlRpcValueType: " << Parameter::getParamTypeName(param) << "]"
                 << " does is not an array");
 
             // Parameter type mismatch, return false
@@ -360,9 +543,9 @@ namespace Toolbox
             else
             {
                 // Report to terminal
-                ROS_ERROR_STREAM("Toolbox::ParameterConverter::" << __FUNCTION__
+                ROS_ERROR_STREAM(Parameter::CLASS_PREFIX << __FUNCTION__
                     << ": Failed! Parameter-Element (" << param_[i] << ")" 
-                    << " [XmlRpcValueType: " << ParameterTool::getParamTypeName(param_[i]) << "]"
+                    << " [XmlRpcValueType: " << Parameter::getParamTypeName(param_[i]) << "]"
                     << " within Paramter (" << param << ")"
                     << " does NOT convert to [string]");
 
@@ -375,4 +558,4 @@ namespace Toolbox
     } // Function-End: convertParamType<std::vector<std::string>>()
 
 } // End of namespace "Toolbox"
-#endif // PARAM_CONVERTER_INL 
+#endif // PARAMETER_TOOL_INL 

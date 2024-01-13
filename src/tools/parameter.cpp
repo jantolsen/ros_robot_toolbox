@@ -3,11 +3,15 @@
 // Description:
 //      Toolbox for Robotics
 //      Parameter Tools contains helper and utility functions 
-//      related to reading and validate parameters
+//      related to loading, reading and validating parameter-data
+//      parameter-data obtained from parameter-server.
 //
 // Version:
-//  0.1 - Initial Version
-//        [19.11.2023]  -   Jan T. Olsen
+//  0.2 -   Overual of Parameter Tools implementation.
+//          Introduced inline implementation.
+//          [12.01.2024]  -   Jan T. Olsen
+//  0.1 -   Initial Version
+//          [19.11.2023]  -   Jan T. Olsen
 //
 // -------------------------------
 
@@ -21,12 +25,13 @@
 // -------------------------------
 namespace Toolbox
 {
-// Parameter Tool Class - Members:
-// -------------------------------
+    // Parameter Tool Class - Members:
+    // -------------------------------
 
     // Constants
     // -------------------------------
     const std::string Parameter::CLASS_PREFIX = "Toolbox::Parameter::";
+
 
     // Check Parameter Member
     // -------------------------------
@@ -114,59 +119,8 @@ namespace Toolbox
 
         // Function return
         return true;
+        
     } // Function-End: checkSize()
-
-
-    // Check Parameter
-    // -------------------------------
-    // (Function Overloading)
-    bool Parameter::checkParameter(
-        const XmlRpc::XmlRpcValue& param, 
-        const std::string& member, 
-        const XmlRpc::XmlRpcValue::Type& type)
-    {
-        // Check parameter for specified member
-        if(!checkMember(param, member)) return false;
-
-        // Check parameter-member against specified type
-        if(!checkDataType(param[member], type)) return false;
-
-        // Function return
-        return true;
-    } // Function-End: checkParameter()
-
-
-    // Check Parameter
-    // -------------------------------
-    // (Function Overloading)
-    bool Parameter::checkParameter(
-        const XmlRpc::XmlRpcValue& param, 
-        const std::string& member, 
-        const XmlRpc::XmlRpcValue::Type& type, 
-        const int& size)
-    {
-        // Check parameter for specified member
-        if(!checkMember(param, member)) return false;
-
-        // Check parameter-member against specified type
-        if(!checkDataType(param[member], type)) return false;
-
-        // Check parameter-member against specified size
-        if(!checkSize(param, size)) return false;
-
-        // Function return
-        return true;
-    } // Function-End: checkParameter()
-
-
-    // Get Name of Parameter Data-Type 
-    // -------------------------------
-    std::string Parameter::getParamTypeName(
-        const XmlRpc::XmlRpcValue& param)
-    {
-        // Call overloading function
-        return getParamTypeName(param.getType());
-    } // Function-End: getParamTypeName()
 
 
     // Get Name of Parameter Data-Type 
@@ -216,5 +170,15 @@ namespace Toolbox
                 return "Type-Invalid";
         }
     } // Function-End: getParamTypeName()
-    
+
+
+    // Get Name of Parameter Data-Type 
+    // -------------------------------
+    std::string Parameter::getParamTypeName(
+        const XmlRpc::XmlRpcValue& param)
+    {
+        // Call overloading function
+        return getParamTypeName(param.getType());
+    } // Function-End: getParamTypeName()
+
 } // End Namespace: Robotics Toolbox

@@ -116,13 +116,13 @@ int main(int argc, char** argv)
     // Loading
     // -------------------------------
         // Load parameter(s)
-        auto param_bool = Toolbox::ParameterLoader::loadParamData<bool>(param_xml, "value_bool");
-        auto param_int = Toolbox::ParameterLoader::loadParamData<int>(param_xml, "value_int");
-        auto param_double = Toolbox::ParameterLoader::loadParamData<double>(param_xml, "value_double");
-        auto param_string = Toolbox::ParameterLoader::loadParamData<std::string>(param_xml, "value_string");
-        auto param_color = Toolbox::ParameterLoader::loadParamData<std::string>(param_xml, "color", validation_set);
-        auto param_vec = Toolbox::ParameterLoader::loadParamData<std::vector<int>>(param_xml, "value_vec");
-        auto param_map = Toolbox::ParameterLoader::loadParamData<int>(param_xml, "map_key" , test_map);
+        bool param_bool = Toolbox::Parameter::getParamData<bool>(param_xml, "value_bool");
+        int param_int = Toolbox::Parameter::getParamData<int>(param_xml, "value_int");
+        double param_double = Toolbox::Parameter::getParamData<double>(param_xml, "value_double");
+        std::string param_string = Toolbox::Parameter::getParamData<std::string>(param_xml, "value_string");
+        std::string param_color = Toolbox::Parameter::getParamData<std::string>(param_xml, "color", validation_set);
+        std::vector<int> param_vec = Toolbox::Parameter::getParamData<std::vector<int>>(param_xml, "value_vec");
+        int param_map = Toolbox::Parameter::getParamData<int>(param_xml, "map_key" , test_map);
         
 
 
@@ -131,19 +131,19 @@ int main(int argc, char** argv)
         ROS_INFO_STREAM(" ");
         ROS_INFO_STREAM("Test Parameters:");
         ROS_INFO_STREAM("--------------------");
-        ROS_INFO_STREAM("Bool: "    << param_bool.value());
-        ROS_INFO_STREAM("Int: "     << param_int.value());
-        ROS_INFO_STREAM("Double: "  << param_double.value());
-        ROS_INFO_STREAM("String: "  << param_string.value());
-        ROS_INFO_STREAM("Color: "   << param_color.value());
+        ROS_INFO_STREAM("Bool: "    << param_bool);
+        ROS_INFO_STREAM("Int: "     << param_int);
+        ROS_INFO_STREAM("Double: "  << param_double);
+        ROS_INFO_STREAM("String: "  << param_string);
+        ROS_INFO_STREAM("Color: "   << param_color);
 
         ROS_INFO_STREAM("Vector: ");
-        for (int i = 0; i < param_vec.value().size(); i++)
+        for (int i = 0; i < param_vec.size(); i++)
         {
-            ROS_INFO_STREAM("   Item [" << i << "]: " << param_vec.value()[i]);
+            ROS_INFO_STREAM("   Item [" << i << "]: " << param_vec[i]);
         }
 
-        ROS_INFO_STREAM("Color-Map: "   << param_map.value());
+        ROS_INFO_STREAM("Color-Map: "   << param_map);
         
 
 

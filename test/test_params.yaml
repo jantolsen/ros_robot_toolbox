@@ -7,9 +7,6 @@ test_params:
   value_string: test-string
   color: grEEn
   value_vec:  [1, 2, 3, 4, 5, 6]
-  map_key: yellOWk
+  map_key: yellOWs
 
   
-
-  
-
