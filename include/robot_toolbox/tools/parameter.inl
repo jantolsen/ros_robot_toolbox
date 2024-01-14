@@ -197,7 +197,7 @@ namespace Toolbox
         {
             // Report to terminal
             ROS_WARN_STREAM(CLASS_PREFIX << __FUNCTION__ 
-                << ": Failed! Parameter [" << param_name << "] was NOT found."
+                << ": Warning! Parameter [" << param_name << "] was NOT found."
                 << " Using default-data");
 
             // Parameter search failed
@@ -210,7 +210,7 @@ namespace Toolbox
         {
             // Parameter convertion failed
             ROS_WARN_STREAM(Parameter::CLASS_PREFIX << __FUNCTION__ 
-                << ": Failed! Parameter [" << param_name << "] is configured incorrectly."
+                << ": Warning! Parameter [" << param_name << "] is configured incorrectly."
                 << " Using default-data");
 
             // Function return
