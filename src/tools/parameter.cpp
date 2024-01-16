@@ -7,7 +7,7 @@
 //      parameter-data obtained from parameter-server.
 //
 // Version:
-//  0.2 -   Overual of Parameter Tools implementation.
+//  0.2 -   Overhaul of Parameter Tools implementation.
 //          Introduced inline implementation.
 //          [12.01.2024]  -   Jan T. Olsen
 //  0.1 -   Initial Version
