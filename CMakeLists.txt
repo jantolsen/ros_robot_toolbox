@@ -59,8 +59,8 @@ add_message_files(
   FILES
   PoseRPY.msg
   TranslationVector.msg
-  JointPosition.msg
-  JointPositionExtAxis.msg
+  JointData.msg
+  JointDataExtAxis.msg
 )
 
 ## Generate services in the 'srv' folder

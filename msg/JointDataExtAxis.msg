@@ -1,8 +1,8 @@
-# Toolbox - Joint-Positiont
+# Toolbox - Joint-Data
 # -------------------------------
 # Description:
-#   Message-type for Joint-Position with External Axis.
-#   A more user friendly representation of joint-position 
+#   Message-type for Joint-Data with External Axis.
+#   A more user friendly representation of joint-data 
 #   with external axis
 #
 # Version:

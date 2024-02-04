@@ -1,8 +1,8 @@
-# Toolbox - Joint-Position
+# Toolbox - Joint-Data
 # -------------------------------
 # Description:
-#   Message-type for Joint-Position.
-#   A more user friendly representation of joint-position
+#   Message-type for Joint-Data.
+#   A more user friendly representation of joint-data
 #
 # Version:
 #   0.1 -   Initial version
